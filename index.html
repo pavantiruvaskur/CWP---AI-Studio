@@ -1,0 +1,4194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CWP AI Studio — Knowledge Repository</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       RESET & CSS VARIABLES
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:        #5252d4;
+      --primary-50:     #f0f0ff;
+      --primary-100:    #ecefff;
+      --primary-light:  #f7f7ff;
+      --link:           #3d5afe;
+
+      --bg-page:        #f3f3f5;
+      --bg-white:       #ffffff;
+      --border:         #e2e4e9;
+      --border-card:    rgba(0,0,0,0.07);
+      --shadow-card:    0 2px 8px rgba(0,0,0,0.05);
+      --shadow-modal:   0 8px 40px rgba(0,0,0,0.20);
+
+      --text-dark:      #1f1f1f;
+      --text-dark2:     #2a2b30;
+      --text-dark3:     #1b1e42;
+      --text-medium:    #4f4f4f;
+      --text-gray:      #6e6e6e;
+      --text-light:     #9e9e9e;
+      --text-placeholder: #b0b0b0;
+      --text-nav:       #666975;
+      --text-secondary: #525560;
+
+      --success-bg:     #e5f7e5;
+      --success-text:   #2e7d33;
+      --warning-bg:     #fff3e0;
+      --warning-text:   #b26600;
+      --error:          #c61919;
+
+      --font-inter:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-roboto: 'Roboto', sans-serif;
+    }
+
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: var(--font-inter);
+      font-size: 13px;
+      color: var(--text-dark);
+      background: var(--bg-page);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+    a { text-decoration: none; }
+    img { display: block; }
+
+    /* ============================================================
+       APP SHELL
+    ============================================================ */
+    .app {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ============================================================
+       SIDEBAR
+    ============================================================ */
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: var(--bg-white);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .sidebar-logo {
+      height: 48px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .logo-diamond {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-logo-wordmark {
+      font-family: var(--font-inter);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 0.3px;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .nav-section { padding: 8px; flex: 1; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      width: 100%;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.12s;
+      outline: none;
+    }
+    .nav-item:hover { background: #f5f5f8; }
+    .nav-item:focus-visible { box-shadow: 0 0 0 2px var(--primary); }
+    .nav-item.active { background: var(--primary-100); }
+
+    .nav-icon {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      background: #eff1f5;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .nav-icon.active { background: var(--primary-100); }
+
+    .nav-label {
+      flex: 1;
+      font-family: var(--font-roboto);
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.12px;
+      text-transform: uppercase;
+      color: var(--text-nav);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .nav-label.active { color: #2b40b4; }
+
+    .nav-chevron {
+      color: var(--text-nav);
+      font-size: 11px;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .nav-chevron.rotated { transform: rotate(90deg); }
+
+    .nav-sub { padding-left: 16px; }
+
+    .nav-sub-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.12s;
+      outline: none;
+    }
+    .nav-sub-item:hover { background: #f5f5f8; }
+    .nav-sub-item.active { background: rgba(236,239,255,0.6); }
+    .nav-sub-item:focus-visible { box-shadow: 0 0 0 2px var(--primary); }
+
+    .nav-sub-divider {
+      width: 1px; height: 36px;
+      background: #525560;
+      flex-shrink: 0;
+    }
+    .nav-sub-item.active .nav-sub-divider { background: #3d5afe; }
+
+    .nav-sub-label {
+      font-family: var(--font-roboto);
+      font-size: 11px;
+      color: var(--text-nav);
+      letter-spacing: 0.3px;
+    }
+    .nav-sub-label.active { color: #3d5afe; font-weight: 700; }
+
+    .collapsible { overflow: hidden; max-height: 0; transition: max-height 0.25s ease; }
+    .collapsible.open { max-height: 200px; }
+
+    /* ============================================================
+       MAIN CONTENT AREA
+    ============================================================ */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    /* ============================================================
+       TOPBAR
+    ============================================================ */
+    .topbar {
+      background: var(--bg-white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      height: 64px;
+    }
+
+    .topbar-title {
+      font-family: var(--font-roboto);
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--text-dark2);
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .breadcrumb a {
+      font-family: var(--font-roboto);
+      font-size: 11px;
+      color: var(--link);
+      letter-spacing: 0.4px;
+    }
+    .breadcrumb-sep { font-size: 11px; color: var(--text-nav); margin: 0 1px; }
+    .breadcrumb-cur { font-family: var(--font-roboto); font-size: 11px; color: var(--text-nav); letter-spacing: 0.4px; }
+
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+
+    .app-grid-icon { opacity: 0.6; cursor: pointer; transition: opacity 0.15s; }
+    .app-grid-icon:hover { opacity: 1; }
+
+    .topbar-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      height: 46px;
+      background: white;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .topbar-user:hover { border-color: var(--primary); }
+
+    .user-avatar {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      color: white;
+      font-size: 11px; font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .topbar-brand {
+      font-family: var(--font-inter);
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--primary);
+      letter-spacing: 0.5px;
+    }
+
+    /* ============================================================
+       TOOLBAR
+    ============================================================ */
+
+    .btn-primary {
+      background: var(--link);
+      color: white;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-family: var(--font-roboto);
+      font-weight: 500;
+      font-size: 12px;
+      white-space: nowrap;
+      transition: background 0.15s, transform 0.1s;
+      line-height: 1.33;
+    }
+    .btn-primary:hover { background: #3040df; }
+    .btn-primary:active { transform: scale(0.97); }
+    .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    /* ============================================================
+       MAIN TAB BAR (underline style)
+    ============================================================ */
+    .tab-bar {
+      background: white;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      display: flex;
+      align-items: flex-end;
+      padding: 4px 24px 0;
+      height: 44px;
+      flex-shrink: 0;
+    }
+
+    .tab {
+      padding: 0 12px;
+      height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-family: var(--font-roboto);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+      user-select: none;
+      outline: none;
+    }
+    .tab:hover { color: var(--link); }
+    .tab.active { color: var(--link); font-weight: 500; border-bottom-color: var(--link); }
+    .tab:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+
+    /* ============================================================
+       CONTENT AREA (scrollable)
+    ============================================================ */
+    .content-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      min-height: 0;
+    }
+
+    /* ============================================================
+       MAIN PANES
+    ============================================================ */
+    .main-pane { display: none; }
+    .main-pane.active { display: flex; flex-direction: column; min-height: 100%; }
+
+    /* ============================================================
+       DASHBOARD PANE (A)
+    ============================================================ */
+    .dash-content { padding: 20px 24px 28px; flex: 1; }
+
+    .dash-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .dash-title {
+      font-family: var(--font-inter);
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--text-dark);
+    }
+
+    .filter-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-size: 12px;
+      color: var(--text-medium);
+      background: white;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+    .dash-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .dash-metric-card {
+      background: white;
+      border-radius: 8px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+
+    .dmc-top {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .dmc-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .dot-blue   { background: #1565c0; }
+    .dot-green  { background: #2e7d33; }
+    .dot-amber  { background: #f9a825; }
+
+    .dmc-label {
+      font-family: var(--font-inter);
+      font-size: 11px;
+      color: var(--text-gray);
+    }
+
+    .dmc-value {
+      font-family: var(--font-inter);
+      font-weight: 700;
+      font-size: 26px;
+      color: var(--text-dark);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .dmc-trend {
+      font-family: var(--font-inter);
+      font-size: 11px;
+      color: var(--success-text);
+    }
+
+    .dash-chart-row {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .dash-bottom-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .dash-card {
+      background: white;
+      border-radius: 10px;
+      padding: 16px 18px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+
+    .dash-card-title {
+      font-family: var(--font-inter);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-dark);
+      margin-bottom: 14px;
+    }
+
+    /* Grouped bar chart */
+    .chart-legend {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .chart-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-inter);
+      font-size: 11px;
+      color: var(--text-gray);
+    }
+
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    .grouped-bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      height: 120px;
+    }
+
+    .bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      height: 100%;
+    }
+
+    .bar-group-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      flex: 1;
+      width: 100%;
+    }
+
+    .bar {
+      flex: 1;
+      border-radius: 2px 2px 0 0;
+      min-height: 3px;
+      transition: opacity 0.15s;
+    }
+    .bar:hover { opacity: 0.8; }
+
+    .bar-day {
+      font-family: var(--font-inter);
+      font-size: 9px;
+      color: var(--text-light);
+      flex-shrink: 0;
+    }
+
+    /* Per-Agent Breakdown Table */
+    .agent-table { width: 100%; border-collapse: collapse; }
+    .agent-table th {
+      font-family: var(--font-inter);
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 0 0 8px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .agent-table th:not(:first-child) { text-align: right; }
+    .agent-table td {
+      padding: 9px 0;
+      font-family: var(--font-inter);
+      font-size: 12px;
+      color: var(--text-dark);
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .agent-table tr:last-child td { border-bottom: none; }
+    .agent-table td:not(:first-child) { text-align: right; }
+    .agent-table .td-agent { display: flex; align-items: center; gap: 7px; }
+    .td-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .td-success { color: var(--success-text); font-weight: 500; }
+
+    /* Activity list */
+    .activity-list { display: flex; flex-direction: column; gap: 0; }
+    .activity-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .activity-row:last-child { border-bottom: none; }
+    .activity-dot-wrap { padding-top: 2px; flex-shrink: 0; }
+    .activity-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .activity-info { flex: 1; min-width: 0; }
+    .activity-agent { font-family: var(--font-inter); font-weight: 600; font-size: 11px; color: var(--text-dark); margin-bottom: 1px; }
+    .activity-msg { font-family: var(--font-inter); font-size: 11px; color: var(--text-gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .activity-time { font-family: var(--font-inter); font-size: 10px; color: var(--text-light); flex-shrink: 0; margin-top: 2px; }
+
+    /* Agent health */
+    .health-list { display: flex; flex-direction: column; gap: 0; }
+    .health-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .health-row:last-child { border-bottom: none; }
+    .health-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; flex-shrink: 0; }
+    .health-info { flex: 1; min-width: 0; }
+    .health-name { font-family: var(--font-inter); font-weight: 600; font-size: 12px; color: var(--text-dark); margin-bottom: 2px; }
+    .health-sub { font-family: var(--font-inter); font-size: 11px; color: var(--text-gray); }
+    .badge-operational { background: var(--success-bg); color: var(--success-text); font-family: var(--font-inter); font-weight: 500; font-size: 10px; padding: 3px 8px; border-radius: 10px; white-space: nowrap; }
+
+    /* ============================================================
+       MY AGENTS — CARD GRID (B1)
+    ============================================================ */
+    .agents-grid-view { padding: 0; flex: 1; display: flex; flex-direction: column; }
+
+    .agents-filter-bar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+.filter-count {
+      font-family: var(--font-inter);
+      font-size: 12px;
+      color: var(--text-gray);
+      padding: 0 4px;
+    }
+
+    .filter-spacer { flex: 1; }
+
+    .filter-search {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      width: 180px;
+      transition: border-color 0.15s;
+    }
+    .filter-search:focus-within { border-color: var(--primary); }
+    .filter-search input { border: none; outline: none; font-family: var(--font-inter); font-size: 12px; color: var(--text-dark); background: transparent; flex: 1; }
+    .filter-search input::placeholder { color: #8f93a3; }
+
+    .btn-more {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 15px;
+      color: var(--text-medium);
+      background: white;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .btn-more:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* DS Segmented Control (CWP DS 2026 — 393:25418) */
+    .seg-ctrl {
+      display: inline-flex;
+      height: 36px;
+      border: 1px solid #e2e4e9;
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .seg-ctrl-item {
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      height: 100%;
+      font-family: var(--font-roboto);
+      font-weight: 500;
+      font-size: 12px;
+      color: #525560;
+      background: white;
+      border: none;
+      border-right: 1px solid #e2e4e9;
+      cursor: pointer;
+      white-space: nowrap;
+      user-select: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .seg-ctrl-item:last-child { border-right: none; }
+    .seg-ctrl-item:hover:not(.active) { background: #f7f8ff; }
+    .seg-ctrl-item.active { background: #ecefff; color: #3d5afe; }
+
+    .agents-grid-content { padding: 16px; flex: 1; overflow-y: auto; }
+
+    .agents-section-title {
+      font-family: var(--font-inter);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-dark);
+      margin-bottom: 14px;
+    }
+
+    .agent-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .agent-card {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.07);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      cursor: pointer;
+      transition: box-shadow 0.15s, border-color 0.15s;
+      position: relative;
+    }
+    .agent-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); border-color: rgba(82,82,212,0.2); }
+
+    .agent-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .agent-card-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .badge-status {
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+    .badge-active { background: var(--success-bg); color: var(--success-text); }
+    .badge-draft  { background: #f0f0f0; color: #6e6e6e; }
+
+    .agent-card-name {
+      font-family: var(--font-inter);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text-dark);
+      margin-bottom: 3px;
+    }
+
+    .agent-card-desc {
+      font-family: var(--font-inter);
+      font-size: 12px;
+      color: var(--text-gray);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .agent-card-tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .agent-card-tag {
+      background: #f0f0ff;
+      border: 1px solid rgba(82,82,212,0.2);
+      color: var(--primary);
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .agent-card-stats {
+      display: flex;
+      gap: 12px;
+    }
+
+    .agent-stat {
+      font-family: var(--font-inter);
+      font-size: 11px;
+      color: var(--text-gray);
+    }
+
+    .agent-stat-val { font-weight: 600; color: var(--text-dark); }
+    .agent-stat-success { font-weight: 600; color: var(--success-text); }
+
+    .agent-card-actions {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .btn-card-action {
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 11px;
+      white-space: nowrap;
+      transition: background 0.12s, border-color 0.12s;
+      border: 1px solid var(--border);
+      color: var(--text-medium);
+      background: white;
+    }
+    .btn-card-action:hover { background: #f5f5f8; border-color: rgba(0,0,0,0.15); }
+
+    .btn-card-deploy {
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 11px;
+      white-space: nowrap;
+      background: var(--primary);
+      color: white;
+      border: none;
+      transition: background 0.12s;
+    }
+    .btn-card-deploy:hover { background: #4040b8; }
+
+    /* ============================================================
+       MY AGENTS — SPLIT DETAIL VIEW (B2)
+    ============================================================ */
+    .agents-detail-view {
+      display: none;
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .agents-detail-view.active {
+      display: flex;
+    }
+
+    .split-pane {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .agent-list-panel {
+      width: 280px;
+      flex-shrink: 0;
+      background: white;
+      border-right: 1px solid rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .list-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      height: 48px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      flex-shrink: 0;
+    }
+
+    .btn-back {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 12px;
+      color: var(--link);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 4px;
+      transition: background 0.12s;
+    }
+    .btn-back:hover { background: #f0f0ff; }
+
+    .list-panel-title {
+      font-family: var(--font-inter);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-dark);
+    }
+
+    .count-chip {
+      background: var(--primary-50);
+      color: var(--primary);
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .list-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      height: 44px;
+      background: #f7f7fa;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      flex-shrink: 0;
+    }
+    .list-search-icon { color: #9e9e9e; font-size: 15px; }
+    .list-search-placeholder { font-family: var(--font-inter); font-size: 12px; color: var(--text-placeholder); }
+
+    .agent-list-items { overflow-y: auto; flex: 1; }
+
+    .agent-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 14px;
+      height: 68px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      cursor: pointer;
+      transition: background 0.12s;
+      outline: none;
+    }
+    .agent-item:hover:not(.selected) { background: #fafafe; }
+    .agent-item.selected {
+      background: var(--primary-50);
+      border-left: 2px solid var(--primary);
+    }
+    .agent-item:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+
+    .agent-avatar-sm {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      color: white;
+      font-weight: 700;
+    }
+
+    .agent-item-info { flex: 1; overflow: hidden; }
+
+    .agent-item-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .agent-item-name {
+      font-family: var(--font-inter);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-dark);
+      white-space: nowrap;
+    }
+    .agent-item.selected .agent-item-name { color: var(--primary); }
+
+    .status-chip {
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+    .status-chip.active  { background: var(--success-bg); color: var(--success-text); }
+    .status-chip.draft   { background: #f0f0f0; color: #6e6e6e; }
+
+    .agent-item-desc {
+      font-family: var(--font-inter);
+      font-size: 11px;
+      color: var(--text-gray);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ============================================================
+       DETAIL PANEL
+    ============================================================ */
+    .detail-panel {
+      flex: 1;
+      background: var(--bg-page);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .agent-header {
+      background: white;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      padding: 0 24px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .agent-header-left { display: flex; align-items: center; gap: 14px; }
+
+    .detail-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7c3aed, #5252d4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      color: white;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .agent-header-name-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .agent-header-name {
+      font-family: var(--font-inter);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--text-dark);
+    }
+
+    .agent-active-badge {
+      background: var(--success-bg);
+      color: var(--success-text);
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .agent-header-sub {
+      font-family: var(--font-inter);
+      font-size: 12px;
+      color: var(--text-gray);
+    }
+
+    .agent-header-actions { display: flex; align-items: center; gap: 8px; }
+
+    .btn-ghost {
+      background: var(--bg-page);
+      border: 1px solid rgba(0,0,0,0.1);
+      color: var(--text-medium);
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 12px;
+      white-space: nowrap;
+      transition: background 0.12s, border-color 0.12s;
+      display: flex; align-items: center; gap: 5px;
+      line-height: 15px;
+    }
+    .btn-ghost:hover { background: #e8e8ef; border-color: rgba(0,0,0,0.18); }
+    .btn-ghost:active { background: #dddde8; }
+
+    .btn-deploy {
+      background: var(--primary);
+      color: white;
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 12px;
+      white-space: nowrap;
+      transition: background 0.12s;
+    }
+    .btn-deploy:hover { background: #4040b8; }
+
+    /* Detail Tabs — DS Mini Tab pill style */
+    .detail-tabs {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      height: 56px;
+      flex-shrink: 0;
+      gap: 0;
+    }
+
+    .detail-tab {
+      height: 36px;
+      padding: 0 12px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-family: var(--font-roboto);
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 1.33;
+      color: var(--text-secondary);
+      background: white;
+      border: 1px solid var(--border);
+      border-right: none;
+      transition: background 0.12s, color 0.12s;
+      user-select: none;
+      white-space: nowrap;
+      position: relative;
+      min-width: 80px;
+      outline: none;
+    }
+    .detail-tab:first-child { border-radius: 6px 0 0 6px; }
+    .detail-tab:last-child  { border-radius: 0 6px 6px 0; border-right: 1px solid var(--border); }
+    .detail-tab:hover:not(.active) { background: #f5f5f8; }
+    .detail-tab:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; z-index: 1; }
+    .detail-tab.active {
+      background: #ecefff;
+      color: #3d5afe;
+      border-color: #c5caff;
+      z-index: 1;
+    }
+    .detail-tab.active + .detail-tab { border-left-color: #c5caff; }
+
+    .detail-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px 28px;
+    }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* ============================================================
+       METRICS CARDS (shared)
+    ============================================================ */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .metric-card {
+      background: white;
+      border-radius: 8px;
+      padding: 12px 14px;
+      height: 76px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-card);
+    }
+
+    .metric-top { display: flex; align-items: center; justify-content: space-between; }
+    .metric-label { font-family: var(--font-inter); font-size: 11px; color: var(--text-gray); }
+    .metric-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .dot-green2 { background: #2e7d33; }
+    .dot-blue2  { background: #1565c0; }
+    .dot-amber2 { background: #f9a825; }
+
+    .metric-value {
+      font-family: var(--font-inter);
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--text-dark);
+    }
+
+    .metric-sub { font-family: var(--font-inter); font-size: 10px; color: var(--text-light); }
+
+    /* ============================================================
+       INFO / CONFIG CARDS (shared)
+    ============================================================ */
+    .info-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .info-card {
+      background: white;
+      border-radius: 10px;
+      padding: 16px 18px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .info-card-title {
+      font-family: var(--font-inter);
+      font-weight: 600;
+      font-size: 12px;
+      color: var(--text-gray);
+      margin-bottom: 10px;
+    }
+
+    .info-card-body {
+      font-family: var(--font-inter);
+      font-size: 13px;
+      color: var(--text-medium);
+      line-height: 20px;
+      margin-bottom: 10px;
+    }
+
+    .tag-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag {
+      background: var(--primary-50);
+      border: 1px solid rgba(82,82,212,0.3);
+      color: var(--primary);
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .config-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 22px;
+      margin-bottom: 6px;
+    }
+    .config-key { font-family: var(--font-inter); font-size: 12px; color: var(--text-gray); }
+    .config-val { font-family: var(--font-inter); font-size: 12px; font-weight: 500; color: var(--text-dark); text-align: right; }
+
+    /* ============================================================
+       RECENT CONVERSATIONS
+    ============================================================ */
+    .conv-card {
+      background: white;
+      border-radius: 10px;
+      padding: 16px 18px 0;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .conv-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+    }
+
+    .conv-card-title { font-family: var(--font-inter); font-weight: 600; font-size: 13px; color: var(--text-dark); }
+    .view-all { font-family: var(--font-inter); font-weight: 500; font-size: 12px; color: var(--primary); cursor: pointer; }
+
+    .conv-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      height: 52px;
+      border-top: 1px solid rgba(0,0,0,0.05);
+      padding-right: 16px;
+    }
+
+    .conv-av {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 11px; font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .conv-info { flex: 1; min-width: 0; }
+    .conv-name { font-family: var(--font-inter); font-weight: 500; font-size: 12px; color: var(--text-dark); margin-bottom: 2px; }
+    .conv-msg {
+      font-family: var(--font-inter);
+      font-size: 12px;
+      color: var(--text-gray);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .conv-meta { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .conv-time, .conv-turns { font-family: var(--font-inter); font-size: 11px; color: var(--text-light); }
+
+    .conv-status { font-family: var(--font-inter); font-weight: 500; font-size: 10px; padding: 3px 7px; border-radius: 10px; }
+    .cs-resolved    { background: var(--success-bg); color: var(--success-text); }
+    .cs-in-progress { background: var(--warning-bg); color: var(--warning-text); }
+
+    /* ============================================================
+       DOCUMENTS TAB
+    ============================================================ */
+    .docs-panel { display: flex; flex-direction: column; gap: 16px; }
+
+    .upload-zone {
+      background: var(--primary-light);
+      border: 1.5px dashed var(--primary);
+      border-radius: 8px;
+      padding: 24px;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .upload-zone:hover { background: #eeeeff; }
+
+    .upload-zone-icon { font-size: 28px; margin-bottom: 4px; }
+    .upload-zone-title { font-family: var(--font-inter); font-weight: 600; font-size: 13px; color: var(--primary); }
+    .upload-zone-sub  { font-family: var(--font-inter); font-size: 11px; color: var(--text-gray); }
+
+    .btn-upload-zone {
+      background: var(--primary);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-weight: 600;
+      font-size: 12px;
+      margin-top: 4px;
+      transition: background 0.15s;
+    }
+    .btn-upload-zone:hover { background: #4040b8; }
+
+    .docs-list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .docs-list-title { font-family: var(--font-inter); font-weight: 600; font-size: 13px; color: var(--text-dark3); }
+
+    .btn-feed {
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-weight: 600;
+      font-size: 12px;
+      background: white;
+      transition: background 0.15s;
+    }
+    .btn-feed:hover { background: var(--primary-50); }
+
+    .doc-list {
+      background: white;
+      border: 1px solid #e0e0e5;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .doc-row {
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      height: 52px;
+      border-bottom: 1px solid #e0e0e5;
+      transition: background 0.12s;
+    }
+    .doc-row:last-child { border-bottom: none; }
+    .doc-row:hover { background: #fafafe; }
+
+    .doc-type-badge {
+      background: var(--primary-light);
+      color: var(--primary);
+      font-family: var(--font-inter);
+      font-weight: 600;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .doc-info { flex: 1; padding: 0 14px; min-width: 0; }
+    .doc-name { font-family: var(--font-inter); font-weight: 500; font-size: 12px; color: var(--text-dark3); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .doc-meta { font-family: var(--font-inter); font-size: 11px; color: var(--text-gray); }
+
+    .btn-remove {
+      font-family: var(--font-inter);
+      font-size: 11px;
+      color: var(--error);
+      background: none;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: background 0.12s;
+      flex-shrink: 0;
+    }
+    .btn-remove:hover { background: #fee; }
+
+    /* ============================================================
+       TEMPLATES PANE (C)
+    ============================================================ */
+    .templates-content { padding: 20px 24px 28px; flex: 1; }
+
+    .templates-header { margin-bottom: 20px; }
+    .templates-title {
+      font-family: var(--font-inter);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .templates-sub {
+      font-family: var(--font-inter);
+      font-size: 13px;
+      color: var(--text-gray);
+    }
+
+    .templates-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .template-card {
+      background: white;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.07);
+      box-shadow: var(--shadow-card);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .template-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); border-color: rgba(82,82,212,0.2); }
+
+    .template-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .template-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .template-category-badge {
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+
+    .template-name {
+      font-family: var(--font-inter);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text-dark);
+    }
+
+    .template-desc {
+      font-family: var(--font-inter);
+      font-size: 12px;
+      color: var(--text-gray);
+      line-height: 1.5;
+    }
+
+    .template-tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .template-tag {
+      background: #f0f0f5;
+      color: var(--text-secondary);
+      font-family: var(--font-inter);
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .template-card-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .btn-use-template {
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 12px;
+      background: white;
+      transition: background 0.15s;
+    }
+    .btn-use-template:hover { background: var(--primary-50); }
+
+    .btn-preview {
+      font-family: var(--font-inter);
+      font-size: 12px;
+      color: var(--link);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+    .btn-preview:hover { text-decoration: underline; }
+
+    /* ============================================================
+       SETTINGS PANE (D)
+    ============================================================ */
+    .settings-content {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .settings-nav {
+      width: 180px;
+      flex-shrink: 0;
+      background: white;
+      border-right: 1px solid var(--border);
+      padding: 16px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow-y: auto;
+    }
+
+    .settings-nav-item {
+      display: flex;
+      align-items: center;
+      padding: 9px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: var(--font-inter);
+      font-size: 13px;
+      color: var(--text-medium);
+      transition: background 0.12s, color 0.12s;
+      user-select: none;
+      outline: none;
+    }
+    .settings-nav-item:hover { background: #f5f5f8; }
+    .settings-nav-item.active { background: var(--primary-100); color: var(--link); font-weight: 500; }
+    .settings-nav-item:focus-visible { box-shadow: 0 0 0 2px var(--primary); }
+
+    .settings-main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px 28px;
+    }
+
+    .settings-section {
+      margin-bottom: 24px;
+    }
+
+    .settings-section-title {
+      font-family: var(--font-inter);
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-dark);
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .settings-field { margin-bottom: 14px; }
+    .settings-label {
+      font-family: var(--font-inter);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-medium);
+      margin-bottom: 5px;
+    }
+
+    .settings-input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-size: 13px;
+      color: var(--text-dark);
+      outline: none;
+      transition: border-color 0.15s;
+      background: white;
+    }
+    .settings-input:focus { border-color: var(--primary); }
+
+    .settings-textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-size: 13px;
+      color: var(--text-dark);
+      outline: none;
+      transition: border-color 0.15s;
+      background: white;
+      resize: vertical;
+      min-height: 80px;
+    }
+    .settings-textarea:focus { border-color: var(--primary); }
+
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .settings-row:last-child { border-bottom: none; }
+
+    .settings-row-left { flex: 1; }
+    .settings-row-label { font-family: var(--font-inter); font-size: 13px; color: var(--text-dark); margin-bottom: 2px; }
+    .settings-row-sub { font-family: var(--font-inter); font-size: 11px; color: var(--text-gray); }
+
+    /* Toggle switch */
+    .toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: #c4c4c4;
+      border-radius: 24px;
+      transition: background 0.2s;
+    }
+    .toggle-slider:before {
+      content: '';
+      position: absolute;
+      width: 18px; height: 18px;
+      left: 3px; top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    .toggle-switch input:checked + .toggle-slider { background: var(--primary); }
+    .toggle-switch input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+    .settings-select {
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-size: 12px;
+      color: var(--text-dark);
+      background: white;
+      outline: none;
+      cursor: pointer;
+      min-width: 140px;
+    }
+    .settings-select:focus { border-color: var(--primary); }
+
+    .btn-destructive {
+      border: 1px solid var(--error);
+      color: var(--error);
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 13px;
+      background: white;
+      transition: background 0.15s;
+    }
+    .btn-destructive:hover { background: #fff0f0; }
+
+    .danger-zone {
+      background: #fff8f8;
+      border: 1px solid #ffd0d0;
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .danger-zone-title { font-family: var(--font-inter); font-weight: 600; font-size: 13px; color: var(--error); margin-bottom: 8px; }
+    .danger-zone-sub { font-family: var(--font-inter); font-size: 12px; color: var(--text-gray); margin-bottom: 12px; }
+
+    /* Settings content panes */
+    .settings-pane { display: none; }
+    .settings-pane.active { display: block; }
+
+    /* ============================================================
+       MODAL
+    ============================================================ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.48);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 900;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--shadow-modal);
+      width: 520px;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(14px) scale(0.99);
+      transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .modal-title { font-family: var(--font-inter); font-weight: 700; font-size: 16px; color: var(--text-dark); }
+
+    .modal-close {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      color: var(--text-gray);
+      font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.12s, color 0.12s;
+    }
+    .modal-close:hover { background: #f0f0f5; color: var(--text-dark); }
+
+    .modal-body { padding: 20px; flex: 1; overflow-y: auto; }
+    .modal-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+      flex-shrink: 0;
+    }
+
+    /* Upload Drop Zone */
+    .modal-drop-zone {
+      background: var(--primary-light);
+      border: 2px dashed var(--primary);
+      border-radius: 10px;
+      padding: 32px 24px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+      margin-bottom: 16px;
+    }
+    .modal-drop-zone:hover,
+    .modal-drop-zone.drag-active { background: #e8e8ff; }
+
+    .drop-icon { font-size: 36px; margin-bottom: 4px; }
+    .drop-title { font-family: var(--font-inter); font-weight: 600; font-size: 15px; color: var(--primary); }
+    .drop-sub { font-family: var(--font-inter); font-size: 12px; color: var(--text-gray); text-align: center; line-height: 1.5; }
+
+    .btn-browse {
+      background: var(--primary);
+      color: white;
+      padding: 8px 22px;
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-weight: 600;
+      font-size: 13px;
+      margin-top: 8px;
+      transition: background 0.15s;
+    }
+    .btn-browse:hover { background: #4040b8; }
+
+    .selected-files-section { display: none; }
+
+    .sel-count {
+      font-family: var(--font-inter);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-gray);
+      margin-bottom: 10px;
+    }
+
+    .file-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.12s;
+    }
+    .file-item:hover { border-color: var(--primary); }
+
+    .file-type-icon {
+      width: 36px; height: 36px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .fti-pdf  { background: #fff0f0; color: #e53935; }
+    .fti-docx { background: #f0f4ff; color: #1565c0; }
+    .fti-xlsx { background: #f0fff4; color: #2e7d32; }
+    .fti-txt  { background: #f5f5f5; color: #6e6e6e; }
+
+    .file-name { font-family: var(--font-inter); font-weight: 500; font-size: 13px; color: var(--text-dark); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-size { font-family: var(--font-inter); font-size: 11px; color: var(--text-light); flex-shrink: 0; }
+
+    .btn-file-rm {
+      color: var(--text-light);
+      font-size: 14px;
+      padding: 4px 6px;
+      border-radius: 4px;
+      transition: background 0.12s, color 0.12s;
+    }
+    .btn-file-rm:hover { background: #fee; color: var(--error); }
+
+    .btn-secondary {
+      background: var(--bg-page);
+      border: 1px solid var(--border);
+      color: var(--text-medium);
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 13px;
+      transition: background 0.12s;
+    }
+    .btn-secondary:hover { background: #e8e8ef; }
+
+    /* ============================================================
+       PROGRESS MODAL
+    ============================================================ */
+    .progress-file-card {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+
+    .pfc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+
+    .pfc-icon {
+      width: 32px; height: 32px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .pfc-name { font-family: var(--font-inter); font-weight: 500; font-size: 13px; color: var(--text-dark); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pfc-pct  { font-family: var(--font-inter); font-weight: 700; font-size: 13px; color: var(--primary); flex-shrink: 0; }
+
+    .progress-track {
+      background: #e8e8f4;
+      border-radius: 4px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .pfc-status { font-family: var(--font-inter); font-size: 11px; color: var(--text-gray); margin-top: 8px; }
+
+    .progress-steps { display: flex; flex-direction: column; gap: 12px; }
+
+    .p-step { display: flex; align-items: center; gap: 10px; }
+
+    .p-step-icon {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+    .psi-done    { background: var(--success-bg); color: var(--success-text); }
+    .psi-active  { background: var(--primary-50); color: var(--primary); }
+    .psi-pending { background: #f0f0f0; color: var(--text-light); }
+
+    .p-step-label { font-family: var(--font-inter); font-size: 12px; }
+    .psl-done    { color: var(--success-text); }
+    .psl-active  { color: var(--primary); font-weight: 500; }
+    .psl-pending { color: var(--text-light); }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 13px; height: 13px;
+      border: 2px solid rgba(82,82,212,0.25);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      display: inline-block;
+    }
+
+    /* ============================================================
+       DS TOAST
+    ============================================================ */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #2a2b30;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 2000;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.25s, transform 0.25s;
+      pointer-events: none;
+      max-width: 320px;
+    }
+    .toast.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+
+    .toast-icon {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: #12B76A;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .toast-msg { font-family: var(--font-roboto); font-size: 12px; font-weight: 400; flex: 1; }
+
+    .btn-toast-close {
+      color: rgba(255,255,255,0.55);
+      font-size: 14px;
+      padding: 2px;
+      transition: color 0.12s;
+    }
+    .btn-toast-close:hover { color: white; }
+
+    /* ============================================================
+       NEW ROW HIGHLIGHT ANIMATION
+    ============================================================ */
+    @keyframes highlightFade {
+      0%   { background: #f0f0ff; }
+      100% { background: white; }
+    }
+    .doc-row.new-entry { animation: highlightFade 2.5s ease forwards; }
+
+    /* ============================================================
+       SCROLLBAR
+    ============================================================ */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d0d0d8; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #b0b0bc; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1200px) {
+      .dash-metrics { grid-template-columns: repeat(2, 1fr); }
+      .dash-chart-row { grid-template-columns: 1fr; }
+      .agent-cards-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 1100px) {
+      .metrics-row { grid-template-columns: repeat(2, 1fr); }
+      .sidebar { width: 200px; }
+      .templates-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 900px) {
+      .info-row { grid-template-columns: 1fr; }
+      .sidebar { width: 180px; }
+      .agent-list-panel { width: 240px; }
+      .dash-bottom-row { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .agent-list-panel { width: 220px; }
+      .topbar-title { font-size: 17px; }
+      .agent-cards-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .split-pane { flex-direction: column; }
+      .agent-list-panel { width: 100%; height: 140px; flex-direction: row; }
+      .agent-list-items { display: flex; flex-direction: row; overflow-x: auto; overflow-y: hidden; flex: 1; }
+      .agent-item { min-width: 200px; height: 100%; }
+      .detail-panel { flex: 1; }
+      .agent-header { height: auto; padding: 12px 16px; flex-direction: column; align-items: flex-start; gap: 10px; }
+      .agent-header-actions { flex-wrap: wrap; }
+      .metrics-row { grid-template-columns: repeat(2, 1fr); }
+      .info-row { grid-template-columns: 1fr; }
+      .modal { width: calc(100vw - 24px); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hidden file input -->
+<input type="file" id="file-input" multiple accept=".pdf,.docx,.xlsx,.txt" aria-hidden="true" style="display:none">
+
+<div class="app">
+
+  <!-- ================================================================
+       SIDEBAR
+  ================================================================ -->
+  <aside class="sidebar" aria-label="Main navigation">
+    <div class="sidebar-logo">
+      <!-- Stacked-layers diamond SVG logo -->
+      <svg class="logo-diamond" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <path d="M14 3L4 10.5L14 18L24 10.5L14 3Z" fill="#5252d4" opacity="0.9"/>
+        <path d="M4 10.5L14 18L24 10.5" stroke="#3737a0" stroke-width="0.5" fill="none"/>
+        <path d="M14 18L4 10.5L14 24.5L24 10.5L14 18Z" fill="#3737a0" opacity="0.85"/>
+        <path d="M8.5 6.5L14 3L19.5 6.5" stroke="white" stroke-width="0.6" opacity="0.4" fill="none"/>
+      </svg>
+      <span class="sidebar-logo-wordmark">INNOVAPPTIVE</span>
+    </div>
+
+    <nav class="nav-section" aria-label="Module navigation">
+
+      <!-- Analytics -->
+      <div>
+        <div class="nav-item" tabindex="0" role="button" aria-label="Analytics" aria-expanded="false" aria-controls="analytics-sub" onclick="toggleSubNav('analytics-sub',this,'analytics-chev')">
+          <div class="nav-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <rect x="1.5" y="7" width="2" height="5.5" rx="0.5" fill="#666975"/>
+              <rect x="4.5" y="4.5" width="2" height="8" rx="0.5" fill="#666975"/>
+              <rect x="7.5" y="2" width="2" height="10.5" rx="0.5" fill="#666975"/>
+              <rect x="10.5" y="5.5" width="2" height="7" rx="0.5" fill="#666975"/>
+            </svg>
+          </div>
+          <span class="nav-label">Analytics</span>
+          <span class="nav-chevron" id="analytics-chev" aria-hidden="true">›</span>
+        </div>
+        <div class="collapsible" id="analytics-sub">
+          <div class="nav-sub">
+            <div class="nav-sub-item" tabindex="0" role="button">
+              <div class="nav-sub-divider"></div>
+              <span class="nav-sub-label">Reports</span>
+            </div>
+            <div class="nav-sub-item" tabindex="0" role="button">
+              <div class="nav-sub-divider"></div>
+              <span class="nav-sub-label">Dashboards</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Maintenance Control Center -->
+      <div class="nav-item" tabindex="0" role="button" aria-label="Maintenance Control Center" onclick="showInfoToast('Maintenance Control Center')">
+        <div class="nav-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <circle cx="7" cy="7" r="5" stroke="#666975" stroke-width="1.3" fill="none"/>
+            <path d="M9.5 4.5L6 8l-1.5-1.5" stroke="#666975" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="nav-label">Maintenance Control Center</span>
+      </div>
+
+      <!-- Digital Work Instructions -->
+      <div class="nav-item" tabindex="0" role="button" aria-label="Digital Work Instructions" onclick="showInfoToast('Digital Work Instructions')">
+        <div class="nav-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <rect x="2" y="1.5" width="8" height="10.5" rx="1" stroke="#666975" stroke-width="1.3" fill="none"/>
+            <path d="M4 5h4M4 7.5h4M4 10h2" stroke="#666975" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="nav-label">Digital Work Instructions</span>
+      </div>
+
+      <!-- User Management -->
+      <div>
+        <div class="nav-item" tabindex="0" role="button" aria-label="User Management" aria-expanded="false" aria-controls="um-sub" onclick="toggleSubNav('um-sub',this,'um-chev')">
+          <div class="nav-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <circle cx="7" cy="5" r="2.5" stroke="#666975" stroke-width="1.3" fill="none"/>
+              <path d="M2.5 12c0-2.5 2-4.5 4.5-4.5S11.5 9.5 11.5 12" stroke="#666975" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="nav-label">User Management</span>
+          <span class="nav-chevron" id="um-chev" aria-hidden="true">›</span>
+        </div>
+        <div class="collapsible" id="um-sub">
+          <div class="nav-sub">
+            <div class="nav-sub-item" tabindex="0" role="button">
+              <div class="nav-sub-divider"></div>
+              <span class="nav-sub-label">Users</span>
+            </div>
+            <div class="nav-sub-item" tabindex="0" role="button">
+              <div class="nav-sub-divider"></div>
+              <span class="nav-sub-label">Roles</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WorkSmart AI (expanded, active) -->
+      <div>
+        <div class="nav-item active" id="nav-worksmart" tabindex="0" role="button" aria-expanded="true" aria-controls="ws-sub" onclick="toggleSubNav('ws-sub',this,'ws-chev')">
+          <div class="nav-icon active">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M7 1L8.6 4.4H12.2L9.4 6.4L10.5 10L7 7.8L3.5 10L4.6 6.4L1.8 4.4H5.4L7 1Z" fill="#5252d4"/>
+            </svg>
+          </div>
+          <span class="nav-label active">WorkSmart AI</span>
+          <span class="nav-chevron rotated" id="ws-chev" aria-hidden="true">›</span>
+        </div>
+        <div class="collapsible open" id="ws-sub">
+          <div class="nav-sub">
+            <div class="nav-sub-item active" tabindex="0" role="button" aria-current="page" aria-label="Knowledge Repository">
+              <div class="nav-sub-divider" aria-hidden="true"></div>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M11 1H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z" stroke="#3d5afe" stroke-width="1.3" fill="none"/>
+                <path d="M4.5 5h5M4.5 7.5h5M4.5 10h3" stroke="#3d5afe" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+              <span class="nav-sub-label active">Knowledge Repository</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RACE -->
+      <div>
+        <div class="nav-item" tabindex="0" role="button" aria-label="RACE" aria-expanded="false" aria-controls="race-sub" onclick="toggleSubNav('race-sub',this,'race-chev')">
+          <div class="nav-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <rect x="3.5" y="1.5" width="7" height="11" rx="1.5" stroke="#666975" stroke-width="1.3" fill="none"/>
+              <path d="M6 3.5h2" stroke="#666975" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M5 7l2 2 2-2" stroke="#666975" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="nav-label">RACE</span>
+          <span class="nav-chevron" id="race-chev" aria-hidden="true">›</span>
+        </div>
+        <div class="collapsible" id="race-sub">
+          <div class="nav-sub">
+            <div class="nav-sub-item" tabindex="0" role="button">
+              <div class="nav-sub-divider"></div>
+              <span class="nav-sub-label">Overview</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Forms -->
+      <div>
+        <div class="nav-item" tabindex="0" role="button" aria-label="Forms" aria-expanded="false" aria-controls="forms-sub" onclick="toggleSubNav('forms-sub',this,'forms-chev')">
+          <div class="nav-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 2.5A.5.5 0 0 1 2.5 2h7L12 4.5V11.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V2.5Z" stroke="#666975" stroke-width="1.3" fill="none"/>
+              <path d="M9.5 2v2.5H12M4 6h6M4 8.5h6M4 11h3" stroke="#666975" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="nav-label">Forms</span>
+          <span class="nav-chevron" id="forms-chev" aria-hidden="true">›</span>
+        </div>
+        <div class="collapsible" id="forms-sub">
+          <div class="nav-sub">
+            <div class="nav-sub-item" tabindex="0" role="button">
+              <div class="nav-sub-divider"></div>
+              <span class="nav-sub-label">Form Builder</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div>
+        <div class="nav-item" tabindex="0" role="button" aria-label="Settings" aria-expanded="false" aria-controls="settings-sub" onclick="toggleSubNav('settings-sub',this,'settings-chev')">
+          <div class="nav-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <circle cx="7" cy="7" r="2" stroke="#666975" stroke-width="1.3" fill="none"/>
+              <path d="M7 1.5v1M7 11.5v1M1.5 7h1M11.5 7h1M3.1 3.1l.7.7M10.2 10.2l.7.7M3.1 10.9l.7-.7M10.2 3.8l.7-.7" stroke="#666975" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="nav-label">Settings</span>
+          <span class="nav-chevron" id="settings-chev" aria-hidden="true">›</span>
+        </div>
+        <div class="collapsible" id="settings-sub">
+          <div class="nav-sub">
+            <div class="nav-sub-item" tabindex="0" role="button">
+              <div class="nav-sub-divider"></div>
+              <span class="nav-sub-label">General</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Master Data -->
+      <div>
+        <div class="nav-item" tabindex="0" role="button" aria-label="Master Data" aria-expanded="false" aria-controls="md-sub" onclick="toggleSubNav('md-sub',this,'md-chev')">
+          <div class="nav-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <ellipse cx="7" cy="3.5" rx="4" ry="1.5" stroke="#666975" stroke-width="1.3" fill="none"/>
+              <path d="M3 3.5v3c0 .83 1.79 1.5 4 1.5s4-.67 4-1.5v-3" stroke="#666975" stroke-width="1.3" fill="none"/>
+              <path d="M3 6.5v3c0 .83 1.79 1.5 4 1.5s4-.67 4-1.5v-3" stroke="#666975" stroke-width="1.3" fill="none"/>
+            </svg>
+          </div>
+          <span class="nav-label">Master Data</span>
+          <span class="nav-chevron" id="md-chev" aria-hidden="true">›</span>
+        </div>
+        <div class="collapsible" id="md-sub">
+          <div class="nav-sub">
+            <div class="nav-sub-item" tabindex="0" role="button">
+              <div class="nav-sub-divider"></div>
+              <span class="nav-sub-label">Equipment</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Integration Manager -->
+      <div class="nav-item" tabindex="0" role="button" aria-label="Integration Manager" onclick="showInfoToast('Integration Manager')">
+        <div class="nav-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M7 2a3 3 0 0 1 2.6 4.5L11.5 9" stroke="#666975" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M7 2a3 3 0 0 0-2.6 4.5L2.5 9" stroke="#666975" stroke-width="1.3" stroke-linecap="round"/>
+            <circle cx="7" cy="11" r="1.5" stroke="#666975" stroke-width="1.3" fill="none"/>
+            <circle cx="11.5" cy="9" r="1.5" stroke="#666975" stroke-width="1.3" fill="none"/>
+            <circle cx="2.5" cy="9" r="1.5" stroke="#666975" stroke-width="1.3" fill="none"/>
+          </svg>
+        </div>
+        <span class="nav-label">Integration Manager</span>
+      </div>
+
+      <!-- Workflows -->
+      <div>
+        <div class="nav-item" tabindex="0" role="button" aria-label="Workflows" aria-expanded="false" aria-controls="wf-sub" onclick="toggleSubNav('wf-sub',this,'wf-chev')">
+          <div class="nav-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <circle cx="2.5" cy="7" r="1.5" stroke="#666975" stroke-width="1.3" fill="none"/>
+              <circle cx="11.5" cy="3" r="1.5" stroke="#666975" stroke-width="1.3" fill="none"/>
+              <circle cx="11.5" cy="11" r="1.5" stroke="#666975" stroke-width="1.3" fill="none"/>
+              <path d="M4 7h4l2-3.5M8 7l2 3.5" stroke="#666975" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="nav-label">Workflows</span>
+          <span class="nav-chevron" id="wf-chev" aria-hidden="true">›</span>
+        </div>
+        <div class="collapsible" id="wf-sub">
+          <div class="nav-sub">
+            <div class="nav-sub-item" tabindex="0" role="button">
+              <div class="nav-sub-divider"></div>
+              <span class="nav-sub-label">My Workflows</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </nav>
+  </aside>
+
+  <!-- ================================================================
+       MAIN
+  ================================================================ -->
+  <main class="main">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div>
+        <div class="topbar-title">Knowledge Repository</div>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="#" tabindex="0">WorkSmart AI</a>
+          <span class="breadcrumb-sep" aria-hidden="true">›</span>
+          <span class="breadcrumb-cur" aria-current="page">Knowledge Repository</span>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <button class="app-grid-icon" aria-label="App switcher" onclick="showInfoToast('App switcher')">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+            <rect x="2" y="2" width="10" height="10" rx="2" fill="#d0d0d8"/>
+            <rect x="14" y="2" width="10" height="10" rx="2" fill="#d0d0d8"/>
+            <rect x="2" y="14" width="10" height="10" rx="2" fill="#d0d0d8"/>
+            <rect x="14" y="14" width="10" height="10" rx="2" fill="#5252d4"/>
+          </svg>
+        </button>
+        <div class="topbar-user" role="button" tabindex="0" aria-label="User menu">
+          <div class="user-avatar" aria-hidden="true">JN</div>
+          <span class="topbar-brand">INNOVAPPTIVE</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Toolbar -->
+    <!-- Main Tab Bar -->
+    <div class="tab-bar" role="tablist" aria-label="AI Studio sections">
+      <div class="tab" role="tab" tabindex="0" aria-selected="false" data-tab="dashboard" onclick="switchMainTab(this)">Dashboard</div>
+      <div class="tab active" role="tab" tabindex="0" aria-selected="true" data-tab="my-agents" onclick="switchMainTab(this)">My Agents</div>
+      <div class="tab" role="tab" tabindex="0" aria-selected="false" data-tab="templates" onclick="switchMainTab(this)">Templates</div>
+      <div class="tab" role="tab" tabindex="0" aria-selected="false" data-tab="settings" onclick="switchMainTab(this)">Settings</div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area" id="content-area">
+
+      <!-- ============================================================
+           PANE A: DASHBOARD
+      ============================================================ -->
+      <div id="pane-dashboard" class="main-pane" role="tabpanel" aria-label="Dashboard">
+        <div class="dash-content">
+          <div class="dash-header">
+            <span class="dash-title">Agent Performance Overview</span>
+            <button class="filter-btn" onclick="showInfoToast('Date range filter')">
+              Last 30 days
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                <path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- 4 Metric Cards -->
+          <div class="dash-metrics" role="list" aria-label="Performance metrics">
+            <div class="dash-metric-card" role="listitem">
+              <div class="dmc-top">
+                <div class="dmc-dot dot-blue"></div>
+                <span class="dmc-label">Total Sessions</span>
+              </div>
+              <div class="dmc-value">4,821</div>
+              <div class="dmc-trend">↑ +12% vs last month</div>
+            </div>
+            <div class="dash-metric-card" role="listitem">
+              <div class="dmc-top">
+                <div class="dmc-dot dot-green"></div>
+                <span class="dmc-label">Success Rate</span>
+              </div>
+              <div class="dmc-value">94.2%</div>
+              <div class="dmc-trend">↑ +1.4% vs last month</div>
+            </div>
+            <div class="dash-metric-card" role="listitem">
+              <div class="dmc-top">
+                <div class="dmc-dot dot-green"></div>
+                <span class="dmc-label">Avg Response</span>
+              </div>
+              <div class="dmc-value">2.3s</div>
+              <div class="dmc-trend">↓ -0.4s improvement</div>
+            </div>
+            <div class="dash-metric-card" role="listitem">
+              <div class="dmc-top">
+                <div class="dmc-dot dot-amber"></div>
+                <span class="dmc-label">Active Users</span>
+              </div>
+              <div class="dmc-value">89</div>
+              <div class="dmc-trend">↑ +6 this week</div>
+            </div>
+          </div>
+
+          <!-- Chart Row -->
+          <div class="dash-chart-row">
+            <!-- Grouped Bar Chart -->
+            <div class="dash-card">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
+                <span class="dash-card-title" style="margin-bottom:0">Sessions over Time — Last 7 Days</span>
+              </div>
+              <div class="chart-legend" role="img" aria-label="Legend: Troubleshoot, Assist, RCA">
+                <div class="chart-legend-item"><div class="legend-dot" style="background:#3d5afe"></div>Troubleshoot</div>
+                <div class="chart-legend-item"><div class="legend-dot" style="background:#2e7d32"></div>Assist</div>
+                <div class="chart-legend-item"><div class="legend-dot" style="background:#f59e0b"></div>RCA</div>
+              </div>
+              <div class="grouped-bar-chart" role="img" aria-label="Grouped bar chart showing sessions per agent for Monday through Sunday">
+                <!-- Mon -->
+                <div class="bar-group">
+                  <div class="bar-group-bars">
+                    <div class="bar" style="background:#3d5afe;height:58%"></div>
+                    <div class="bar" style="background:#2e7d32;height:72%"></div>
+                    <div class="bar" style="background:#f59e0b;height:40%"></div>
+                  </div>
+                  <span class="bar-day">Mon</span>
+                </div>
+                <!-- Tue -->
+                <div class="bar-group">
+                  <div class="bar-group-bars">
+                    <div class="bar" style="background:#3d5afe;height:80%"></div>
+                    <div class="bar" style="background:#2e7d32;height:65%"></div>
+                    <div class="bar" style="background:#f59e0b;height:52%"></div>
+                  </div>
+                  <span class="bar-day">Tue</span>
+                </div>
+                <!-- Wed -->
+                <div class="bar-group">
+                  <div class="bar-group-bars">
+                    <div class="bar" style="background:#3d5afe;height:95%"></div>
+                    <div class="bar" style="background:#2e7d32;height:88%"></div>
+                    <div class="bar" style="background:#f59e0b;height:70%"></div>
+                  </div>
+                  <span class="bar-day">Wed</span>
+                </div>
+                <!-- Thu -->
+                <div class="bar-group">
+                  <div class="bar-group-bars">
+                    <div class="bar" style="background:#3d5afe;height:75%"></div>
+                    <div class="bar" style="background:#2e7d32;height:82%"></div>
+                    <div class="bar" style="background:#f59e0b;height:60%"></div>
+                  </div>
+                  <span class="bar-day">Thu</span>
+                </div>
+                <!-- Fri -->
+                <div class="bar-group">
+                  <div class="bar-group-bars">
+                    <div class="bar" style="background:#3d5afe;height:100%"></div>
+                    <div class="bar" style="background:#2e7d32;height:92%"></div>
+                    <div class="bar" style="background:#f59e0b;height:78%"></div>
+                  </div>
+                  <span class="bar-day">Fri</span>
+                </div>
+                <!-- Sat -->
+                <div class="bar-group">
+                  <div class="bar-group-bars">
+                    <div class="bar" style="background:#3d5afe;height:42%"></div>
+                    <div class="bar" style="background:#2e7d32;height:35%"></div>
+                    <div class="bar" style="background:#f59e0b;height:25%"></div>
+                  </div>
+                  <span class="bar-day">Sat</span>
+                </div>
+                <!-- Sun -->
+                <div class="bar-group">
+                  <div class="bar-group-bars">
+                    <div class="bar" style="background:#3d5afe;height:30%"></div>
+                    <div class="bar" style="background:#2e7d32;height:28%"></div>
+                    <div class="bar" style="background:#f59e0b;height:18%"></div>
+                  </div>
+                  <span class="bar-day">Sun</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Per-Agent Breakdown -->
+            <div class="dash-card">
+              <span class="dash-card-title">Per-Agent Breakdown</span>
+              <table class="agent-table" aria-label="Per-agent performance breakdown">
+                <thead>
+                  <tr>
+                    <th>Agent</th>
+                    <th>Sessions</th>
+                    <th>Success</th>
+                    <th>Avg Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><div class="td-agent"><div class="td-dot" style="background:#3d5afe"></div>Troubleshoot</div></td>
+                    <td>2,103</td>
+                    <td class="td-success">93.1%</td>
+                    <td>2.8s</td>
+                  </tr>
+                  <tr>
+                    <td><div class="td-agent"><div class="td-dot" style="background:#2e7d32"></div>Assist</div></td>
+                    <td>1,847</td>
+                    <td class="td-success">95.8%</td>
+                    <td>1.9s</td>
+                  </tr>
+                  <tr>
+                    <td><div class="td-agent"><div class="td-dot" style="background:#f59e0b"></div>RCA</div></td>
+                    <td>871</td>
+                    <td class="td-success">93.7%</td>
+                    <td>3.1s</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Bottom Row -->
+          <div class="dash-bottom-row">
+            <!-- Recent Activity -->
+            <div class="dash-card">
+              <span class="dash-card-title">Recent Activity</span>
+              <div class="activity-list" role="list">
+                <div class="activity-row" role="listitem">
+                  <div class="activity-dot-wrap"><div class="activity-dot" style="background:#3d5afe"></div></div>
+                  <div class="activity-info">
+                    <div class="activity-agent">Troubleshoot</div>
+                    <div class="activity-msg">Diagnosed P0 pump failure on Unit 3</div>
+                  </div>
+                  <span class="activity-time">2m ago</span>
+                </div>
+                <div class="activity-row" role="listitem">
+                  <div class="activity-dot-wrap"><div class="activity-dot" style="background:#2e7d32"></div></div>
+                  <div class="activity-info">
+                    <div class="activity-agent">Assist</div>
+                    <div class="activity-msg">Answered WO-4821: Valve replacement SOP</div>
+                  </div>
+                  <span class="activity-time">11m ago</span>
+                </div>
+                <div class="activity-row" role="listitem">
+                  <div class="activity-dot-wrap"><div class="activity-dot" style="background:#f59e0b"></div></div>
+                  <div class="activity-info">
+                    <div class="activity-agent">RCA</div>
+                    <div class="activity-msg">Root cause report for Conveyor E generated</div>
+                  </div>
+                  <span class="activity-time">34m ago</span>
+                </div>
+                <div class="activity-row" role="listitem">
+                  <div class="activity-dot-wrap"><div class="activity-dot" style="background:#c61919"></div></div>
+                  <div class="activity-info">
+                    <div class="activity-agent">Troubleshoot</div>
+                    <div class="activity-msg">Session timeout — sensor data unavailable</div>
+                  </div>
+                  <span class="activity-time">1h ago</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Agent Health Status -->
+            <div class="dash-card">
+              <span class="dash-card-title">Agent Health Status</span>
+              <div class="health-list" role="list">
+                <div class="health-row" role="listitem">
+                  <div class="health-avatar" style="background:linear-gradient(135deg,#7c3aed,#5252d4)">TS</div>
+                  <div class="health-info">
+                    <div class="health-name">Troubleshoot</div>
+                    <div class="health-sub">Last run: 2m ago · Uptime: 99.2%</div>
+                  </div>
+                  <span class="badge-operational">Operational</span>
+                </div>
+                <div class="health-row" role="listitem">
+                  <div class="health-avatar" style="background:linear-gradient(135deg,#0891b2,#06b6d4)">AS</div>
+                  <div class="health-info">
+                    <div class="health-name">Assist</div>
+                    <div class="health-sub">Last run: 11m ago · Uptime: 99.8%</div>
+                  </div>
+                  <span class="badge-operational">Operational</span>
+                </div>
+                <div class="health-row" role="listitem">
+                  <div class="health-avatar" style="background:linear-gradient(135deg,#d97706,#f59e0b)">RC</div>
+                  <div class="health-info">
+                    <div class="health-name">RCA</div>
+                    <div class="health-sub">Last run: 34m ago · Uptime: 98.5%</div>
+                  </div>
+                  <span class="badge-operational">Operational</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /pane-dashboard -->
+
+      <!-- ============================================================
+           PANE B: MY AGENTS
+      ============================================================ -->
+      <div id="pane-my-agents" class="main-pane active" role="tabpanel" aria-label="My Agents">
+
+        <!-- B1: Card Grid View -->
+        <div id="agents-grid-view" class="agents-grid-view">
+
+          <!-- Filter Bar with DS Segmented Control -->
+          <div class="agents-filter-bar" role="toolbar" aria-label="Agent filters">
+            <!-- DS Segmented Control: All Agents / Published / Drafted -->
+            <div class="seg-ctrl" role="tablist" aria-label="Filter agents">
+              <button class="seg-ctrl-item active" role="tab" aria-selected="true"  onclick="filterAgents('all',this)">All Agents</button>
+              <button class="seg-ctrl-item"        role="tab" aria-selected="false" onclick="filterAgents('published',this)">Published</button>
+              <button class="seg-ctrl-item"        role="tab" aria-selected="false" onclick="filterAgents('drafted',this)">Drafted</button>
+            </div>
+            <span class="filter-count" id="agents-filter-count">8 AI Agents</span>
+            <div class="filter-spacer"></div>
+            <div class="filter-search" role="search">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+                <circle cx="5.5" cy="5.5" r="4" stroke="#8f93a3" stroke-width="1.4"/>
+                <path d="M8.5 8.5L11 11" stroke="#8f93a3" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+              <input type="text" placeholder="Search agents..." aria-label="Search agents">
+            </div>
+            <button class="btn-primary" style="padding:7px 14px;font-size:12px" onclick="showInfoToast('New Agent builder coming soon')">+ New Agent</button>
+            <button class="btn-more" aria-label="More options" onclick="showInfoToast('More options')">···</button>
+          </div>
+
+          <!-- Grid Content -->
+          <div class="agents-grid-content">
+            <div class="agents-section-title">8 AI Agents</div>
+            <div class="agent-cards-grid" id="agent-cards-grid" role="list" aria-label="AI Agents">
+
+              <!-- Agent 1: Troubleshoot -->
+              <div class="agent-card" role="listitem" tabindex="0" data-status="published" onclick="openAgentDetail('wo-assistant')" onkeydown="keyActivate(event,this)" aria-label="Troubleshoot agent">
+                <div class="agent-card-top">
+                  <div class="agent-card-avatar" style="background:#3d5afe">TR</div>
+                  <span class="badge-status badge-active">Active</span>
+                </div>
+                <div>
+                  <div class="agent-card-name">Troubleshoot</div>
+                  <div class="agent-card-desc">Diagnoses equipment failures, process anomalies, and operational issues using SAP PM and IoT sensor data.</div>
+                </div>
+                <div class="agent-card-tags">
+                  <span class="agent-card-tag">SAP PM</span>
+                  <span class="agent-card-tag">IoT Sensors</span>
+                </div>
+                <div class="agent-card-stats">
+                  <span class="agent-stat"><span class="agent-stat-val">2,103</span> sessions</span>
+                  <span class="agent-stat"><span class="agent-stat-success">93.1%</span> success</span>
+                </div>
+                <div class="agent-card-actions">
+                  <button class="btn-card-action" onclick="openAgentDetail('wo-assistant');event.stopPropagation()">Configure</button>
+                  <button class="btn-card-action" onclick="showInfoToast('Chat coming soon');event.stopPropagation()">Chat</button>
+                  <button class="btn-card-action" onclick="openAgentDetail('wo-assistant');switchDetailTabById('documents');event.stopPropagation()">Documents</button>
+                  <button class="btn-card-deploy" onclick="showInfoToast('Deploying...');event.stopPropagation()">Deploy</button>
+                </div>
+              </div>
+
+              <!-- Agent 2: Assist -->
+              <div class="agent-card" role="listitem" tabindex="0" data-status="published" onclick="openAgentDetail('safety')" onkeydown="keyActivate(event,this)" aria-label="Assist agent">
+                <div class="agent-card-top">
+                  <div class="agent-card-avatar" style="background:#2e7d32">AS</div>
+                  <span class="badge-status badge-active">Active</span>
+                </div>
+                <div>
+                  <div class="agent-card-name">Assist</div>
+                  <div class="agent-card-desc">Answers work order queries, retrieves SOPs and guides technicians through step-by-step procedures.</div>
+                </div>
+                <div class="agent-card-tags">
+                  <span class="agent-card-tag">SAP PM</span>
+                  <span class="agent-card-tag">SOP Library</span>
+                </div>
+                <div class="agent-card-stats">
+                  <span class="agent-stat"><span class="agent-stat-val">1,847</span> sessions</span>
+                  <span class="agent-stat"><span class="agent-stat-success">95.8%</span> success</span>
+                </div>
+                <div class="agent-card-actions">
+                  <button class="btn-card-action" onclick="openAgentDetail('safety');event.stopPropagation()">Configure</button>
+                  <button class="btn-card-action" onclick="showInfoToast('Chat coming soon');event.stopPropagation()">Chat</button>
+                  <button class="btn-card-action" onclick="openAgentDetail('safety');switchDetailTabById('documents');event.stopPropagation()">Documents</button>
+                  <button class="btn-card-deploy" onclick="showInfoToast('Deploying...');event.stopPropagation()">Deploy</button>
+                </div>
+              </div>
+
+              <!-- Agent 3: RCA -->
+              <div class="agent-card" role="listitem" tabindex="0" data-status="published" onclick="openAgentDetail('parts')" onkeydown="keyActivate(event,this)" aria-label="RCA agent">
+                <div class="agent-card-top">
+                  <div class="agent-card-avatar" style="background:#f59e0b">RC</div>
+                  <span class="badge-status badge-active">Active</span>
+                </div>
+                <div>
+                  <div class="agent-card-name">RCA</div>
+                  <div class="agent-card-desc">Performs root cause analysis on equipment failures and cross-references historical work orders and sensor trends.</div>
+                </div>
+                <div class="agent-card-tags">
+                  <span class="agent-card-tag">SAP PM</span>
+                  <span class="agent-card-tag">IoT Hub</span>
+                </div>
+                <div class="agent-card-stats">
+                  <span class="agent-stat"><span class="agent-stat-val">871</span> sessions</span>
+                  <span class="agent-stat"><span class="agent-stat-success">93.7%</span> success</span>
+                </div>
+                <div class="agent-card-actions">
+                  <button class="btn-card-action" onclick="openAgentDetail('parts');event.stopPropagation()">Configure</button>
+                  <button class="btn-card-action" onclick="showInfoToast('Chat coming soon');event.stopPropagation()">Chat</button>
+                  <button class="btn-card-action" onclick="openAgentDetail('parts');switchDetailTabById('documents');event.stopPropagation()">Documents</button>
+                  <button class="btn-card-deploy" onclick="showInfoToast('Deploying...');event.stopPropagation()">Deploy</button>
+                </div>
+              </div>
+
+              <!-- Agent 4: WO Create (Draft) -->
+              <div class="agent-card" role="listitem" tabindex="0" data-status="draft" onclick="openAgentDetail('scheduler')" onkeydown="keyActivate(event,this)" aria-label="WO Create agent">
+                <div class="agent-card-top">
+                  <div class="agent-card-avatar" style="background:#7c3aed">WC</div>
+                  <span class="badge-status badge-draft">Draft</span>
+                </div>
+                <div>
+                  <div class="agent-card-name">WO Create</div>
+                  <div class="agent-card-desc">Automatically creates work orders from equipment alerts, inspection findings, and operator-reported issues.</div>
+                </div>
+                <div class="agent-card-tags">
+                  <span class="agent-card-tag">SAP PM</span>
+                  <span class="agent-card-tag">Alerts</span>
+                </div>
+                <div class="agent-card-stats">
+                  <span class="agent-stat" style="color:var(--text-light)">Not deployed</span>
+                  <span class="agent-stat" style="color:var(--text-light)">—</span>
+                </div>
+                <div class="agent-card-actions">
+                  <button class="btn-card-action" onclick="openAgentDetail('scheduler');event.stopPropagation()">Configure</button>
+                  <button class="btn-card-action" onclick="showInfoToast('Chat coming soon');event.stopPropagation()">Chat</button>
+                  <button class="btn-card-action" onclick="openAgentDetail('scheduler');switchDetailTabById('documents');event.stopPropagation()">Documents</button>
+                  <button class="btn-card-deploy" onclick="showInfoToast('Deploy agent first');event.stopPropagation()">Deploy</button>
+                </div>
+              </div>
+
+              <!-- Agent 5: Issue Report -->
+              <div class="agent-card" role="listitem" tabindex="0" data-status="published" onclick="openAgentDetail('eq-health')" onkeydown="keyActivate(event,this)" aria-label="Issue Report agent">
+                <div class="agent-card-top">
+                  <div class="agent-card-avatar" style="background:#1565c0">IR</div>
+                  <span class="badge-status badge-active">Active</span>
+                </div>
+                <div>
+                  <div class="agent-card-name">Issue Report</div>
+                  <div class="agent-card-desc">Generates structured issue reports from operational data, incidents, and anomalies detected across the plant.</div>
+                </div>
+                <div class="agent-card-tags">
+                  <span class="agent-card-tag">IoT Hub</span>
+                  <span class="agent-card-tag">SAP PM</span>
+                </div>
+                <div class="agent-card-stats">
+                  <span class="agent-stat"><span class="agent-stat-val">534</span> sessions</span>
+                  <span class="agent-stat"><span class="agent-stat-success">97%</span> success</span>
+                </div>
+                <div class="agent-card-actions">
+                  <button class="btn-card-action" onclick="openAgentDetail('eq-health');event.stopPropagation()">Configure</button>
+                  <button class="btn-card-action" onclick="showInfoToast('Chat coming soon');event.stopPropagation()">Chat</button>
+                  <button class="btn-card-action" onclick="openAgentDetail('eq-health');switchDetailTabById('documents');event.stopPropagation()">Documents</button>
+                  <button class="btn-card-deploy" onclick="showInfoToast('Deploying...');event.stopPropagation()">Deploy</button>
+                </div>
+              </div>
+
+              <!-- Agent 6: Shift Report Generator (Draft) -->
+              <div class="agent-card" role="listitem" tabindex="0" data-status="draft" onclick="openAgentDetail('shift-report')" onkeydown="keyActivate(event,this)" aria-label="Shift Report Generator agent">
+                <div class="agent-card-top">
+                  <div class="agent-card-avatar" style="background:#7c3aed">SR</div>
+                  <span class="badge-status badge-draft">Draft</span>
+                </div>
+                <div>
+                  <div class="agent-card-name">Shift Report Generator</div>
+                  <div class="agent-card-desc">Auto-generates end-of-shift reports by aggregating completed WOs, incidents, and KPI data.</div>
+                </div>
+                <div class="agent-card-tags">
+                  <span class="agent-card-tag">Reports</span>
+                  <span class="agent-card-tag">SAP</span>
+                </div>
+                <div class="agent-card-stats">
+                  <span class="agent-stat" style="color:var(--text-light)">Not deployed</span>
+                  <span class="agent-stat" style="color:var(--text-light)">—</span>
+                </div>
+                <div class="agent-card-actions">
+                  <button class="btn-card-action" onclick="openAgentDetail('shift-report');event.stopPropagation()">Configure</button>
+                  <button class="btn-card-action" onclick="showInfoToast('Chat coming soon');event.stopPropagation()">Chat</button>
+                  <button class="btn-card-action" onclick="openAgentDetail('shift-report');switchDetailTabById('documents');event.stopPropagation()">Documents</button>
+                  <button class="btn-card-deploy" onclick="showInfoToast('Deploy agent first');event.stopPropagation()">Deploy</button>
+                </div>
+              </div>
+
+              <!-- Agent 7: Calibration Tracker -->
+              <div class="agent-card" role="listitem" tabindex="0" data-status="published" onclick="openAgentDetail('calibration')" onkeydown="keyActivate(event,this)" aria-label="Calibration Tracker agent">
+                <div class="agent-card-top">
+                  <div class="agent-card-avatar" style="background:#0891b2">CT</div>
+                  <span class="badge-status badge-active">Active</span>
+                </div>
+                <div>
+                  <div class="agent-card-name">Calibration Tracker</div>
+                  <div class="agent-card-desc">Monitors calibration schedules and triggers alerts when instruments approach due dates.</div>
+                </div>
+                <div class="agent-card-tags">
+                  <span class="agent-card-tag">SAP PM</span>
+                  <span class="agent-card-tag">QM</span>
+                </div>
+                <div class="agent-card-stats">
+                  <span class="agent-stat"><span class="agent-stat-val">22</span> runs today</span>
+                  <span class="agent-stat"><span class="agent-stat-success">91%</span> success</span>
+                </div>
+                <div class="agent-card-actions">
+                  <button class="btn-card-action" onclick="openAgentDetail('calibration');event.stopPropagation()">Configure</button>
+                  <button class="btn-card-action" onclick="showInfoToast('Chat coming soon');event.stopPropagation()">Chat</button>
+                  <button class="btn-card-action" onclick="openAgentDetail('calibration');switchDetailTabById('documents');event.stopPropagation()">Documents</button>
+                  <button class="btn-card-deploy" onclick="showInfoToast('Deploying...');event.stopPropagation()">Deploy</button>
+                </div>
+              </div>
+
+              <!-- Agent 8: Energy Monitor (Draft) -->
+              <div class="agent-card" role="listitem" tabindex="0" data-status="draft" onclick="openAgentDetail('energy')" onkeydown="keyActivate(event,this)" aria-label="Energy Monitor agent">
+                <div class="agent-card-top">
+                  <div class="agent-card-avatar" style="background:#d97706">EM</div>
+                  <span class="badge-status badge-draft">Draft</span>
+                </div>
+                <div>
+                  <div class="agent-card-name">Energy Monitor</div>
+                  <div class="agent-card-desc">Analyzes energy consumption patterns and flags deviations from expected baselines.</div>
+                </div>
+                <div class="agent-card-tags">
+                  <span class="agent-card-tag">IoT Hub</span>
+                  <span class="agent-card-tag">EHS</span>
+                </div>
+                <div class="agent-card-stats">
+                  <span class="agent-stat" style="color:var(--text-light)">Not deployed</span>
+                  <span class="agent-stat" style="color:var(--text-light)">—</span>
+                </div>
+                <div class="agent-card-actions">
+                  <button class="btn-card-action" onclick="openAgentDetail('energy');event.stopPropagation()">Configure</button>
+                  <button class="btn-card-action" onclick="showInfoToast('Chat coming soon');event.stopPropagation()">Chat</button>
+                  <button class="btn-card-action" onclick="openAgentDetail('energy');switchDetailTabById('documents');event.stopPropagation()">Documents</button>
+                  <button class="btn-card-deploy" onclick="showInfoToast('Deploy agent first');event.stopPropagation()">Deploy</button>
+                </div>
+              </div>
+
+            </div><!-- /agent-cards-grid -->
+          </div><!-- /agents-grid-content -->
+        </div><!-- /agents-grid-view -->
+
+        <!-- B2: Split Detail View -->
+        <div id="agents-detail-view" class="agents-detail-view">
+          <div class="split-pane">
+
+            <!-- Left Panel -->
+            <aside class="agent-list-panel" aria-label="Agents list">
+              <div class="list-panel-header">
+                <button class="btn-back" onclick="backToGrid()" aria-label="Back to all agents">
+                  ← All Agents
+                </button>
+                <span class="count-chip" aria-label="8 agents">8</span>
+              </div>
+              <div class="list-search" role="search" aria-label="Search agents">
+                <span class="list-search-icon" aria-hidden="true">⌕</span>
+                <span class="list-search-placeholder">Search agents...</span>
+              </div>
+              <div class="agent-list-items" id="agent-list-items" role="listbox" aria-label="Agent list">
+                <!-- Populated by JS -->
+              </div>
+            </aside>
+
+            <!-- Detail Panel -->
+            <section class="detail-panel" aria-label="Agent detail">
+
+              <!-- Agent Header -->
+              <div class="agent-header" id="detail-agent-header">
+                <div class="agent-header-left">
+                  <div class="detail-avatar" id="detail-avatar" aria-hidden="true">WO</div>
+                  <div>
+                    <div class="agent-header-name-row">
+                      <span class="agent-header-name" id="detail-name">Work Order Assistant</span>
+                      <span class="agent-active-badge" id="detail-status-badge" role="status">Active</span>
+                    </div>
+                    <span class="agent-header-sub" id="detail-sub">SAP PM integration · Created Feb 2, 2026</span>
+                  </div>
+                </div>
+                <div class="agent-header-actions" role="group" aria-label="Agent actions">
+                  <button class="btn-ghost" aria-label="Edit agent" onclick="showInfoToast('Edit agent coming soon')">Edit</button>
+                  <button class="btn-ghost" aria-label="Test chat" onclick="showInfoToast('Test Chat coming soon')">Test Chat</button>
+                  <button class="btn-ghost" aria-label="Upload documents" onclick="openUploadModal()">
+                    <span aria-hidden="true">↑</span> Upload Docs
+                  </button>
+                  <button class="btn-deploy" aria-label="Deploy agent" onclick="showInfoToast('Deploying agent...')">▶ Deploy</button>
+                </div>
+              </div>
+
+              <!-- Detail Tabs -->
+              <div class="detail-tabs" role="tablist" aria-label="Agent sections">
+                <div class="detail-tab active" role="tab" tabindex="0" aria-selected="true"
+                     id="dtab-overview"
+                     onclick="switchDetailTab(this,'overview')" onkeydown="keyActivate(event,this)">Overview</div>
+                <div class="detail-tab" role="tab" tabindex="0" aria-selected="false"
+                     id="dtab-configuration"
+                     onclick="switchDetailTab(this,'configuration')" onkeydown="keyActivate(event,this)">Configuration</div>
+                <div class="detail-tab" role="tab" tabindex="0" aria-selected="false"
+                     id="dtab-tools"
+                     onclick="switchDetailTab(this,'tools')" onkeydown="keyActivate(event,this)">Tools</div>
+                <div class="detail-tab" role="tab" tabindex="0" aria-selected="false"
+                     id="dtab-documents"
+                     onclick="switchDetailTab(this,'documents')" onkeydown="keyActivate(event,this)">Documents</div>
+                <div class="detail-tab" role="tab" tabindex="0" aria-selected="false"
+                     id="dtab-conversations"
+                     onclick="switchDetailTab(this,'conversations')" onkeydown="keyActivate(event,this)">Conversations</div>
+                <div class="detail-tab" role="tab" tabindex="0" aria-selected="false"
+                     id="dtab-analytics"
+                     onclick="switchDetailTab(this,'analytics')" onkeydown="keyActivate(event,this)">Analytics</div>
+              </div>
+
+              <!-- Scrollable Content -->
+              <div class="detail-content" role="tabpanel">
+
+                <!-- OVERVIEW -->
+                <div id="pane-overview" class="tab-pane active" aria-label="Overview">
+                  <div class="metrics-row" role="list" aria-label="Agent metrics">
+                    <div class="metric-card" role="listitem">
+                      <div class="metric-top"><span class="metric-label">Total Sessions</span><div class="metric-dot dot-green2" aria-hidden="true"></div></div>
+                      <div class="metric-value" id="ov-sessions">2,103</div>
+                      <div class="metric-sub">All time</div>
+                    </div>
+                    <div class="metric-card" role="listitem">
+                      <div class="metric-top"><span class="metric-label">Success Rate</span><div class="metric-dot dot-green2" aria-hidden="true"></div></div>
+                      <div class="metric-value" id="ov-success">93.1%</div>
+                      <div class="metric-sub">Last 30 days</div>
+                    </div>
+                    <div class="metric-card" role="listitem">
+                      <div class="metric-top"><span class="metric-label">Avg Response</span><div class="metric-dot dot-blue2" aria-hidden="true"></div></div>
+                      <div class="metric-value" id="ov-response">2.8s</div>
+                      <div class="metric-sub">Last 30 days</div>
+                    </div>
+                    <div class="metric-card" role="listitem">
+                      <div class="metric-top"><span class="metric-label">User Rating</span><div class="metric-dot dot-amber2" aria-hidden="true"></div></div>
+                      <div class="metric-value" id="ov-rating">4.6 ★</div>
+                      <div class="metric-sub" id="ov-rating-sub">From 312 ratings</div>
+                    </div>
+                  </div>
+
+                  <div class="info-row">
+                    <div class="info-card">
+                      <div class="info-card-title">Description</div>
+                      <div class="info-card-body" id="ov-desc">
+                        Analyzes work order data, suggests priorities and assigns technicians based on skill and availability. Integrates with SAP PM and IoT sensor streams.
+                      </div>
+                      <div class="tag-row" id="ov-tags">
+                        <span class="tag">SAP PM</span>
+                        <span class="tag">IoT Sensors</span>
+                      </div>
+                    </div>
+                    <div class="info-card">
+                      <div class="info-card-title">Model Configuration</div>
+                      <div class="config-row"><span class="config-key">Model</span><span class="config-val">Claude Sonnet 4.6</span></div>
+                      <div class="config-row"><span class="config-key">Temperature</span><span class="config-val">0.3 (focused)</span></div>
+                      <div class="config-row"><span class="config-key">Max Tokens</span><span class="config-val">4,096</span></div>
+                      <div class="config-row"><span class="config-key">Memory</span><span class="config-val">Last 20 messages</span></div>
+                    </div>
+                  </div>
+
+                  <div class="conv-card">
+                    <div class="conv-card-header">
+                      <span class="conv-card-title">Recent Conversations</span>
+                      <a class="view-all" href="#" tabindex="0" role="button">View all →</a>
+                    </div>
+                    <div class="conv-row" role="listitem">
+                      <div class="conv-av" style="background:linear-gradient(135deg,#c4b5fd,#818cf8)" aria-hidden="true">JN</div>
+                      <div class="conv-info">
+                        <div class="conv-name">John Nolan</div>
+                        <div class="conv-msg">Pump P-201 showing abnormal vibration at 2400 RPM</div>
+                      </div>
+                      <div class="conv-meta">
+                        <span class="conv-time">2m ago</span>
+                        <span class="conv-turns">6 turns</span>
+                        <span class="conv-status cs-resolved">Resolved</span>
+                      </div>
+                    </div>
+                    <div class="conv-row" role="listitem">
+                      <div class="conv-av" style="background:linear-gradient(135deg,#06b6d4,#0891b2)" aria-hidden="true">SK</div>
+                      <div class="conv-info">
+                        <div class="conv-name">Sarah Kim</div>
+                        <div class="conv-msg">Conveyor belt E speed dropping during peak load</div>
+                      </div>
+                      <div class="conv-meta">
+                        <span class="conv-time">1h ago</span>
+                        <span class="conv-turns">12 turns</span>
+                        <span class="conv-status cs-in-progress">In Progress</span>
+                      </div>
+                    </div>
+                    <div class="conv-row" role="listitem">
+                      <div class="conv-av" style="background:linear-gradient(135deg,#d97706,#f59e0b)" aria-hidden="true">MR</div>
+                      <div class="conv-info">
+                        <div class="conv-name">Mike Ross</div>
+                        <div class="conv-msg">Heat exchanger HX-04 outlet temp exceeding threshold</div>
+                      </div>
+                      <div class="conv-meta">
+                        <span class="conv-time">3h ago</span>
+                        <span class="conv-turns">8 turns</span>
+                        <span class="conv-status cs-resolved">Resolved</span>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- /overview -->
+
+                <!-- CONFIGURATION -->
+                <div id="pane-configuration" class="tab-pane" aria-label="Configuration">
+                  <div class="info-row">
+                    <div class="info-card">
+                      <div class="info-card-title">Agent Identity</div>
+                      <div class="config-row"><span class="config-key">Name</span><span class="config-val" id="cfg-name">Work Order Assistant</span></div>
+                      <div class="config-row"><span class="config-key">Status</span><span class="config-val" id="cfg-status" style="color:#2e7d33">Active</span></div>
+                      <div class="config-row"><span class="config-key">Created</span><span class="config-val" id="cfg-created">Feb 2, 2026</span></div>
+                      <div class="config-row"><span class="config-key">Owner</span><span class="config-val">admin@innovapptive.com</span></div>
+                      <div class="config-row"><span class="config-key">Version</span><span class="config-val">v1.0</span></div>
+                    </div>
+                    <div class="info-card">
+                      <div class="info-card-title">Model Settings</div>
+                      <div class="config-row"><span class="config-key">Model</span><span class="config-val">Claude Sonnet 4.6</span></div>
+                      <div class="config-row"><span class="config-key">Temperature</span><span class="config-val">0.3</span></div>
+                      <div class="config-row"><span class="config-key">Max Tokens</span><span class="config-val">4,096</span></div>
+                      <div class="config-row"><span class="config-key">Top-P</span><span class="config-val">0.9</span></div>
+                      <div class="config-row"><span class="config-key">Memory Window</span><span class="config-val">Last 20 messages</span></div>
+                    </div>
+                  </div>
+                  <div class="info-card">
+                    <div class="info-card-title">System Prompt (Preview)</div>
+                    <div style="background:#f7f7fa;border-radius:6px;padding:12px;font-family:monospace;font-size:11px;color:#4f4f4f;line-height:1.6;max-height:120px;overflow-y:auto;">
+                      You are an expert industrial work order assistant for Innovapptive CWP. Your role is to analyze work order data, prioritize tasks, and suggest optimal technician assignments based on skill profiles and availability...
+                    </div>
+                  </div>
+                </div><!-- /configuration -->
+
+                <!-- TOOLS -->
+                <div id="pane-tools" class="tab-pane" aria-label="Tools">
+                  <div class="doc-list" style="margin-bottom:16px" role="list" aria-label="Connected tools">
+                    <div class="doc-row" role="listitem">
+                      <div class="doc-type-badge">API</div>
+                      <div class="doc-info">
+                        <div class="doc-name">SAP PM Integration</div>
+                        <div class="doc-meta">Work order retrieval &amp; creation · REST API</div>
+                      </div>
+                      <span style="color:#2e7d33;font-size:11px;font-family:var(--font-inter);font-weight:500">● Connected</span>
+                    </div>
+                    <div class="doc-row" role="listitem">
+                      <div class="doc-type-badge">IoT</div>
+                      <div class="doc-info">
+                        <div class="doc-name">Sensor Data Stream</div>
+                        <div class="doc-meta">Real-time telemetry from 240 sensors · WebSocket</div>
+                      </div>
+                      <span style="color:#2e7d33;font-size:11px;font-family:var(--font-inter);font-weight:500">● Connected</span>
+                    </div>
+                    <div class="doc-row" role="listitem">
+                      <div class="doc-type-badge">DB</div>
+                      <div class="doc-info">
+                        <div class="doc-name">Maintenance History DB</div>
+                        <div class="doc-meta">Historical work orders &amp; failure records · PostgreSQL</div>
+                      </div>
+                      <span style="color:#2e7d33;font-size:11px;font-family:var(--font-inter);font-weight:500">● Connected</span>
+                    </div>
+                    <div class="doc-row" role="listitem" style="border-bottom:none">
+                      <div class="doc-type-badge" style="background:#fff3e0;color:#b26600">WEB</div>
+                      <div class="doc-info">
+                        <div class="doc-name">Equipment Manufacturer Docs</div>
+                        <div class="doc-meta">Online manuals &amp; service bulletins · Web Scraper</div>
+                      </div>
+                      <span style="color:#b26600;font-size:11px;font-family:var(--font-inter);font-weight:500">● Pending</span>
+                    </div>
+                  </div>
+                  <button class="btn-ghost" style="width:100%;justify-content:center" onclick="showInfoToast('Tool marketplace coming soon')">
+                    + Add Tool
+                  </button>
+                </div><!-- /tools -->
+
+                <!-- DOCUMENTS -->
+                <div id="pane-documents" class="tab-pane" aria-label="Documents">
+                  <div class="docs-panel">
+                    <div class="upload-zone" role="button" tabindex="0"
+                         onclick="openUploadModal()" onkeydown="keyActivate(event,this)"
+                         aria-label="Drop files here or click to upload documents">
+                      <div class="upload-zone-icon" aria-hidden="true">📄</div>
+                      <div class="upload-zone-title">Drop files here or click to upload</div>
+                      <div class="upload-zone-sub">PDF, DOCX, XLSX, TXT supported · Max 50 MB per file</div>
+                      <button class="btn-upload-zone" tabindex="-1">Upload Document</button>
+                    </div>
+                    <div class="docs-list-header">
+                      <span class="docs-list-title" id="docs-count-label">Uploaded Documents (3)</span>
+                      <button class="btn-feed" onclick="showInfoToast('Feed to Multiple Agents coming soon')">Feed to Multiple Agents</button>
+                    </div>
+                    <div class="doc-list" id="doc-list" role="list" aria-label="Uploaded documents">
+                      <div class="doc-row" role="listitem">
+                        <div class="doc-type-badge">PDF</div>
+                        <div class="doc-info">
+                          <div class="doc-name">SAP_PM_Work_Orders_2024.pdf</div>
+                          <div class="doc-meta">2.4 MB · Uploaded Mar 28, 2026</div>
+                        </div>
+                        <button class="btn-remove" onclick="removeDoc(this)" aria-label="Remove SAP_PM_Work_Orders_2024.pdf">Remove</button>
+                      </div>
+                      <div class="doc-row" role="listitem">
+                        <div class="doc-type-badge">DOCX</div>
+                        <div class="doc-info">
+                          <div class="doc-name">Equipment_Failure_Handbook.docx</div>
+                          <div class="doc-meta">1.1 MB · Uploaded Mar 15, 2026</div>
+                        </div>
+                        <button class="btn-remove" onclick="removeDoc(this)" aria-label="Remove Equipment_Failure_Handbook.docx">Remove</button>
+                      </div>
+                      <div class="doc-row" role="listitem">
+                        <div class="doc-type-badge">XLSX</div>
+                        <div class="doc-info">
+                          <div class="doc-name">Sensor_Thresholds_Config.xlsx</div>
+                          <div class="doc-meta">380 KB · Uploaded Mar 10, 2026</div>
+                        </div>
+                        <button class="btn-remove" onclick="removeDoc(this)" aria-label="Remove Sensor_Thresholds_Config.xlsx">Remove</button>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- /documents -->
+
+                <!-- CONVERSATIONS -->
+                <div id="pane-conversations" class="tab-pane" aria-label="Conversations">
+                  <div class="conv-card">
+                    <div class="conv-card-header">
+                      <span class="conv-card-title">All Conversations</span>
+                      <span class="view-all" tabindex="0" role="button" onclick="showInfoToast('Exporting CSV...')">Export CSV</span>
+                    </div>
+                    <div class="conv-row" role="listitem">
+                      <div class="conv-av" style="background:linear-gradient(135deg,#c4b5fd,#818cf8)">JN</div>
+                      <div class="conv-info"><div class="conv-name">John Nolan</div><div class="conv-msg">Pump P-201 showing abnormal vibration at 2400 RPM</div></div>
+                      <div class="conv-meta"><span class="conv-time">2m ago</span><span class="conv-turns">6 turns</span><span class="conv-status cs-resolved">Resolved</span></div>
+                    </div>
+                    <div class="conv-row" role="listitem">
+                      <div class="conv-av" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">SK</div>
+                      <div class="conv-info"><div class="conv-name">Sarah Kim</div><div class="conv-msg">Conveyor belt E speed dropping during peak load</div></div>
+                      <div class="conv-meta"><span class="conv-time">1h ago</span><span class="conv-turns">12 turns</span><span class="conv-status cs-in-progress">In Progress</span></div>
+                    </div>
+                    <div class="conv-row" role="listitem">
+                      <div class="conv-av" style="background:linear-gradient(135deg,#d97706,#f59e0b)">MR</div>
+                      <div class="conv-info"><div class="conv-name">Mike Ross</div><div class="conv-msg">Heat exchanger HX-04 outlet temp exceeding threshold</div></div>
+                      <div class="conv-meta"><span class="conv-time">3h ago</span><span class="conv-turns">8 turns</span><span class="conv-status cs-resolved">Resolved</span></div>
+                    </div>
+                    <div class="conv-row" role="listitem">
+                      <div class="conv-av" style="background:linear-gradient(135deg,#a78bfa,#7c3aed)">DL</div>
+                      <div class="conv-info"><div class="conv-name">David Lee</div><div class="conv-msg">Compressor C-07 pressure readings inconsistent after maintenance</div></div>
+                      <div class="conv-meta"><span class="conv-time">5h ago</span><span class="conv-turns">4 turns</span><span class="conv-status cs-resolved">Resolved</span></div>
+                    </div>
+                    <div class="conv-row" role="listitem">
+                      <div class="conv-av" style="background:linear-gradient(135deg,#f59e0b,#d97706)">AP</div>
+                      <div class="conv-info"><div class="conv-name">Ana Perez</div><div class="conv-msg">Motor M-12 overheating alarm triggered three times this shift</div></div>
+                      <div class="conv-meta"><span class="conv-time">8h ago</span><span class="conv-turns">9 turns</span><span class="conv-status cs-in-progress">In Progress</span></div>
+                    </div>
+                  </div>
+                </div><!-- /conversations -->
+
+                <!-- ANALYTICS -->
+                <div id="pane-analytics" class="tab-pane" aria-label="Analytics">
+                  <div class="metrics-row" style="margin-bottom:16px">
+                    <div class="metric-card">
+                      <div class="metric-top"><span class="metric-label">Sessions (7d)</span><div class="metric-dot dot-green2" aria-hidden="true"></div></div>
+                      <div class="metric-value" id="an-sessions">147</div>
+                      <div class="metric-sub">↑ 12% vs last week</div>
+                    </div>
+                    <div class="metric-card">
+                      <div class="metric-top"><span class="metric-label">Avg Turns / Session</span><div class="metric-dot dot-blue2" aria-hidden="true"></div></div>
+                      <div class="metric-value" id="an-turns">8.4</div>
+                      <div class="metric-sub">Per conversation</div>
+                    </div>
+                    <div class="metric-card">
+                      <div class="metric-top"><span class="metric-label">Escalation Rate</span><div class="metric-dot dot-amber2" aria-hidden="true"></div></div>
+                      <div class="metric-value" id="an-escalation">4.2%</div>
+                      <div class="metric-sub">Require human</div>
+                    </div>
+                    <div class="metric-card">
+                      <div class="metric-top"><span class="metric-label">Uptime</span><div class="metric-dot dot-green2" aria-hidden="true"></div></div>
+                      <div class="metric-value" id="an-uptime">99.9%</div>
+                      <div class="metric-sub">Last 90 days</div>
+                    </div>
+                  </div>
+                  <div class="info-card">
+                    <div class="info-card-title">Daily Session Volume — Last 7 Days</div>
+                    <div style="display:flex;align-items:flex-end;gap:6px;height:110px;padding:8px 0 0" role="img" aria-label="Bar chart showing daily session volume">
+                      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%">
+                        <div style="flex:1;width:100%;display:flex;align-items:flex-end">
+                          <div style="width:100%;background:#5252d4;border-radius:3px 3px 0 0;height:48%"></div>
+                        </div>
+                        <span style="font-size:9px;color:#9e9e9e;font-family:var(--font-inter)">Mon</span>
+                      </div>
+                      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%">
+                        <div style="flex:1;width:100%;display:flex;align-items:flex-end">
+                          <div style="width:100%;background:#5252d4;border-radius:3px 3px 0 0;height:62%"></div>
+                        </div>
+                        <span style="font-size:9px;color:#9e9e9e;font-family:var(--font-inter)">Tue</span>
+                      </div>
+                      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%">
+                        <div style="flex:1;width:100%;display:flex;align-items:flex-end">
+                          <div style="width:100%;background:#5252d4;border-radius:3px 3px 0 0;height:80%"></div>
+                        </div>
+                        <span style="font-size:9px;color:#9e9e9e;font-family:var(--font-inter)">Wed</span>
+                      </div>
+                      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%">
+                        <div style="flex:1;width:100%;display:flex;align-items:flex-end">
+                          <div style="width:100%;background:#5252d4;border-radius:3px 3px 0 0;height:75%"></div>
+                        </div>
+                        <span style="font-size:9px;color:#9e9e9e;font-family:var(--font-inter)">Thu</span>
+                      </div>
+                      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%">
+                        <div style="flex:1;width:100%;display:flex;align-items:flex-end">
+                          <div style="width:100%;background:#5252d4;border-radius:3px 3px 0 0;height:100%"></div>
+                        </div>
+                        <span style="font-size:9px;color:#9e9e9e;font-family:var(--font-inter)">Fri</span>
+                      </div>
+                      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%">
+                        <div style="flex:1;width:100%;display:flex;align-items:flex-end">
+                          <div style="width:100%;background:#5252d4;opacity:0.5;border-radius:3px 3px 0 0;height:38%"></div>
+                        </div>
+                        <span style="font-size:9px;color:#9e9e9e;font-family:var(--font-inter)">Sat</span>
+                      </div>
+                      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%">
+                        <div style="flex:1;width:100%;display:flex;align-items:flex-end">
+                          <div style="width:100%;background:#5252d4;opacity:0.35;border-radius:3px 3px 0 0;height:28%"></div>
+                        </div>
+                        <span style="font-size:9px;color:#9e9e9e;font-family:var(--font-inter)">Sun</span>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- /analytics -->
+
+              </div><!-- /detail-content -->
+            </section>
+          </div><!-- /split-pane -->
+        </div><!-- /agents-detail-view -->
+
+      </div><!-- /pane-my-agents -->
+
+      <!-- ============================================================
+           PANE C: TEMPLATES
+      ============================================================ -->
+      <div id="pane-templates" class="main-pane" role="tabpanel" aria-label="Templates">
+        <div class="templates-content">
+          <div class="templates-header">
+            <div class="templates-title">Agent Templates</div>
+            <div class="templates-sub">Browse ready-to-use AI agent templates for industrial operations</div>
+          </div>
+
+          <div class="templates-grid" role="list" aria-label="Agent templates">
+
+            <!-- Template 1 -->
+            <div class="template-card" role="listitem">
+              <div class="template-card-top">
+                <div class="template-icon" style="background:#f0f0ff">🔧</div>
+                <span class="template-category-badge" style="background:#f0f0ff;color:#5252d4">Equipment</span>
+              </div>
+              <div class="template-name">Equipment Diagnostics Starter</div>
+              <div class="template-desc">Pre-configured for SAP PM + IoT integration. Diagnoses equipment failures with real-time sensor data and maintenance history.</div>
+              <div class="template-tags">
+                <span class="template-tag">SAP PM</span>
+                <span class="template-tag">IoT</span>
+                <span class="template-tag">Diagnostics</span>
+              </div>
+              <div class="template-card-actions">
+                <button class="btn-use-template" onclick="showInfoToast('Creating agent from template...')">Use Template</button>
+                <button class="btn-preview" onclick="showInfoToast('Preview coming soon')">Preview →</button>
+              </div>
+            </div>
+
+            <!-- Template 2 -->
+            <div class="template-card" role="listitem">
+              <div class="template-card-top">
+                <div class="template-icon" style="background:#fff0f0">🦺</div>
+                <span class="template-category-badge" style="background:#fff0f0;color:#c62828">Safety</span>
+              </div>
+              <div class="template-name">Safety Compliance Monitor</div>
+              <div class="template-desc">Integrates with EHS and Forms for violation detection. Automatically generates corrective action plans and incident reports.</div>
+              <div class="template-tags">
+                <span class="template-tag">Forms</span>
+                <span class="template-tag">SAP EHS</span>
+                <span class="template-tag">Compliance</span>
+              </div>
+              <div class="template-card-actions">
+                <button class="btn-use-template" onclick="showInfoToast('Creating agent from template...')">Use Template</button>
+                <button class="btn-preview" onclick="showInfoToast('Preview coming soon')">Preview →</button>
+              </div>
+            </div>
+
+            <!-- Template 3 -->
+            <div class="template-card" role="listitem">
+              <div class="template-card-top">
+                <div class="template-icon" style="background:#f0f4ff">📋</div>
+                <span class="template-category-badge" style="background:#f0f4ff;color:#1565c0">Operations</span>
+              </div>
+              <div class="template-name">Work Order Optimizer</div>
+              <div class="template-desc">Prioritizes and schedules work orders using AI analysis of technician skills, equipment criticality, and SLA requirements.</div>
+              <div class="template-tags">
+                <span class="template-tag">SAP PM</span>
+                <span class="template-tag">Scheduling</span>
+                <span class="template-tag">WO</span>
+              </div>
+              <div class="template-card-actions">
+                <button class="btn-use-template" onclick="showInfoToast('Creating agent from template...')">Use Template</button>
+                <button class="btn-preview" onclick="showInfoToast('Preview coming soon')">Preview →</button>
+              </div>
+            </div>
+
+            <!-- Template 4 -->
+            <div class="template-card" role="listitem">
+              <div class="template-card-top">
+                <div class="template-icon" style="background:#fff8e1">⚙️</div>
+                <span class="template-category-badge" style="background:#fff8e1;color:#b26600">Maintenance</span>
+              </div>
+              <div class="template-name">Predictive Maintenance</div>
+              <div class="template-desc">ML-powered failure prediction using sensor history and equipment age profiles. Integrates with existing PM schedules.</div>
+              <div class="template-tags">
+                <span class="template-tag">ML Model</span>
+                <span class="template-tag">IoT</span>
+                <span class="template-tag">Predictive</span>
+              </div>
+              <div class="template-card-actions">
+                <button class="btn-use-template" onclick="showInfoToast('Creating agent from template...')">Use Template</button>
+                <button class="btn-preview" onclick="showInfoToast('Preview coming soon')">Preview →</button>
+              </div>
+            </div>
+
+            <!-- Template 5 -->
+            <div class="template-card" role="listitem">
+              <div class="template-card-top">
+                <div class="template-icon" style="background:#f0fff4">📚</div>
+                <span class="template-category-badge" style="background:#f0fff4;color:#2e7d32">Knowledge</span>
+              </div>
+              <div class="template-name">Knowledge Base Q&amp;A</div>
+              <div class="template-desc">RAG-powered agent for SOPs and manuals. Answers maintenance questions using your uploaded documentation and procedure guides.</div>
+              <div class="template-tags">
+                <span class="template-tag">RAG</span>
+                <span class="template-tag">SOPs</span>
+                <span class="template-tag">Knowledge</span>
+              </div>
+              <div class="template-card-actions">
+                <button class="btn-use-template" onclick="showInfoToast('Creating agent from template...')">Use Template</button>
+                <button class="btn-preview" onclick="showInfoToast('Preview coming soon')">Preview →</button>
+              </div>
+            </div>
+
+            <!-- Template 6 -->
+            <div class="template-card" role="listitem">
+              <div class="template-card-top">
+                <div class="template-icon" style="background:#f5f5f5">📊</div>
+                <span class="template-category-badge" style="background:#f5f5f5;color:#525560">Reporting</span>
+              </div>
+              <div class="template-name">Shift Report Generator</div>
+              <div class="template-desc">Auto-generates end-of-shift reports by aggregating completed work orders, incidents, and KPI data from SAP.</div>
+              <div class="template-tags">
+                <span class="template-tag">Reports</span>
+                <span class="template-tag">SAP</span>
+                <span class="template-tag">Automation</span>
+              </div>
+              <div class="template-card-actions">
+                <button class="btn-use-template" onclick="showInfoToast('Creating agent from template...')">Use Template</button>
+                <button class="btn-preview" onclick="showInfoToast('Preview coming soon')">Preview →</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div><!-- /pane-templates -->
+
+      <!-- ============================================================
+           PANE D: SETTINGS
+      ============================================================ -->
+      <div id="pane-settings" class="main-pane" role="tabpanel" aria-label="Settings" style="flex-direction:row">
+        <div class="settings-content">
+
+          <!-- Settings Nav -->
+          <nav class="settings-nav" aria-label="Settings navigation">
+            <div class="settings-nav-item active" tabindex="0" role="button" aria-current="page" onclick="switchSettingsPane(this,'settings-general')">General</div>
+            <div class="settings-nav-item" tabindex="0" role="button" onclick="switchSettingsPane(this,'settings-model')">Model Defaults</div>
+            <div class="settings-nav-item" tabindex="0" role="button" onclick="switchSettingsPane(this,'settings-integrations')">Integrations</div>
+            <div class="settings-nav-item" tabindex="0" role="button" onclick="switchSettingsPane(this,'settings-notifications')">Notifications</div>
+            <div class="settings-nav-item" tabindex="0" role="button" onclick="switchSettingsPane(this,'settings-api')">API Keys</div>
+          </nav>
+
+          <!-- Settings Main Content -->
+          <div class="settings-main">
+
+            <!-- General -->
+            <div id="settings-general" class="settings-pane active">
+              <div class="settings-section">
+                <div class="settings-section-title">Agent Studio</div>
+                <div class="settings-field">
+                  <div class="settings-label">Studio Name</div>
+                  <input type="text" class="settings-input" value="Knowledge Repository" aria-label="Studio name">
+                </div>
+                <div class="settings-field">
+                  <div class="settings-label">Description</div>
+                  <textarea class="settings-textarea" aria-label="Studio description">Central hub for all AI agents managing industrial operations, maintenance, and safety workflows.</textarea>
+                </div>
+              </div>
+              <div class="settings-section">
+                <div class="settings-section-title">Defaults</div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-label">Max Active Agents</div>
+                    <div class="settings-row-sub">Limit the number of concurrently active agents</div>
+                  </div>
+                  <label class="toggle-switch" aria-label="Max active agents toggle">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-label">Default Agent Status</div>
+                    <div class="settings-row-sub">Status assigned to newly created agents</div>
+                  </div>
+                  <select class="settings-select" aria-label="Default agent status">
+                    <option selected>Active</option>
+                    <option>Draft</option>
+                    <option>Disabled</option>
+                  </select>
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-label">Conversation Retention</div>
+                    <div class="settings-row-sub">How long to store conversation history</div>
+                  </div>
+                  <select class="settings-select" aria-label="Conversation retention period">
+                    <option>30 days</option>
+                    <option>60 days</option>
+                    <option selected>90 days</option>
+                    <option>1 year</option>
+                  </select>
+                </div>
+              </div>
+              <div class="settings-section">
+                <div class="settings-section-title" style="color:var(--error)">Danger Zone</div>
+                <div class="danger-zone">
+                  <div class="danger-zone-title">Reset All Agents</div>
+                  <div class="danger-zone-sub">This will permanently delete all agents, documents, and conversation history. This action cannot be undone.</div>
+                  <button class="btn-destructive" onclick="showInfoToast('Please confirm this action in a dialog')">Reset All Agents</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Model Defaults -->
+            <div id="settings-model" class="settings-pane">
+              <div class="settings-section">
+                <div class="settings-section-title">Default Model Settings</div>
+                <div class="settings-field">
+                  <div class="settings-label">Default Model</div>
+                  <select class="settings-select" style="width:100%" aria-label="Default AI model">
+                    <option selected>Claude Sonnet 4.6</option>
+                    <option>Claude Haiku 3.5</option>
+                    <option>Claude Opus 4</option>
+                  </select>
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-label">Default Temperature</div>
+                    <div class="settings-row-sub">Controls response creativity (0 = deterministic, 1 = creative)</div>
+                  </div>
+                  <input type="number" class="settings-input" style="width:80px;text-align:right" value="0.3" min="0" max="1" step="0.1" aria-label="Default temperature">
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-label">Default Max Tokens</div>
+                    <div class="settings-row-sub">Maximum response length in tokens</div>
+                  </div>
+                  <input type="number" class="settings-input" style="width:100px;text-align:right" value="4096" aria-label="Default max tokens">
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-label">Memory Window</div>
+                    <div class="settings-row-sub">Number of past messages included in context</div>
+                  </div>
+                  <select class="settings-select" aria-label="Memory window">
+                    <option>Last 10 messages</option>
+                    <option selected>Last 20 messages</option>
+                    <option>Last 50 messages</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Integrations -->
+            <div id="settings-integrations" class="settings-pane">
+              <div class="settings-section">
+                <div class="settings-section-title">Connected Integrations</div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-label">SAP PM (S/4HANA)</div>
+                    <div class="settings-row-sub" style="color:var(--success-text)">● Connected · Last sync 5m ago</div>
+                  </div>
+                  <button class="btn-ghost" onclick="showInfoToast('Configuring SAP PM...')">Configure</button>
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-label">IoT Hub</div>
+                    <div class="settings-row-sub" style="color:var(--success-text)">● Connected · 240 sensors active</div>
+                  </div>
+                  <button class="btn-ghost" onclick="showInfoToast('Configuring IoT Hub...')">Configure</button>
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-label">SAP EHS</div>
+                    <div class="settings-row-sub" style="color:var(--success-text)">● Connected</div>
+                  </div>
+                  <button class="btn-ghost" onclick="showInfoToast('Configuring SAP EHS...')">Configure</button>
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-label">SAP MM (Materials)</div>
+                    <div class="settings-row-sub" style="color:#b26600">● Pending configuration</div>
+                  </div>
+                  <button class="btn-ghost" onclick="showInfoToast('Configuring SAP MM...')">Connect</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notifications -->
+            <div id="settings-notifications" class="settings-pane">
+              <div class="settings-section">
+                <div class="settings-section-title">Notification Preferences</div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-label">Agent Downtime Alerts</div>
+                    <div class="settings-row-sub">Notify when an agent becomes unavailable</div>
+                  </div>
+                  <label class="toggle-switch" aria-label="Agent downtime alerts">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-label">Session Escalation Alerts</div>
+                    <div class="settings-row-sub">Notify when a conversation requires human intervention</div>
+                  </div>
+                  <label class="toggle-switch" aria-label="Escalation alerts">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-label">Weekly Performance Digest</div>
+                    <div class="settings-row-sub">Weekly email summary of agent performance metrics</div>
+                  </div>
+                  <label class="toggle-switch" aria-label="Weekly digest">
+                    <input type="checkbox">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-label">Document Upload Confirmation</div>
+                    <div class="settings-row-sub">Notify when a document finishes indexing</div>
+                  </div>
+                  <label class="toggle-switch" aria-label="Upload confirmation">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- API Keys -->
+            <div id="settings-api" class="settings-pane">
+              <div class="settings-section">
+                <div class="settings-section-title">API Keys</div>
+                <div class="settings-field">
+                  <div class="settings-label">Production API Key</div>
+                  <div style="display:flex;gap:8px;align-items:center">
+                    <input type="password" class="settings-input" value="sk-prod-xxxxxxxxxxxxxxxxxxx" aria-label="Production API key" style="font-family:monospace;font-size:12px">
+                    <button class="btn-ghost" onclick="showInfoToast('API key copied')">Copy</button>
+                    <button class="btn-ghost" onclick="showInfoToast('Regenerating key...')">Regen</button>
+                  </div>
+                </div>
+                <div class="settings-field">
+                  <div class="settings-label">Staging API Key</div>
+                  <div style="display:flex;gap:8px;align-items:center">
+                    <input type="password" class="settings-input" value="sk-stg-yyyyyyyyyyyyyyyyyyy" aria-label="Staging API key" style="font-family:monospace;font-size:12px">
+                    <button class="btn-ghost" onclick="showInfoToast('API key copied')">Copy</button>
+                    <button class="btn-ghost" onclick="showInfoToast('Regenerating key...')">Regen</button>
+                  </div>
+                </div>
+                <div style="margin-top:16px">
+                  <button class="btn-primary" onclick="showInfoToast('Generating new API key...')">+ Generate New Key</button>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /settings-main -->
+        </div><!-- /settings-content -->
+      </div><!-- /pane-settings -->
+
+    </div><!-- /content-area -->
+
+  </main><!-- /main -->
+</div><!-- /app -->
+
+
+<!-- ================================================================
+     MODAL: UPLOAD FILE BROWSER
+================================================================ -->
+<div id="modal-upload" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="upload-modal-title">
+  <div class="modal" role="document">
+    <div class="modal-header">
+      <h2 class="modal-title" id="upload-modal-title">Upload Documents</h2>
+      <button class="modal-close" onclick="closeModal('modal-upload')" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="drop-zone" class="modal-drop-zone"
+           ondragover="handleDragOver(event)"
+           ondragleave="handleDragLeave(event)"
+           ondrop="handleDrop(event)"
+           onclick="triggerFileInput()"
+           role="button" tabindex="0" aria-label="Click or drop files to upload">
+        <div class="drop-icon" aria-hidden="true">☁️</div>
+        <div class="drop-title">Drop files here</div>
+        <div class="drop-sub">PDF, DOCX, XLSX, TXT supported<br>Max 50 MB per file</div>
+        <button class="btn-browse" onclick="triggerFileInput(); event.stopPropagation()">Browse Files</button>
+      </div>
+      <div id="selected-files-section" class="selected-files-section">
+        <div class="sel-count" id="sel-count" aria-live="polite" role="status">0 files selected</div>
+        <div class="file-list" id="modal-file-list" role="list" aria-label="Selected files"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-upload')">Cancel</button>
+      <button class="btn-primary" id="btn-upload-start" onclick="startUpload()" disabled>Upload</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ================================================================
+     MODAL: UPLOAD PROGRESS
+================================================================ -->
+<div id="modal-progress" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="progress-modal-title">
+  <div class="modal" style="width:480px" role="document">
+    <div class="modal-header">
+      <h2 class="modal-title" id="progress-modal-title">Uploading Document</h2>
+      <button class="modal-close" id="progress-close-x" style="display:none" onclick="finishUpload()" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="progress-file-card">
+        <div class="pfc-header">
+          <div class="pfc-icon fti-pdf" id="pfc-icon" aria-hidden="true">PDF</div>
+          <div class="pfc-name" id="pfc-name">file.pdf</div>
+          <div class="pfc-pct" id="pfc-pct" role="status" aria-live="polite">0%</div>
+        </div>
+        <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Upload progress" id="progress-track">
+          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+        <div class="pfc-status" id="pfc-status">Preparing upload...</div>
+      </div>
+      <div class="progress-steps" role="list" aria-label="Upload steps">
+        <div class="p-step" role="listitem">
+          <div class="p-step-icon psi-done" aria-hidden="true">✓</div>
+          <span class="p-step-label psl-done">File validated</span>
+        </div>
+        <div class="p-step" role="listitem" id="step-upload">
+          <div class="p-step-icon psi-active" id="step-upload-icon" aria-hidden="true"><span class="spinner"></span></div>
+          <span class="p-step-label psl-active" id="step-upload-label">Uploading to knowledge base...</span>
+        </div>
+        <div class="p-step" role="listitem" id="step-index">
+          <div class="p-step-icon psi-pending" id="step-index-icon" aria-hidden="true">○</div>
+          <span class="p-step-label psl-pending" id="step-index-label">Indexing &amp; embedding</span>
+        </div>
+        <div class="p-step" role="listitem" id="step-ready">
+          <div class="p-step-icon psi-pending" id="step-ready-icon" aria-hidden="true">○</div>
+          <span class="p-step-label psl-pending" id="step-ready-label">Ready for agent queries</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" id="btn-cancel-progress" onclick="cancelUpload()">Cancel Upload</button>
+      <button class="btn-primary"   id="btn-done-progress"  onclick="finishUpload()" style="display:none">Done</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ================================================================
+     DS TOAST
+================================================================ -->
+<div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-icon" aria-hidden="true">✓</div>
+  <span class="toast-msg" id="toast-msg">File uploaded successfully</span>
+  <button class="btn-toast-close" onclick="hideToast()" aria-label="Dismiss">✕</button>
+</div>
+
+
+<!-- ================================================================
+     JAVASCRIPT
+================================================================ -->
+<script>
+'use strict';
+
+/* ================================================================
+   AGENT DATA
+================================================================ */
+const AGENTS_DATA = {
+  'wo-assistant': {
+    initials: 'TR', color: '#3d5afe',
+    name: 'Troubleshoot', status: 'Active',
+    sub: 'Equipment & process diagnostics · Created Feb 2, 2026',
+    sessions: '2,103', success: '93.1%', response: '2.8s', rating: '4.6 ★',
+    ratingCount: '312 ratings',
+    desc: 'Diagnoses equipment failures, process anomalies, and operational issues. Integrates with SAP PM, IoT sensor data, and maintenance history to suggest corrective actions and escalation paths.',
+    tags: ['SAP PM', 'IoT Sensors', 'Maintenance DB'],
+    anSessions: '218', anTurns: '6.2', anEscalation: '2.1%', anUptime: '99.2%'
+  },
+  'safety': {
+    initials: 'AS', color: '#2e7d32',
+    name: 'Assist', status: 'Active',
+    sub: 'Work order & SOP assistant · Created Jan 15, 2026',
+    sessions: '1,847', success: '95.8%', response: '1.9s', rating: '4.8 ★',
+    ratingCount: '198 ratings',
+    desc: 'Answers work order queries, retrieves SOPs, and guides technicians through step-by-step procedures. Integrates with SAP PM and the document knowledge base.',
+    tags: ['SAP PM', 'SOP Library'],
+    anSessions: '38', anTurns: '4.1', anEscalation: '0.8%', anUptime: '99.8%'
+  },
+  'parts': {
+    initials: 'RC', color: '#f59e0b',
+    name: 'RCA', status: 'Active',
+    sub: 'Root cause analysis engine · Created Feb 10, 2026',
+    sessions: '871', success: '93.7%', response: '3.1s', rating: '4.5 ★',
+    ratingCount: '143 ratings',
+    desc: 'Performs root cause analysis on equipment failures and recurring defects. Cross-references historical work orders, sensor trends, and maintenance logs to identify systemic issues.',
+    tags: ['SAP PM', 'IoT Hub', 'Analytics'],
+    anSessions: '67', anTurns: '5.8', anEscalation: '3.4%', anUptime: '99.5%'
+  },
+  'scheduler': {
+    initials: 'WC', color: '#7c3aed',
+    name: 'WO Create', status: 'Draft',
+    sub: 'Work order automation · Created Mar 1, 2026',
+    sessions: '0', success: '—', response: '—', rating: '—',
+    ratingCount: 'No ratings yet',
+    desc: 'Automatically creates work orders from equipment alerts, inspection findings, and operator-reported issues. Integrates with SAP PM and the alerting pipeline.',
+    tags: ['SAP PM', 'Alerts'],
+    anSessions: '0', anTurns: '—', anEscalation: '—', anUptime: '—'
+  },
+  'eq-health': {
+    initials: 'IR', color: '#1565c0',
+    name: 'Issue Report', status: 'Active',
+    sub: 'Operational issue reporting · Created Jan 22, 2026',
+    sessions: '534', success: '97.0%', response: '1.4s', rating: '4.7 ★',
+    ratingCount: '98 ratings',
+    desc: 'Generates structured issue reports from operational data, incidents, and anomalies detected across the plant. Links findings to relevant work orders and equipment records.',
+    tags: ['IoT Hub', 'SAP PM'],
+    anSessions: '291', anTurns: '3.2', anEscalation: '1.5%', anUptime: '99.8%'
+  },
+  'shift-report': {
+    initials: 'SR', color: '#7c3aed',
+    name: 'Shift Report Generator', status: 'Draft',
+    sub: 'Reports & SAP integration · Created Mar 20, 2026',
+    sessions: '0', success: '—', response: '—', rating: '—',
+    ratingCount: 'No ratings yet',
+    desc: 'Auto-generates end-of-shift reports by aggregating completed work orders, incidents, and KPI data.',
+    tags: ['Reports', 'SAP'],
+    anSessions: '0', anTurns: '—', anEscalation: '—', anUptime: '—'
+  },
+  'calibration': {
+    initials: 'CT', color: '#0891b2',
+    name: 'Calibration Tracker', status: 'Active',
+    sub: 'SAP PM + QM integration · Created Feb 28, 2026',
+    sessions: '672', success: '91.0%', response: '1.6s', rating: '4.2 ★',
+    ratingCount: '54 ratings',
+    desc: 'Monitors calibration schedules and triggers alerts when instruments approach their due dates.',
+    tags: ['SAP PM', 'QM'],
+    anSessions: '22', anTurns: '3.8', anEscalation: '5.2%', anUptime: '98.9%'
+  },
+  'energy': {
+    initials: 'EM', color: '#d97706',
+    name: 'Energy Monitor', status: 'Draft',
+    sub: 'IoT Hub + EHS integration · Created Apr 1, 2026',
+    sessions: '0', success: '—', response: '—', rating: '—',
+    ratingCount: 'No ratings yet',
+    desc: 'Analyzes energy consumption patterns and flags deviations from expected baselines for investigation.',
+    tags: ['IoT Hub', 'EHS'],
+    anSessions: '0', anTurns: '—', anEscalation: '—', anUptime: '—'
+  }
+};
+
+let currentAgentKey = 'wo-assistant';
+
+/* ================================================================
+   SIDEBAR TOGGLE
+================================================================ */
+function toggleSubNav(subId, navEl, chevId) {
+  const sub  = document.getElementById(subId);
+  const chev = document.getElementById(chevId);
+  const isOpen = sub.classList.contains('open');
+  sub.classList.toggle('open', !isOpen);
+  if (chev) chev.classList.toggle('rotated', !isOpen);
+  navEl.setAttribute('aria-expanded', String(!isOpen));
+}
+
+/* ================================================================
+   SEGMENTED CONTROL — AGENT FILTER
+================================================================ */
+function filterAgents(filter, el) {
+  // Update segmented control active state
+  document.querySelectorAll('.seg-ctrl-item').forEach(btn => {
+    const isActive = btn === el;
+    btn.classList.toggle('active', isActive);
+    btn.setAttribute('aria-selected', String(isActive));
+  });
+
+  // Show/hide cards by data-status
+  const cards = document.querySelectorAll('#agent-cards-grid .agent-card');
+  let visible = 0;
+  cards.forEach(card => {
+    const status = card.dataset.status; // 'published' | 'draft'
+    const show = filter === 'all' ||
+                 (filter === 'published' && status === 'published') ||
+                 (filter === 'drafted'   && status === 'draft');
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+
+  // Update count label
+  const countEl = document.getElementById('agents-filter-count');
+  if (countEl) {
+    const label = filter === 'all'       ? `${visible} AI Agents` :
+                  filter === 'published' ? `${visible} Published` :
+                                           `${visible} Drafted`;
+    countEl.textContent = label;
+  }
+}
+
+/* ================================================================
+   MAIN TABS
+================================================================ */
+function switchMainTab(el) {
+  document.querySelectorAll('.tab-bar .tab').forEach(t => {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+  });
+  el.classList.add('active');
+  el.setAttribute('aria-selected', 'true');
+
+  const tabId = el.dataset.tab;
+
+  // Show/hide panes
+  document.querySelectorAll('.main-pane').forEach(p => p.classList.remove('active'));
+
+  if (tabId === 'dashboard') {
+    document.getElementById('pane-dashboard').classList.add('active');
+  } else if (tabId === 'my-agents') {
+    document.getElementById('pane-my-agents').classList.add('active');
+    document.getElementById('agents-grid-view').style.display = 'flex';
+    document.getElementById('agents-detail-view').classList.remove('active');
+  } else if (tabId === 'templates') {
+    document.getElementById('pane-templates').classList.add('active');
+  } else if (tabId === 'settings') {
+    document.getElementById('pane-settings').classList.add('active');
+  }
+}
+
+/* ================================================================
+   DETAIL TABS
+================================================================ */
+function switchDetailTab(el, paneId) {
+  document.querySelectorAll('.detail-tab').forEach(t => {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+  });
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  el.setAttribute('aria-selected', 'true');
+  const pane = document.getElementById('pane-' + paneId);
+  if (pane) pane.classList.add('active');
+}
+
+function switchDetailTabById(tabName) {
+  const btn = document.getElementById('dtab-' + tabName);
+  if (btn) switchDetailTab(btn, tabName);
+}
+
+/* ================================================================
+   AGENT DETAIL NAVIGATION
+================================================================ */
+function openAgentDetail(agentKey) {
+  currentAgentKey = agentKey;
+  const data = AGENTS_DATA[agentKey];
+  if (!data) return;
+
+  // Ensure My Agents pane is visible
+  document.querySelectorAll('.main-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('pane-my-agents').classList.add('active');
+  document.querySelectorAll('.tab-bar .tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === 'my-agents');
+    t.setAttribute('aria-selected', String(t.dataset.tab === 'my-agents'));
+  });
+
+  // Switch from grid to detail view
+  document.getElementById('agents-grid-view').style.display = 'none';
+  document.getElementById('agents-detail-view').classList.add('active');
+
+  // Update agent header
+  const avatar = document.getElementById('detail-avatar');
+  avatar.textContent = data.initials;
+  avatar.style.background = data.color;
+  document.getElementById('detail-name').textContent = data.name;
+  document.getElementById('detail-sub').textContent = data.sub;
+  const statusBadge = document.getElementById('detail-status-badge');
+  statusBadge.textContent = data.status;
+  statusBadge.style.background = data.status === 'Active' ? 'var(--success-bg)' : '#f0f0f0';
+  statusBadge.style.color = data.status === 'Active' ? 'var(--success-text)' : '#6e6e6e';
+
+  // Update overview metrics
+  document.getElementById('ov-sessions').textContent = data.sessions;
+  document.getElementById('ov-success').textContent  = data.success;
+  document.getElementById('ov-response').textContent  = data.response;
+  document.getElementById('ov-rating').textContent    = data.rating;
+  document.getElementById('ov-rating-sub').textContent = 'From ' + data.ratingCount;
+  document.getElementById('ov-desc').textContent      = data.desc;
+  document.getElementById('ov-tags').innerHTML        = data.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('');
+
+  // Update config panel
+  document.getElementById('cfg-name').textContent    = data.name;
+  document.getElementById('cfg-status').textContent  = data.status;
+  document.getElementById('cfg-status').style.color  = data.status === 'Active' ? '#2e7d33' : '#6e6e6e';
+  document.getElementById('cfg-created').textContent = data.sub.split(' · Created ')[1] || '2026';
+
+  // Update analytics
+  document.getElementById('an-sessions').textContent   = data.anSessions;
+  document.getElementById('an-turns').textContent      = data.anTurns;
+  document.getElementById('an-escalation').textContent = data.anEscalation;
+  document.getElementById('an-uptime').textContent     = data.anUptime;
+
+  // Update sidebar agent list
+  renderAgentList(agentKey);
+
+  // Reset to Overview tab
+  switchDetailTabById('overview');
+}
+
+function renderAgentList(selectedKey) {
+  const container = document.getElementById('agent-list-items');
+  container.innerHTML = Object.entries(AGENTS_DATA).map(([key, d]) => `
+    <div class="agent-item ${key === selectedKey ? 'selected' : ''}" role="option"
+         aria-selected="${key === selectedKey}"
+         tabindex="0"
+         data-agent="${esc(key)}"
+         onclick="openAgentDetail('${esc(key)}')"
+         onkeydown="keyActivate(event,this)"
+         aria-label="${esc(d.name)} agent, ${esc(d.status)}">
+      <div class="agent-avatar-sm" style="background:${esc(d.color)}" aria-hidden="true">${esc(d.initials)}</div>
+      <div class="agent-item-info">
+        <div class="agent-item-row">
+          <span class="agent-item-name">${esc(d.name)}</span>
+          <span class="status-chip ${d.status.toLowerCase()}">${esc(d.status)}</span>
+        </div>
+        <span class="agent-item-desc">${esc(d.tags.join(' · '))}</span>
+      </div>
+    </div>`).join('');
+}
+
+function backToGrid() {
+  document.getElementById('agents-grid-view').style.display = 'flex';
+  document.getElementById('agents-detail-view').classList.remove('active');
+}
+
+/* ================================================================
+   SETTINGS PANES
+================================================================ */
+function switchSettingsPane(el, paneId) {
+  document.querySelectorAll('.settings-nav-item').forEach(i => {
+    i.classList.remove('active');
+    i.removeAttribute('aria-current');
+  });
+  el.classList.add('active');
+  el.setAttribute('aria-current', 'page');
+
+  document.querySelectorAll('.settings-pane').forEach(p => p.classList.remove('active'));
+  const pane = document.getElementById(paneId);
+  if (pane) pane.classList.add('active');
+}
+
+/* ================================================================
+   KEYBOARD ACTIVATION
+================================================================ */
+function keyActivate(e, el) {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
+}
+
+/* ================================================================
+   DOCUMENT REMOVE
+================================================================ */
+function removeDoc(btn) {
+  const row = btn.closest('.doc-row');
+  row.style.transition = 'opacity .18s, transform .18s';
+  row.style.opacity = '0';
+  row.style.transform = 'translateX(6px)';
+  setTimeout(() => { row.remove(); updateDocCount(); }, 180);
+}
+
+function updateDocCount() {
+  const n = document.querySelectorAll('#doc-list .doc-row').length;
+  const el = document.getElementById('docs-count-label');
+  if (el) el.textContent = `Uploaded Documents (${n})`;
+}
+
+/* ================================================================
+   FILE INPUT
+================================================================ */
+const fileInput = document.getElementById('file-input');
+let selectedFiles = [];
+
+function triggerFileInput() { fileInput.click(); }
+
+fileInput.addEventListener('change', e => {
+  addFiles(Array.from(e.target.files));
+  fileInput.value = '';
+});
+
+function handleDragOver(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.add('drag-active');
+}
+function handleDragLeave() {
+  document.getElementById('drop-zone').classList.remove('drag-active');
+}
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('drag-active');
+  addFiles(Array.from(e.dataTransfer.files));
+}
+
+function addFiles(files) {
+  const allowed = ['pdf','docx','xlsx','txt'];
+  files.forEach(f => {
+    const ext = f.name.split('.').pop().toLowerCase();
+    if (allowed.includes(ext) && !selectedFiles.some(x => x.name === f.name)) {
+      selectedFiles.push(f);
+    }
+  });
+  renderFileList();
+}
+
+function renderFileList() {
+  const section = document.getElementById('selected-files-section');
+  const list    = document.getElementById('modal-file-list');
+  const btn     = document.getElementById('btn-upload-start');
+  const count   = document.getElementById('sel-count');
+
+  if (selectedFiles.length === 0) {
+    section.style.display = 'none';
+    btn.disabled = true;
+    return;
+  }
+  section.style.display = 'block';
+  btn.disabled = false;
+  count.textContent = selectedFiles.length + ' file' + (selectedFiles.length > 1 ? 's' : '') + ' selected';
+  list.innerHTML = selectedFiles.map((f, i) => {
+    const ext = f.name.split('.').pop().toLowerCase();
+    const sz  = f.size > 1048576 ? (f.size/1048576).toFixed(1)+' MB' : Math.round(f.size/1024)+' KB';
+    return `
+      <div class="file-item" role="listitem">
+        <div class="file-type-icon fti-${esc(ext)}" aria-hidden="true">${esc(ext.toUpperCase())}</div>
+        <span class="file-name">${esc(f.name)}</span>
+        <span class="file-size">${sz}</span>
+        <button class="btn-file-rm" onclick="removeFile(${i})" aria-label="Remove ${esc(f.name)}">✕</button>
+      </div>`;
+  }).join('');
+}
+
+function removeFile(i) {
+  selectedFiles.splice(i, 1);
+  renderFileList();
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ================================================================
+   MODAL HELPERS
+================================================================ */
+function openModal(id) {
+  const overlay = document.getElementById(id);
+  overlay.classList.add('open');
+  requestAnimationFrame(() => {
+    const first = overlay.querySelector('button:not([disabled]), [tabindex="0"]');
+    if (first) first.focus();
+  });
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  if (id === 'modal-upload') {
+    selectedFiles = [];
+    renderFileList();
+  }
+}
+
+function openUploadModal() {
+  openModal('modal-upload');
+}
+
+/* ================================================================
+   UPLOAD FLOW
+================================================================ */
+let uploadTimer = null;
+let uploadPct   = 0;
+let uploadedFileInfo = null;
+
+function startUpload() {
+  if (!selectedFiles.length) return;
+  const f   = selectedFiles[0];
+  const ext = f.name.split('.').pop().toLowerCase();
+  const sz  = f.size > 1048576 ? (f.size/1048576).toFixed(1)+' MB' : Math.round(f.size/1024)+' KB';
+  uploadedFileInfo = { name: f.name, ext, sz };
+  selectedFiles = [];
+
+  document.getElementById('pfc-name').textContent      = uploadedFileInfo.name;
+  document.getElementById('pfc-icon').textContent      = ext.toUpperCase();
+  document.getElementById('pfc-icon').className        = `pfc-icon fti-${ext}`;
+  document.getElementById('pfc-pct').textContent       = '0%';
+  document.getElementById('pfc-status').textContent    = 'Preparing upload...';
+  document.getElementById('progress-fill').style.width = '0%';
+  document.getElementById('progress-track').setAttribute('aria-valuenow', '0');
+  document.getElementById('progress-close-x').style.display  = 'none';
+  document.getElementById('btn-cancel-progress').style.display = '';
+  document.getElementById('btn-done-progress').style.display  = 'none';
+  resetSteps();
+  uploadPct = 0;
+
+  closeModal('modal-upload');
+  openModal('modal-progress');
+
+  uploadTimer = setInterval(() => {
+    uploadPct += Math.random() * 9 + 4;
+    if (uploadPct >= 100) {
+      uploadPct = 100;
+      clearInterval(uploadTimer);
+      completeUpload();
+    }
+    const pctInt = Math.round(uploadPct);
+    document.getElementById('progress-fill').style.width = pctInt + '%';
+    document.getElementById('pfc-pct').textContent = pctInt + '%';
+    document.getElementById('progress-track').setAttribute('aria-valuenow', pctInt);
+
+    if (uploadPct >= 50 && uploadPct < 85)  document.getElementById('pfc-status').textContent = 'Uploading to knowledge base...';
+    if (uploadPct >= 85 && uploadPct < 100) {
+      document.getElementById('pfc-status').textContent = 'Indexing & embedding...';
+      setStep('step-upload', 'done', '✓', 'done', 'Uploaded to knowledge base');
+      setStep('step-index',  'active', '<span class="spinner"></span>', 'active', 'Indexing &amp; embedding...');
+    }
+  }, 160);
+}
+
+function resetSteps() {
+  setStep('step-upload', 'active', '<span class="spinner"></span>', 'active', 'Uploading to knowledge base...');
+  setStep('step-index',  'pending', '○', 'pending', 'Indexing &amp; embedding');
+  setStep('step-ready',  'pending', '○', 'pending', 'Ready for agent queries');
+}
+
+function setStep(id, iconState, iconHTML, labelState, labelHTML) {
+  const step  = document.getElementById(id);
+  const icon  = step.querySelector('.p-step-icon');
+  const label = step.querySelector('.p-step-label');
+  icon.className  = 'p-step-icon psi-' + iconState;
+  icon.innerHTML  = iconHTML;
+  label.className = 'p-step-label psl-' + labelState;
+  label.innerHTML = labelHTML;
+}
+
+function completeUpload() {
+  document.getElementById('pfc-status').textContent = '✓ Upload complete!';
+  setStep('step-upload', 'done', '✓', 'done', 'Uploaded to knowledge base');
+  setStep('step-index',  'done', '✓', 'done', 'Indexed &amp; embedded');
+  setStep('step-ready',  'done', '✓', 'done', 'Ready for agent queries');
+  document.getElementById('progress-close-x').style.display   = 'flex';
+  document.getElementById('btn-cancel-progress').style.display = 'none';
+  document.getElementById('btn-done-progress').style.display   = '';
+}
+
+function cancelUpload() {
+  clearInterval(uploadTimer);
+  uploadedFileInfo = null;
+  closeModal('modal-progress');
+}
+
+function finishUpload() {
+  closeModal('modal-progress');
+  if (uploadedFileInfo) {
+    addDocToList(uploadedFileInfo);
+    uploadedFileInfo = null;
+  }
+  // Make sure we're in detail view
+  if (document.getElementById('agents-detail-view').classList.contains('active')) {
+    switchDetailTabById('documents');
+  } else {
+    // Navigate to My Agents > first agent > Documents
+    openAgentDetail('wo-assistant');
+    setTimeout(() => switchDetailTabById('documents'), 50);
+  }
+  setTimeout(() => showToast('File uploaded and indexed successfully'), 300);
+}
+
+function addDocToList(info) {
+  const list  = document.getElementById('doc-list');
+  if (!list) return;
+  const today = new Date();
+  const date  = today.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const div   = document.createElement('div');
+  div.className = 'doc-row new-entry';
+  div.setAttribute('role','listitem');
+  div.innerHTML = `
+    <div class="doc-type-badge">${esc(info.ext.toUpperCase())}</div>
+    <div class="doc-info">
+      <div class="doc-name">${esc(info.name)}</div>
+      <div class="doc-meta">${esc(info.sz)} · Uploaded ${date}</div>
+    </div>
+    <button class="btn-remove" onclick="removeDoc(this)" aria-label="Remove ${esc(info.name)}">Remove</button>`;
+  list.insertBefore(div, list.firstChild);
+  updateDocCount();
+}
+
+/* ================================================================
+   TOAST
+================================================================ */
+let toastTimer = null;
+
+function showToast(msg) {
+  document.getElementById('toast-msg').textContent = msg;
+  const t = document.getElementById('toast');
+  t.classList.add('visible');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, 5000);
+}
+
+function hideToast() {
+  document.getElementById('toast').classList.remove('visible');
+}
+
+function showInfoToast(msg) { showToast(msg); }
+
+/* ================================================================
+   KEYBOARD: ESCAPE
+================================================================ */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (document.getElementById('modal-upload').classList.contains('open'))   closeModal('modal-upload');
+  if (document.getElementById('modal-progress').classList.contains('open') &&
+      document.getElementById('btn-done-progress').style.display !== 'none') finishUpload();
+});
+
+/* ================================================================
+   CLOSE MODALS ON OVERLAY CLICK
+================================================================ */
+document.getElementById('modal-upload').addEventListener('click', function(e) {
+  if (e.target === this) closeModal('modal-upload');
+});
+
+/* ================================================================
+   KEYBOARD SUPPORT FOR NAV ITEMS
+================================================================ */
+document.querySelectorAll('.nav-item, .nav-sub-item, .settings-nav-item').forEach(el => {
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
+  });
+});
+
+/* ================================================================
+   INIT: render agent list on load
+================================================================ */
+renderAgentList('wo-assistant');
+</script>
+</body>
+</html>
