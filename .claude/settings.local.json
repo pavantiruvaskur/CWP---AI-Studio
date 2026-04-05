@@ -5,7 +5,18 @@
       "mcp__claude_ai_Figma__get_metadata",
       "mcp__claude_ai_Figma__get_screenshot",
       "mcp__claude_ai_Figma__use_figma",
-      "mcp__claude_ai_Figma__search_design_system"
+      "mcp__claude_ai_Figma__search_design_system",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('mcpServers', {}\\), indent=2\\)\\)\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(list\\(d.keys\\(\\)\\), indent=2\\)\\)\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d, indent=2\\)\\)\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(list\\(d.keys\\(\\)\\)\\)\")",
+      "Bash(cat ~/.claude/session-env/*.json)",
+      "Bash(cat ~/.claude/cache/*.json)",
+      "Bash(python3 -c \"import json,sys; for line in sys.stdin: try: d = json.loads\\(line\\) if 'tools' in str\\(d\\).lower\\(\\) or 'figma' in str\\(d\\).lower\\(\\): print\\(str\\(d\\)[:200]\\) except: pass \")",
+      "Bash(python3 -c \" import json, sys lines = sys.stdin.readlines\\(\\) for line in lines[-20:]: try: d = json.loads\\(line\\) if 'figma' in str\\(d\\).lower\\(\\) or 'use_figma' in str\\(d\\).lower\\(\\): print\\(str\\(d\\)[:300]\\) print\\('---'\\) except: pass \")",
+      "Bash(python3 -c \" import json, sys lines = sys.stdin.readlines\\(\\) for line in lines[-5:]: try: d = json.loads\\(line.strip\\(\\)\\) print\\(json.dumps\\(d, indent=2\\)[:500]\\) print\\('==='\\) except: pass \")",
+      "Bash(curl -s http://127.0.0.1:3845/mcp)",
+      "Bash(curl -sv http://127.0.0.1:3845/sse)"
     ]
   }
 }
