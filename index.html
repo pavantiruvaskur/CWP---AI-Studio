@@ -2468,12 +2468,21 @@
         <div class="dash-content">
           <div class="dash-header">
             <span class="dash-title">Agent Performance Overview</span>
-            <button class="filter-btn" onclick="showInfoToast('Date range filter')">
-              Last 30 days
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                <path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
+            <div class="filter-btn-wrap">
+              <button class="filter-btn" aria-haspopup="listbox" aria-expanded="false" id="btn-date-filter" onclick="toggleDateFilter(event)">
+                <span id="date-filter-label">Last 30 days</span>
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                  <path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <div class="date-filter-dropdown" id="date-filter-dropdown" role="listbox" aria-label="Select date range">
+                <button class="dfd-item" role="option" onclick="selectDateFilter('Last 7 days', this)">Last 7 days</button>
+                <button class="dfd-item active" role="option" aria-selected="true" onclick="selectDateFilter('Last 30 days', this)">Last 30 days</button>
+                <button class="dfd-item" role="option" onclick="selectDateFilter('Last 3 months', this)">Last 3 months</button>
+                <button class="dfd-item" role="option" onclick="selectDateFilter('Last 6 months', this)">Last 6 months</button>
+                <button class="dfd-item" role="option" onclick="selectDateFilter('Last 12 months', this)">Last 12 months</button>
+              </div>
+            </div>
           </div>
 
           <!-- 4 Metric Cards -->
@@ -3010,8 +3019,11 @@
                 <div class="agent-header-actions" role="group" aria-label="Agent actions">
                   <button class="btn-ghost" aria-label="Edit agent" onclick="showInfoToast('Edit agent coming soon')">Edit</button>
                   <button class="btn-ghost" aria-label="Test chat" onclick="showInfoToast('Test Chat coming soon')">Test Chat</button>
-                  <button class="btn-ghost" aria-label="Upload documents" onclick="openUploadModal()">
-                    <span aria-hidden="true">↑</span> Upload Docs
+                  <button class="btn-upload-icon" aria-label="Upload documents" title="Upload Documents" onclick="openUploadTypeModal()">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+                      <path d="M7.5 2v8M7.5 2L5 4.5M7.5 2L10 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M2 11v1.2C2 12.65 2.35 13 2.8 13h9.4c.45 0 .8-.35.8-.8V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
                   </button>
                   <button class="btn-deploy" aria-label="Deploy agent" onclick="showInfoToast('Deploying agent...')">▶ Deploy</button>
                 </div>
@@ -4814,10 +4826,66 @@ function showInfoToast(msg) { showToast(msg); }
 function showSuccessToast(msg) { showToast(msg); }
 
 /* ================================================================
+   MORE MENU
+================================================================ */
+function toggleMoreMenu(e) {
+  e.stopPropagation();
+  const btn = document.getElementById('btn-more-main');
+  const menu = document.getElementById('more-dropdown-main');
+  const open = menu.classList.toggle('open');
+  btn.setAttribute('aria-expanded', String(open));
+  // close date filter if open
+  document.getElementById('date-filter-dropdown').classList.remove('open');
+  document.getElementById('btn-date-filter').setAttribute('aria-expanded','false');
+}
+
+function openHelpGuide() {
+  document.getElementById('more-dropdown-main').classList.remove('open');
+  document.getElementById('btn-more-main').setAttribute('aria-expanded','false');
+  showToast('Help Guide — coming soon');
+}
+
+/* ================================================================
+   DATE FILTER DROPDOWN
+================================================================ */
+function toggleDateFilter(e) {
+  e.stopPropagation();
+  const btn = document.getElementById('btn-date-filter');
+  const dd  = document.getElementById('date-filter-dropdown');
+  const open = dd.classList.toggle('open');
+  btn.setAttribute('aria-expanded', String(open));
+  // close more menu if open
+  document.getElementById('more-dropdown-main').classList.remove('open');
+  document.getElementById('btn-more-main').setAttribute('aria-expanded','false');
+}
+
+function selectDateFilter(label, el) {
+  document.getElementById('date-filter-label').textContent = label;
+  document.querySelectorAll('.dfd-item').forEach(b => {
+    b.classList.toggle('active', b === el);
+    b.setAttribute('aria-selected', String(b === el));
+  });
+  document.getElementById('date-filter-dropdown').classList.remove('open');
+  document.getElementById('btn-date-filter').setAttribute('aria-expanded','false');
+}
+
+// Close all dropdowns when clicking outside
+document.addEventListener('click', function() {
+  document.getElementById('more-dropdown-main').classList.remove('open');
+  document.getElementById('btn-more-main').setAttribute('aria-expanded','false');
+  const dd = document.getElementById('date-filter-dropdown');
+  if (dd) { dd.classList.remove('open'); document.getElementById('btn-date-filter').setAttribute('aria-expanded','false'); }
+});
+
+/* ================================================================
    KEYBOARD: ESCAPE
 ================================================================ */
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
+  document.getElementById('more-dropdown-main').classList.remove('open');
+  document.getElementById('btn-more-main').setAttribute('aria-expanded','false');
+  const dfd = document.getElementById('date-filter-dropdown');
+  if (dfd) { dfd.classList.remove('open'); document.getElementById('btn-date-filter').setAttribute('aria-expanded','false'); }
   if (document.getElementById('modal-upload-type').classList.contains('open'))  closeModal('modal-upload-type');
   if (document.getElementById('modal-bulk-upload').classList.contains('open'))  closeBulkUpload();
   if (document.getElementById('modal-upload').classList.contains('open'))        closeModal('modal-upload');
