@@ -719,8 +719,11 @@
       padding: 3px 8px;
       border-radius: 10px;
     }
-    .badge-active { background: var(--success-bg); color: var(--success-text); }
-    .badge-draft  { background: #f0f0f0; color: #6e6e6e; }
+    .badge-active       { background: var(--success-bg); color: var(--success-text); }
+    .badge-deployed     { background: var(--success-bg); color: var(--success-text); }
+    .badge-available    { background: #ecefff; color: #3d5afe; }
+    .badge-coming-soon  { background: #f0f0f0; color: #6e6e6e; }
+    .badge-draft        { background: #f0f0f0; color: #6e6e6e; }
 
     .agent-card-name {
       font-family: var(--font-inter);
@@ -805,6 +808,20 @@
       transition: background 0.12s;
     }
     .btn-card-deploy:hover { background: #4040b8; }
+
+    .btn-card-contact-sales {
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-family: var(--font-inter);
+      font-weight: 500;
+      font-size: 11px;
+      white-space: nowrap;
+      background: #f5f5f8;
+      color: #4f4f4f;
+      border: 1px solid rgba(0,0,0,0.12);
+      transition: background 0.12s;
+    }
+    .btn-card-contact-sales:hover { background: #ebebf0; }
 
     /* ============================================================
        MY AGENTS — SPLIT DETAIL VIEW (B2)
@@ -3724,9 +3741,9 @@
           <div class="agents-filter-bar" role="toolbar" aria-label="Agent filters">
             <!-- DS Segmented Control: All Agents / Published / Drafted -->
             <div class="seg-ctrl" role="tablist" aria-label="Filter agents">
-              <button class="seg-ctrl-item active" role="tab" aria-selected="true"  onclick="filterAgents('all',this)">All Agents</button>
-              <button class="seg-ctrl-item"        role="tab" aria-selected="false" onclick="filterAgents('published',this)">Published</button>
-              <button class="seg-ctrl-item"        role="tab" aria-selected="false" onclick="filterAgents('drafted',this)">Drafted</button>
+              <button class="seg-ctrl-item active" role="tab" aria-selected="true"  onclick="filterAgents('all',this)">All</button>
+              <button class="seg-ctrl-item"        role="tab" aria-selected="false" onclick="filterAgents('deployed',this)">Deployed</button>
+              <button class="seg-ctrl-item"        role="tab" aria-selected="false" onclick="filterAgents('coming-soon',this)">Coming Soon</button>
             </div>
             <span class="filter-count" id="agents-filter-count">8 AI Agents</span>
             <div class="filter-spacer"></div>
@@ -3743,7 +3760,6 @@
                 <path d="M2 11v1.2C2 12.65 2.35 13 2.8 13h9.4c.45 0 .8-.35.8-.8V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </button>
-            <button class="btn-primary" style="padding:7px 14px;font-size:12px" onclick="showInfoToast('New Agent builder coming soon')">+ New Agent</button>
             <div class="more-menu-wrap">
               <button class="btn-more" aria-label="More options" aria-haspopup="menu" onclick="toggleMoreMenu(event)" aria-expanded="false" id="btn-more-main">···</button>
               <div class="more-dropdown" id="more-dropdown-main" role="menu">
@@ -3770,10 +3786,10 @@
             <div class="agent-cards-grid" id="agent-cards-grid" role="list" aria-label="AI Agents">
 
               <!-- Agent 1: Troubleshoot -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="published" onclick="openAgentDetail('wo-assistant')" onkeydown="keyActivate(event,this)" aria-label="Troubleshoot agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" onclick="openAgentDetail('wo-assistant')" onkeydown="keyActivate(event,this)" aria-label="Troubleshoot agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#3d5afe">TR</div>
-                  <span class="badge-status badge-active">Active</span>
+                  <span class="badge-status badge-deployed">Deployed</span>
                 </div>
                 <div>
                   <div class="agent-card-name">Troubleshoot</div>
@@ -3791,15 +3807,14 @@
                   <button class="btn-card-action" onclick="openAgentDetail('wo-assistant');event.stopPropagation()">Configure</button>
                   <button class="btn-card-action" onclick="showInfoToast('Chat coming soon');event.stopPropagation()">Chat</button>
                   <button class="btn-card-action" onclick="openAgentDetail('wo-assistant');switchDetailTabById('documents');event.stopPropagation()">Documents</button>
-                  <button class="btn-card-deploy" onclick="openDeployModal();event.stopPropagation()">Deploy</button>
                 </div>
               </div>
 
               <!-- Agent 2: Assist -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="published" onclick="openAgentDetail('safety')" onkeydown="keyActivate(event,this)" aria-label="Assist agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" onclick="openAgentDetail('safety')" onkeydown="keyActivate(event,this)" aria-label="Assist agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#2e7d32">AS</div>
-                  <span class="badge-status badge-active">Active</span>
+                  <span class="badge-status badge-deployed">Deployed</span>
                 </div>
                 <div>
                   <div class="agent-card-name">Assist</div>
@@ -3817,15 +3832,14 @@
                   <button class="btn-card-action" onclick="openAgentDetail('safety');event.stopPropagation()">Configure</button>
                   <button class="btn-card-action" onclick="showInfoToast('Chat coming soon');event.stopPropagation()">Chat</button>
                   <button class="btn-card-action" onclick="openAgentDetail('safety');switchDetailTabById('documents');event.stopPropagation()">Documents</button>
-                  <button class="btn-card-deploy" onclick="openDeployModal();event.stopPropagation()">Deploy</button>
                 </div>
               </div>
 
               <!-- Agent 3: RCA -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="published" onclick="openAgentDetail('parts')" onkeydown="keyActivate(event,this)" aria-label="RCA agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" onclick="openAgentDetail('parts')" onkeydown="keyActivate(event,this)" aria-label="RCA agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#f59e0b">RC</div>
-                  <span class="badge-status badge-active">Active</span>
+                  <span class="badge-status badge-deployed">Deployed</span>
                 </div>
                 <div>
                   <div class="agent-card-name">RCA</div>
@@ -3843,15 +3857,14 @@
                   <button class="btn-card-action" onclick="openAgentDetail('parts');event.stopPropagation()">Configure</button>
                   <button class="btn-card-action" onclick="showInfoToast('Chat coming soon');event.stopPropagation()">Chat</button>
                   <button class="btn-card-action" onclick="openAgentDetail('parts');switchDetailTabById('documents');event.stopPropagation()">Documents</button>
-                  <button class="btn-card-deploy" onclick="openDeployModal();event.stopPropagation()">Deploy</button>
                 </div>
               </div>
 
-              <!-- Agent 4: WO Create (Draft) -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="draft" onclick="openAgentDetail('scheduler')" onkeydown="keyActivate(event,this)" aria-label="WO Create agent">
+              <!-- Agent 4: WO Create (Available) -->
+              <div class="agent-card" role="listitem" tabindex="0" data-status="available" onclick="openAgentDetail('scheduler')" onkeydown="keyActivate(event,this)" aria-label="WO Create agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#7c3aed">WC</div>
-                  <span class="badge-status badge-draft">Draft</span>
+                  <span class="badge-status badge-available">Available</span>
                 </div>
                 <div>
                   <div class="agent-card-name">WO Create</div>
@@ -3874,10 +3887,10 @@
               </div>
 
               <!-- Agent 5: Issue Report -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="published" onclick="openAgentDetail('eq-health')" onkeydown="keyActivate(event,this)" aria-label="Issue Report agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" onclick="openAgentDetail('eq-health')" onkeydown="keyActivate(event,this)" aria-label="Issue Report agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#1565c0">IR</div>
-                  <span class="badge-status badge-active">Active</span>
+                  <span class="badge-status badge-deployed">Deployed</span>
                 </div>
                 <div>
                   <div class="agent-card-name">Issue Report</div>
@@ -3895,15 +3908,14 @@
                   <button class="btn-card-action" onclick="openAgentDetail('eq-health');event.stopPropagation()">Configure</button>
                   <button class="btn-card-action" onclick="showInfoToast('Chat coming soon');event.stopPropagation()">Chat</button>
                   <button class="btn-card-action" onclick="openAgentDetail('eq-health');switchDetailTabById('documents');event.stopPropagation()">Documents</button>
-                  <button class="btn-card-deploy" onclick="openDeployModal();event.stopPropagation()">Deploy</button>
                 </div>
               </div>
 
-              <!-- Agent 6: Shift Report Generator (Draft) -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="draft" onclick="openAgentDetail('shift-report')" onkeydown="keyActivate(event,this)" aria-label="Shift Report Generator agent">
+              <!-- Agent 6: Shift Report Generator (Coming Soon) -->
+              <div class="agent-card" role="listitem" tabindex="0" data-status="coming-soon" onclick="openAgentDetail('shift-report')" onkeydown="keyActivate(event,this)" aria-label="Shift Report Generator agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#7c3aed">SR</div>
-                  <span class="badge-status badge-draft">Draft</span>
+                  <span class="badge-status badge-coming-soon">Coming Soon</span>
                 </div>
                 <div>
                   <div class="agent-card-name">Shift Report Generator</div>
@@ -3914,22 +3926,19 @@
                   <span class="agent-card-tag">SAP</span>
                 </div>
                 <div class="agent-card-stats">
-                  <span class="agent-stat" style="color:var(--text-light)">Not deployed</span>
+                  <span class="agent-stat" style="color:var(--text-light)">Not available</span>
                   <span class="agent-stat" style="color:var(--text-light)">—</span>
                 </div>
                 <div class="agent-card-actions">
-                  <button class="btn-card-action" onclick="openAgentDetail('shift-report');event.stopPropagation()">Configure</button>
-                  <button class="btn-card-action" onclick="showInfoToast('Chat coming soon');event.stopPropagation()">Chat</button>
-                  <button class="btn-card-action" onclick="openAgentDetail('shift-report');switchDetailTabById('documents');event.stopPropagation()">Documents</button>
-                  <button class="btn-card-deploy" onclick="showInfoToast('Deploy agent first');event.stopPropagation()">Deploy</button>
+                  <button class="btn-card-contact-sales" onclick="showInfoToast('Our team will reach out shortly');event.stopPropagation()">Contact Sales</button>
                 </div>
               </div>
 
               <!-- Agent 7: Calibration Tracker -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="published" onclick="openAgentDetail('calibration')" onkeydown="keyActivate(event,this)" aria-label="Calibration Tracker agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="available" onclick="openAgentDetail('calibration')" onkeydown="keyActivate(event,this)" aria-label="Calibration Tracker agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#0891b2">CT</div>
-                  <span class="badge-status badge-active">Active</span>
+                  <span class="badge-status badge-available">Available</span>
                 </div>
                 <div>
                   <div class="agent-card-name">Calibration Tracker</div>
@@ -3951,11 +3960,11 @@
                 </div>
               </div>
 
-              <!-- Agent 8: Energy Monitor (Draft) -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="draft" onclick="openAgentDetail('energy')" onkeydown="keyActivate(event,this)" aria-label="Energy Monitor agent">
+              <!-- Agent 8: Energy Monitor (Coming Soon) -->
+              <div class="agent-card" role="listitem" tabindex="0" data-status="coming-soon" onclick="openAgentDetail('energy')" onkeydown="keyActivate(event,this)" aria-label="Energy Monitor agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#d97706">EM</div>
-                  <span class="badge-status badge-draft">Draft</span>
+                  <span class="badge-status badge-coming-soon">Coming Soon</span>
                 </div>
                 <div>
                   <div class="agent-card-name">Energy Monitor</div>
@@ -3966,14 +3975,11 @@
                   <span class="agent-card-tag">EHS</span>
                 </div>
                 <div class="agent-card-stats">
-                  <span class="agent-stat" style="color:var(--text-light)">Not deployed</span>
+                  <span class="agent-stat" style="color:var(--text-light)">Not available</span>
                   <span class="agent-stat" style="color:var(--text-light)">—</span>
                 </div>
                 <div class="agent-card-actions">
-                  <button class="btn-card-action" onclick="openAgentDetail('energy');event.stopPropagation()">Configure</button>
-                  <button class="btn-card-action" onclick="showInfoToast('Chat coming soon');event.stopPropagation()">Chat</button>
-                  <button class="btn-card-action" onclick="openAgentDetail('energy');switchDetailTabById('documents');event.stopPropagation()">Documents</button>
-                  <button class="btn-card-deploy" onclick="showInfoToast('Deploy agent first');event.stopPropagation()">Deploy</button>
+                  <button class="btn-card-contact-sales" onclick="showInfoToast('Our team will reach out shortly');event.stopPropagation()">Contact Sales</button>
                 </div>
               </div>
 
@@ -5069,7 +5075,7 @@
 const AGENTS_DATA = {
   'wo-assistant': {
     initials: 'TR', color: '#3d5afe',
-    name: 'Troubleshoot', status: 'Active',
+    name: 'Troubleshoot', status: 'Deployed',
     sub: 'Equipment & process diagnostics · Created Feb 2, 2026',
     sessions: '2,103', success: '93.1%', response: '2.8s', rating: '4.6 ★',
     ratingCount: '312 ratings',
@@ -5079,7 +5085,7 @@ const AGENTS_DATA = {
   },
   'safety': {
     initials: 'AS', color: '#2e7d32',
-    name: 'Assist', status: 'Active',
+    name: 'Assist', status: 'Deployed',
     sub: 'Work order & SOP assistant · Created Jan 15, 2026',
     sessions: '1,847', success: '95.8%', response: '1.9s', rating: '4.8 ★',
     ratingCount: '198 ratings',
@@ -5089,7 +5095,7 @@ const AGENTS_DATA = {
   },
   'parts': {
     initials: 'RC', color: '#f59e0b',
-    name: 'RCA', status: 'Active',
+    name: 'RCA', status: 'Deployed',
     sub: 'Root cause analysis engine · Created Feb 10, 2026',
     sessions: '871', success: '93.7%', response: '3.1s', rating: '4.5 ★',
     ratingCount: '143 ratings',
@@ -5099,7 +5105,7 @@ const AGENTS_DATA = {
   },
   'scheduler': {
     initials: 'WC', color: '#7c3aed',
-    name: 'WO Create', status: 'Draft',
+    name: 'WO Create', status: 'Available',
     sub: 'Work order automation · Created Mar 1, 2026',
     sessions: '0', success: '—', response: '—', rating: '—',
     ratingCount: 'No ratings yet',
@@ -5109,7 +5115,7 @@ const AGENTS_DATA = {
   },
   'eq-health': {
     initials: 'IR', color: '#1565c0',
-    name: 'Issue Report', status: 'Active',
+    name: 'Issue Report', status: 'Deployed',
     sub: 'Operational issue reporting · Created Jan 22, 2026',
     sessions: '534', success: '97.0%', response: '1.4s', rating: '4.7 ★',
     ratingCount: '98 ratings',
@@ -5119,7 +5125,7 @@ const AGENTS_DATA = {
   },
   'shift-report': {
     initials: 'SR', color: '#7c3aed',
-    name: 'Shift Report Generator', status: 'Draft',
+    name: 'Shift Report Generator', status: 'Coming Soon',
     sub: 'Reports & SAP integration · Created Mar 20, 2026',
     sessions: '0', success: '—', response: '—', rating: '—',
     ratingCount: 'No ratings yet',
@@ -5129,7 +5135,7 @@ const AGENTS_DATA = {
   },
   'calibration': {
     initials: 'CT', color: '#0891b2',
-    name: 'Calibration Tracker', status: 'Active',
+    name: 'Calibration Tracker', status: 'Available',
     sub: 'SAP PM + QM integration · Created Feb 28, 2026',
     sessions: '672', success: '91.0%', response: '1.6s', rating: '4.2 ★',
     ratingCount: '54 ratings',
@@ -5139,7 +5145,7 @@ const AGENTS_DATA = {
   },
   'energy': {
     initials: 'EM', color: '#d97706',
-    name: 'Energy Monitor', status: 'Draft',
+    name: 'Energy Monitor', status: 'Coming Soon',
     sub: 'IoT Hub + EHS integration · Created Apr 1, 2026',
     sessions: '0', success: '—', response: '—', rating: '—',
     ratingCount: 'No ratings yet',
@@ -5178,10 +5184,10 @@ function filterAgents(filter, el) {
   const cards = document.querySelectorAll('#agent-cards-grid .agent-card');
   let visible = 0;
   cards.forEach(card => {
-    const status = card.dataset.status; // 'published' | 'draft'
+    const status = card.dataset.status; // 'deployed' | 'available' | 'coming-soon'
     const show = filter === 'all' ||
-                 (filter === 'published' && status === 'published') ||
-                 (filter === 'drafted'   && status === 'draft');
+                 (filter === 'deployed'    && status === 'deployed') ||
+                 (filter === 'coming-soon' && status === 'coming-soon');
     card.style.display = show ? '' : 'none';
     if (show) visible++;
   });
@@ -5189,9 +5195,9 @@ function filterAgents(filter, el) {
   // Update count label
   const countEl = document.getElementById('agents-filter-count');
   if (countEl) {
-    const label = filter === 'all'       ? `${visible} AI Agents` :
-                  filter === 'published' ? `${visible} Published` :
-                                           `${visible} Drafted`;
+    const label = filter === 'all'         ? `${visible} AI Agents` :
+                  filter === 'deployed'    ? `${visible} Deployed` :
+                                             `${visible} Coming Soon`;
     countEl.textContent = label;
   }
 }
@@ -5273,8 +5279,8 @@ function openAgentDetail(agentKey) {
   document.getElementById('detail-sub').textContent = data.sub;
   const statusBadge = document.getElementById('detail-status-badge');
   statusBadge.textContent = data.status;
-  statusBadge.style.background = data.status === 'Active' ? 'var(--success-bg)' : '#f0f0f0';
-  statusBadge.style.color = data.status === 'Active' ? 'var(--success-text)' : '#6e6e6e';
+  statusBadge.style.background = data.status === 'Deployed' ? 'var(--success-bg)' : data.status === 'Available' ? '#ecefff' : '#f0f0f0';
+  statusBadge.style.color = data.status === 'Deployed' ? 'var(--success-text)' : data.status === 'Available' ? '#3d5afe' : '#6e6e6e';
 
   // Update overview metrics
   document.getElementById('ov-sessions').textContent = data.sessions;
@@ -5288,7 +5294,7 @@ function openAgentDetail(agentKey) {
   // Update config panel
   document.getElementById('cfg-name').textContent    = data.name;
   document.getElementById('cfg-status').textContent  = data.status;
-  document.getElementById('cfg-status').style.color  = data.status === 'Active' ? '#2e7d33' : '#6e6e6e';
+  document.getElementById('cfg-status').style.color  = data.status === 'Deployed' ? '#2e7d33' : data.status === 'Available' ? '#3d5afe' : '#6e6e6e';
   document.getElementById('cfg-created').textContent = data.sub.split(' · Created ')[1] || '2026';
 
   // Update analytics
@@ -5401,12 +5407,12 @@ let bulkStep = 1;
 let bulkTimers = [];
 
 const BULK_AGENTS = [
-  { key:'wo-assistant', initials:'TR', color:'#3d5afe', name:'Troubleshoot', type:'Equipment & process diagnostics', status:'Active' },
-  { key:'safety',       initials:'AS', color:'#2e7d32', name:'Assist',        type:'Work order & SOP assistant',       status:'Active' },
-  { key:'parts',        initials:'RC', color:'#f59e0b', name:'RCA',            type:'Root cause analysis engine',       status:'Active' },
-  { key:'scheduler',    initials:'WC', color:'#7c3aed', name:'WO Create',      type:'Work order automation',            status:'Draft'  },
-  { key:'eq-health',    initials:'IR', color:'#1565c0', name:'Issue Report',   type:'Structured issue reporting',       status:'Active' },
-  { key:'shift-report', initials:'SH', color:'#0d9488', name:'Shift Report',   type:'Shift handover generator',         status:'Active' },
+  { key:'wo-assistant', initials:'TR', color:'#3d5afe', name:'Troubleshoot', type:'Equipment & process diagnostics', status:'Deployed'  },
+  { key:'safety',       initials:'AS', color:'#2e7d32', name:'Assist',        type:'Work order & SOP assistant',       status:'Deployed'  },
+  { key:'parts',        initials:'RC', color:'#f59e0b', name:'RCA',            type:'Root cause analysis engine',       status:'Deployed'  },
+  { key:'eq-health',    initials:'IR', color:'#1565c0', name:'Issue Report',   type:'Structured issue reporting',       status:'Deployed'  },
+  { key:'scheduler',    initials:'WC', color:'#7c3aed', name:'WO Create',      type:'Work order automation',            status:'Available' },
+  { key:'calibration',  initials:'CT', color:'#0891b2', name:'Calibration Tracker', type:'SAP PM + QM integration',    status:'Available' },
 ];
 
 /* ----------------------------------------------------------------
