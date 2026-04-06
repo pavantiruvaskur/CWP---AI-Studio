@@ -2073,7 +2073,7 @@
   .modal-bulk { width:580px; max-height:88vh; display:flex; flex-direction:column; }
   .bulk-steps-bar {
     display:flex; align-items:center; gap:0; padding:0 20px 16px;
-    border-bottom:1px solid #e2e4e9; flex-shrink:0;
+    flex-shrink:0;
   }
   .bsb-step {
     display:flex; flex-direction:column; align-items:center; gap:4px; flex:1;
@@ -4945,7 +4945,7 @@
   <div class="modal modal-bulk" role="document">
 
     <!-- Header -->
-    <div class="modal-header" style="flex-direction:column;align-items:stretch;gap:14px">
+    <div class="modal-header" style="flex-direction:column;align-items:stretch;gap:14px;border-bottom:none">
       <div style="display:flex;justify-content:space-between;align-items:center">
         <h2 class="modal-title" id="bulk-upload-title">Upload Documents</h2>
         <button class="modal-close" onclick="closeUploadModal()" aria-label="Close">✕</button>
