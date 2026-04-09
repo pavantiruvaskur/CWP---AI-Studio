@@ -206,80 +206,111 @@
        TOPBAR
     ============================================================ */
     .topbar {
-      background: var(--bg-white);
-      border-bottom: 1px solid var(--border);
-      padding: 0 16px;
+      background: #fff;
+      border-bottom: 1px solid #e2e4e9;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-shrink: 0;
-      height: 64px;
     }
+
+    .topbar-left { display: flex; flex-direction: column; gap: 2px; }
 
     .topbar-title {
       font-family: var(--font-roboto);
-      font-weight: 700;
-      font-size: 20px;
-      color: var(--text-dark2);
-      line-height: 1;
-      margin-bottom: 3px;
+      font-weight: 500;
+      font-size: 18px;
+      color: #2a2b30;
+      line-height: 1.33;
+      letter-spacing: -0.09px;
+      white-space: nowrap;
     }
 
-    .breadcrumb {
+    .topbar-breadcrumb {
       display: flex;
       align-items: center;
-      gap: 2px;
+      gap: 0;
     }
-    .breadcrumb a {
+    .topbar-breadcrumb-item {
       font-family: var(--font-roboto);
-      font-size: 11px;
-      color: var(--link);
-      letter-spacing: 0.4px;
+      font-size: 10px;
+      font-weight: 400;
+      color: #525560;
+      letter-spacing: 0.2px;
+      line-height: 1.4;
+      white-space: nowrap;
     }
-    .breadcrumb-sep { font-size: 11px; color: var(--text-nav); margin: 0 1px; }
-    .breadcrumb-cur { font-family: var(--font-roboto); font-size: 11px; color: var(--text-nav); letter-spacing: 0.4px; }
+    .topbar-breadcrumb-sep {
+      display: inline-flex;
+      align-items: center;
+      color: #525560;
+      margin: 0 2px;
+      font-size: 9px;
+    }
 
-    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
 
-    .app-grid-icon { opacity: 0.6; cursor: pointer; transition: opacity 0.15s; }
-    .app-grid-icon:hover { opacity: 1; }
+    .topbar-notif-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #e2e4e9;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+      color: #525560;
+      transition: border-color 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+    .topbar-notif-btn:hover { border-color: #b0b4c4; color: #2a2b30; }
 
     .topbar-user {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 2px 12px;
-      border: 1px solid #e0e0e0;
-      border-radius: 5px;
-      height: 48px;
-      background: white;
+      gap: 8px;
+      padding: 0 8px;
+      border: 1px solid #e2e4e9;
+      border-radius: 8px;
+      height: 36px;
+      background: #fff;
       cursor: pointer;
       transition: border-color 0.15s;
+      flex-shrink: 0;
     }
-    .topbar-user:hover { border-color: var(--primary); }
+    .topbar-user:hover { border-color: #b0b4c4; }
 
     .user-avatar {
-      width: 30px; height: 30px;
+      width: 24px; height: 24px;
       border-radius: 50%;
       background: linear-gradient(135deg, #4fc3f7 0%, #80deea 100%);
       display: flex; align-items: center; justify-content: center;
       color: white;
-      font-size: 10px; font-weight: 700;
+      font-size: 9px; font-weight: 700;
       flex-shrink: 0;
       overflow: hidden;
+    }
+
+    .topbar-user-divider {
+      width: 1px;
+      height: 18px;
+      background: #e2e4e9;
+      flex-shrink: 0;
     }
 
     .topbar-wordmark {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       flex-shrink: 0;
     }
     .topbar-wordmark-text {
       font-family: var(--font-inter);
       font-weight: 700;
-      font-size: 13px;
-      letter-spacing: 1px;
+      font-size: 12px;
+      letter-spacing: 0.8px;
       color: #212C58;
       white-space: nowrap;
     }
@@ -337,6 +368,55 @@
     .tab:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
 
     /* ============================================================
+       DASHBOARD SUB-TABS
+    ============================================================ */
+    .dash-tab-bar {
+      background: var(--bg-white);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      display: flex;
+      align-items: flex-end;
+      padding: 0 24px;
+      height: 44px;
+      flex-shrink: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .dash-tab-bar::-webkit-scrollbar { display: none; }
+
+    .dash-tab {
+      padding: 0 14px;
+      height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-family: var(--font-roboto);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      border: none;
+      background: none;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+      user-select: none;
+      outline: none;
+      flex-shrink: 0;
+    }
+    .dash-tab:hover { color: var(--link); }
+    .dash-tab.active { color: var(--link); font-weight: 500; border-bottom-color: var(--link); }
+    .dash-tab:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+
+    .dash-tab-pane { display: none; flex-direction: column; min-height: 100%; }
+    .dash-tab-pane.active { display: flex; }
+
+    .dash-placeholder-msg {
+      padding: 48px 24px;
+      font-family: var(--font-inter);
+      font-size: 13px;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    /* ============================================================
        CONTENT AREA (scrollable)
     ============================================================ */
     .content-area {
@@ -386,6 +466,63 @@
       transition: border-color 0.15s;
     }
     .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* ============================================================
+       P&S-STYLE FLOATING-LABEL FILTER CONTROL
+       Adopted from Planning-and-Scheduling "Quick filter" pattern
+    ============================================================ */
+    .ps-filter-wrap {
+      position: relative;
+      display: inline-flex;
+    }
+    .ps-filter-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 160px;
+      padding: 8px 10px 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      font-family: var(--font-inter);
+      transition: border-color 0.15s;
+      user-select: none;
+    }
+    .ps-filter-btn:hover:not(.open) { border-color: #b0b4c4; }
+    .ps-filter-btn.open { border-color: var(--primary); }
+    .ps-filter-label {
+      position: absolute;
+      top: -6px;
+      left: 10px;
+      background: white;
+      padding: 0 4px;
+      font-size: 10px;
+      font-weight: 500;
+      color: #9ca0ac;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      pointer-events: none;
+      line-height: 1.4;
+    }
+    .ps-filter-btn.open .ps-filter-label { color: var(--primary); }
+    .ps-filter-value {
+      flex: 1;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-dark2);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: left;
+    }
+    .ps-filter-chevron {
+      flex-shrink: 0;
+      color: #9ca0ac;
+      transition: transform 0.2s, color 0.15s;
+    }
+    .ps-filter-btn.open .ps-filter-chevron { transform: rotate(180deg); color: var(--primary); }
 
     .dash-metrics {
       display: grid;
@@ -1068,6 +1205,260 @@
     .badge-available    { background: #ecefff; color: #3d5afe; }
     .badge-coming-soon  { background: #f0f0f0; color: #6e6e6e; }
     .badge-draft        { background: #f0f0f0; color: #6e6e6e; }
+
+    /* ============================================================
+       PRODUCT BADGE
+    ============================================================ */
+    .product-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-family: var(--font-inter);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15px;
+      margin-bottom: 5px;
+    }
+    .product-badge::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .pb-imaintenance { background: #e8f0fe; color: #1a56db; }
+    .pb-imaintenance::before { background: #1a56db; }
+    .pb-ipermits     { background: #f3e8ff; color: #7c3aed; }
+    .pb-ipermits::before     { background: #7c3aed; }
+    .pb-mrounds      { background: #e5f7e5; color: #2e7d32; }
+    .pb-mrounds::before      { background: #2e7d32; }
+
+    /* ============================================================
+       CONTEXT FILTER BAR  — CWP DS 2026 "Quick filter Count" style
+    ============================================================ */
+    .context-filter-bar {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 56px;          /* taller to give floating labels breathing room */
+      flex-shrink: 0;
+    }
+
+    /* Floating-label outlined filter control */
+    .cfilter-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    /* The trigger button — mimics an outlined input field (DS 2026 Quick filter) */
+    .cfilter-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      min-width: 140px;
+      max-width: 212px;
+      padding: 9px 12px;
+      border: 1px solid #e2e4e9;        /* --color/border/default */
+      border-radius: 8px;
+      background: #fff;
+      font-family: var(--font-roboto);
+      font-size: 12px;
+      font-weight: 400;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+    }
+    /* Default hover */
+    .cfilter-btn:hover:not(.open):not(.active) { border-color: #b0b4c4; }
+
+    /* Active state — dropdown is open  →  blue border (DS: primary-500 #3d5afe) */
+    .cfilter-btn.open {
+      border-color: #3d5afe;
+      box-shadow: 0 0 0 3px rgba(61,90,254,0.10);
+    }
+
+    /* Filled state — value selected, border stays default */
+    .cfilter-btn.active:not(.open) { border-color: #e2e4e9; }
+
+    /* ── Floating label ──────────────────────────────────────────
+       Default  → hidden (filter name shown as placeholder inside)
+       Filled   → visible, color #525560 (--color/text/secondary)
+       Active   → visible, color #3d5afe (--color/alpha/primary-500)
+    ───────────────────────────────────────────────────────────── */
+    .cfilter-floating-label {
+      display: none;
+      position: absolute;
+      top: -8px;
+      left: 8px;
+      padding: 0 4px;
+      background: #fff;
+      font-family: var(--font-roboto);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      line-height: 14px;
+      pointer-events: none;
+      white-space: nowrap;
+      max-width: 140px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* Filled — show label in secondary text color */
+    .cfilter-btn.active .cfilter-floating-label {
+      display: block;
+      color: #525560;         /* --color/text/secondary */
+    }
+    /* Open — override to blue regardless of filled/empty */
+    .cfilter-btn.open .cfilter-floating-label {
+      display: block;
+      color: #3d5afe;         /* --color/alpha/primary-500 */
+    }
+
+    /* ── Value / placeholder text ────────────────────────────────
+       Default  → filter name as gray placeholder (#8f93a3)
+       Filled   → selected value in dark (#2a2b30)
+       Active   → same as filled (or empty placeholder if none)
+    ───────────────────────────────────────────────────────────── */
+    .cfilter-btn-value {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: left;
+      font-family: var(--font-roboto);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #8f93a3;           /* placeholder — default */
+    }
+    .cfilter-btn.active .cfilter-btn-value { color: #2a2b30; }  /* filled */
+    .cfilter-btn.open:not(.active) .cfilter-btn-value { color: #8f93a3; } /* open, nothing selected */
+    .cfilter-btn.open.active .cfilter-btn-value { color: #2a2b30; }       /* open, value selected */
+
+    /* ── Chevron ────────────────────────────────────────────────
+       Default  → muted (#8f93a3)
+       Filled   → secondary (#525560)
+       Active   → secondary (#525560), rotated 180°
+    ───────────────────────────────────────────────────────────── */
+    .cfilter-chevron {
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+      color: #8f93a3;
+      transition: transform 0.18s, color 0.15s;
+    }
+    .cfilter-btn.active .cfilter-chevron { color: #525560; }
+    .cfilter-btn.open   .cfilter-chevron { color: #525560; transform: rotate(180deg); }
+
+    /* Dropdown panel */
+    .cfilter-dropdown {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      min-width: 200px;
+      background: #fff;
+      border: 1px solid #e2e4e9;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.11);
+      z-index: 800;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .cfilter-dropdown.open { display: flex; }
+
+    .cfilter-dropdown-header {
+      padding: 10px 12px 6px;
+      border-bottom: 1px solid #e2e4e9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cfilter-dropdown-title {
+      font-family: var(--font-inter);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .cfilter-dropdown-clear {
+      font-family: var(--font-inter);
+      font-size: 11px;
+      color: var(--link);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .cfilter-dropdown-clear:hover { text-decoration: underline; }
+
+    .cfilter-dropdown-list {
+      padding: 6px 0;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .cfilter-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      cursor: pointer;
+      font-family: var(--font-roboto);
+      font-size: 12px;
+      color: #2a2b30;
+      transition: background 0.1s;
+      user-select: none;
+    }
+    .cfilter-option:hover { background: #f5f5f8; }
+    .cfilter-option.selected { background: var(--primary-100); color: #2b40b4; font-weight: 500; }
+
+    .cfilter-option-check {
+      width: 14px; height: 14px;
+      border: 1.5px solid #c8cad4;
+      border-radius: 3px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.12s, border-color 0.12s;
+    }
+    .cfilter-option.selected .cfilter-option-check {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    .cfilter-option.selected .cfilter-option-check::after {
+      content: '';
+      width: 8px; height: 4px;
+      border-left: 1.5px solid #fff;
+      border-bottom: 1.5px solid #fff;
+      transform: rotate(-45deg) translate(0.5px, -1px);
+    }
+
+
+    /* Clear all */
+    .cfilter-clear-all {
+      margin-left: auto;
+      display: none;
+      align-items: center;
+      gap: 4px;
+      height: 28px;
+      padding: 0 10px;
+      background: none;
+      border: 1px solid #e2e4e9;
+      border-radius: 6px;
+      font-family: var(--font-roboto);
+      font-size: 11px;
+      color: var(--text-gray);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .cfilter-clear-all:hover { border-color: #b0b4c4; color: var(--text-dark); }
+    .cfilter-clear-all.visible { display: inline-flex; }
 
     .agent-card-name {
       font-family: var(--font-inter);
@@ -2574,7 +2965,7 @@
     @media (max-width: 768px) {
       .sidebar { display: none; }
       .agent-list-panel { width: 220px; }
-      .topbar-title { font-size: 17px; }
+      .topbar-title { font-size: 16px; }
       .agent-cards-grid { grid-template-columns: 1fr; }
     }
 
@@ -3831,7 +4222,191 @@
     }
     .btn-rollback-confirm:hover { background: #a51515; }
     .btn-rollback-confirm:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ============================================================
+       DASHBOARD WIDGET GRID
+    ============================================================ */
+    .dash-widget-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .dash-widget {
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid var(--border-card);
+      box-shadow: var(--shadow-card);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: opacity 0.18s, box-shadow 0.18s, outline 0.1s;
+      will-change: transform;
+    }
+    /* ── Drag & Drop ── */
+    .drag-handle { display: none; }
+    /* Grab cursor on widget header to signal draggability */
+    .widget-header { cursor: grab; }
+    .widget-header:active { cursor: grabbing; }
+    /* Reset cursor for interactive children */
+    .widget-header button,
+    .widget-header a,
+    .widget-header .widget-toggle { cursor: pointer; }
+    /* Drag tooltip — appears on prolonged hover over header */
+    .dash-widget { position: relative; }
+    .dash-widget::after {
+      content: 'Drag to reorder';
+      position: absolute;
+      bottom: calc(100% + 7px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1b1b3c;
+      color: #fff;
+      font-size: 11px;
+      font-family: var(--font-inter);
+      font-weight: 400;
+      padding: 4px 9px;
+      border-radius: 5px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.12s;
+      transition-delay: 0s;
+      z-index: 250;
+    }
+    .dash-widget:hover::after {
+      opacity: 1;
+      transition-delay: 0.65s;
+    }
+    .dash-widget.dnd-dragging {
+      opacity: 0.28;
+      box-shadow: none;
+    }
+    .dash-widget.dnd-over {
+      outline: 2px dashed #3d5afe;
+      outline-offset: -2px;
+      box-shadow: 0 0 0 4px rgba(61,90,254,0.08);
+    }
+    .dash-widget-grid.dnd-active .dash-widget:not(.dnd-dragging):not(.dnd-over) {
+      opacity: 0.72;
+    }
+    .widget-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-shrink: 0;
+      gap: 8px;
+    }
+    .widget-title {
+      font-family: var(--font-inter);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dark2);
+      letter-spacing: 0.1px;
+    }
+    .widget-subtitle {
+      font-family: var(--font-inter);
+      font-size: 10px;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+    .widget-chart { min-height: 200px; }
+    .widget-toggle {
+      display: flex;
+      gap: 2px;
+      background: #f0f0f5;
+      border-radius: 6px;
+      padding: 2px;
+      flex-shrink: 0;
+    }
+    /* Widget action buttons (download + more) */
+    .widget-actions {
+      display: flex;
+      align-items: center;
+      gap: 1px;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+    .widget-action-wrap { position: relative; }
+    .widget-action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border: none;
+      background: transparent;
+      border-radius: 5px;
+      cursor: pointer;
+      color: #525560;
+      padding: 0;
+      transition: background 0.12s, color 0.12s;
+    }
+    .widget-action-btn:hover { background: #f0f0f5; color: #3d5afe; }
+    .widget-action-menu {
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      z-index: 300;
+      background: #fff;
+      border: 1px solid #e2e4e9;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.12);
+      min-width: 130px;
+      padding: 4px 0;
+      display: none;
+      flex-direction: column;
+    }
+    .widget-action-menu.open { display: flex; }
+    .wam-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-family: var(--font-inter);
+      color: #1b1b3c;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      white-space: nowrap;
+      width: 100%;
+    }
+    .wam-item:hover { background: #f5f5fb; }
+    .wtgl-btn {
+      font-size: 10px;
+      font-family: var(--font-inter);
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--text-gray);
+      transition: background 0.15s, color 0.15s;
+      border: none;
+      background: transparent;
+    }
+    .wtgl-btn.active { background: white; color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.09); }
+    /* KPI widget */
+    .kpi-body { display: flex; flex-direction: column; flex: 1; gap: 8px; }
+    .kpi-main { display: flex; align-items: baseline; gap: 10px; }
+    .kpi-val  { font-family: var(--font-inter); font-size: 30px; font-weight: 700; line-height: 1; color: var(--text-dark3); }
+    .kpi-unit { font-size: 13px; font-weight: 600; color: var(--text-gray); }
+    .kpi-badge-up   { font-size: 10px; font-weight: 600; color: #2e7d32; background: #e5f7e5; padding: 2px 8px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
+    .kpi-badge-down { font-size: 10px; font-weight: 600; color: #c62828; background: #fce8e8; padding: 2px 8px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
+    .kpi-badge-warn { font-size: 10px; font-weight: 600; color: #b26600; background: #fff3e0; padding: 2px 8px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
+    .kpi-desc { font-family: var(--font-inter); font-size: 11px; color: var(--text-gray); }
+    .kpi-sparkline  { height: 64px; width: 100%; }
+    /* Agent version table */
+    .avt-table { width: 100%; border-collapse: collapse; font-family: var(--font-inter); font-size: 11px; }
+    .avt-table th { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light); padding: 5px 8px; text-align: left; border-bottom: 1px solid var(--border); background: #fafafa; }
+    .avt-table td { padding: 7px 8px; border-bottom: 1px solid #f5f5f7; color: var(--text-medium); vertical-align: middle; }
+    .avt-table tr:last-child td { border-bottom: none; }
+    .avt-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 5px; vertical-align: middle; }
   </style>
+  <script src="vendor/highcharts.js"></script>
+  <script src="vendor/highcharts-more.js"></script>
+  <script src="vendor/solid-gauge.js"></script>
 </head>
 <body>
 
@@ -3926,12 +4501,18 @@
         </div></div>
       </div>
 
-      <!-- WorkSmart AI (top-level, no sub-menu) -->
+      <!-- WorkSmart AI (expandable with sub-modules) -->
       <div>
-        <div class="nav-item active" id="nav-worksmart" tabindex="0" role="button" aria-label="WorkSmart AI">
+        <div class="nav-item active" id="nav-worksmart" tabindex="0" role="button" aria-label="WorkSmart AI" aria-expanded="true" aria-controls="ws-sub" onclick="toggleWorksmartNav(this)">
           <div class="nav-icon active"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1L8.6 4.4H12.2L9.4 6.4L10.5 10L7 7.8L3.5 10L4.6 6.4L1.8 4.4H5.4L7 1Z" fill="#5252d4"/></svg></div>
           <span class="nav-label active">WorkSmart AI</span>
+          <span class="nav-chevron rotated" id="ws-chev" aria-hidden="true">›</span>
         </div>
+        <div class="collapsible open" id="ws-sub"><div class="nav-sub">
+          <div class="nav-sub-item active" tabindex="0" role="button" id="ws-sub-dashboard" onclick="switchWorksmartModule('dashboard', this)"><div class="nav-sub-divider"></div><span class="nav-sub-label active">Dashboard</span></div>
+          <div class="nav-sub-item" tabindex="0" role="button" id="ws-sub-my-agents" onclick="switchWorksmartModule('my-agents', this)"><div class="nav-sub-divider"></div><span class="nav-sub-label">My Agents</span></div>
+          <div class="nav-sub-item" tabindex="0" role="button" id="ws-sub-settings" onclick="switchWorksmartModule('settings', this)"><div class="nav-sub-divider"></div><span class="nav-sub-label">Settings</span></div>
+        </div></div>
       </div>
 
       <!-- Forms -->
@@ -4023,27 +4604,33 @@
 
     <!-- Topbar -->
     <header class="topbar">
-      <div>
-        <div class="topbar-title">WorkSmart AI</div>
+      <div class="topbar-left">
+        <div class="topbar-title" id="topbar-module-title">Dashboard</div>
+        <nav class="topbar-breadcrumb" aria-label="Breadcrumb">
+          <span class="topbar-breadcrumb-item">WorkSmart AI</span>
+          <span class="topbar-breadcrumb-sep" aria-hidden="true">
+            <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M2.5 1.5l3 2.5-3 2.5" stroke="#525560" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="topbar-breadcrumb-item" id="topbar-breadcrumb-sub">Dashboard</span>
+        </nav>
       </div>
       <div class="topbar-right">
-        <button class="app-grid-icon" aria-label="App switcher" onclick="showInfoToast('App switcher')">
-          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-            <rect x="2" y="2" width="10" height="10" rx="2" fill="#d0d0d8"/>
-            <rect x="14" y="2" width="10" height="10" rx="2" fill="#d0d0d8"/>
-            <rect x="2" y="14" width="10" height="10" rx="2" fill="#d0d0d8"/>
-            <rect x="14" y="14" width="10" height="10" rx="2" fill="#5252d4"/>
+        <button class="topbar-notif-btn" aria-label="Notifications" onclick="showInfoToast('Notifications')">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 1.5A4.5 4.5 0 0 0 3.5 6v2.5l-1 1.5h11l-1-1.5V6A4.5 4.5 0 0 0 8 1.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M6.5 12.5a1.5 1.5 0 0 0 3 0" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
           </svg>
         </button>
         <div class="topbar-user" role="button" tabindex="0" aria-label="User menu">
           <div class="user-avatar" aria-hidden="true">
-            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
-              <circle cx="15" cy="11" r="6" fill="rgba(255,255,255,0.7)"/>
-              <ellipse cx="15" cy="26" rx="10" ry="7" fill="rgba(255,255,255,0.7)"/>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="9" r="4.5" fill="rgba(255,255,255,0.75)"/>
+              <ellipse cx="12" cy="21" rx="7.5" ry="5" fill="rgba(255,255,255,0.75)"/>
             </svg>
           </div>
+          <div class="topbar-user-divider" aria-hidden="true"></div>
           <div class="topbar-wordmark">
-            <svg width="20" height="20" viewBox="0 0 33.196 32" fill="none" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 33.196 32" fill="none" aria-hidden="true">
               <path d="M 0.083 9.562 L 16.670 0 L 32.999 9.390 L 29.108 11.763 L 16.753 4.401 L 0 13.791 Z" fill="#212C58"/>
               <path d="M 0.083 17.090 L 16.670 7.531 L 26.398 13.285 L 22.507 15.399 L 16.753 11.932 L 0 21.322 Z" fill="#212C58"/>
               <path d="M 33.113 22.634 L 16.863 32 L 0.861 22.799 L 4.676 20.478 L 16.780 27.689 L 33.196 18.488 Z" fill="#212C58"/>
@@ -4055,13 +4642,144 @@
       </div>
     </header>
 
-    <!-- Toolbar -->
-    <!-- Main Tab Bar -->
-    <div class="tab-bar" role="tablist" aria-label="AI Studio sections">
-      <div class="tab" role="tab" tabindex="0" aria-selected="false" data-tab="dashboard" onclick="switchMainTab(this)">Dashboard</div>
-      <div class="tab active" role="tab" tabindex="0" aria-selected="true" data-tab="my-agents" onclick="switchMainTab(this)">My Agents</div>
-      <div class="tab" role="tab" tabindex="0" aria-selected="false" data-tab="templates" onclick="switchMainTab(this)">Templates</div>
-      <div class="tab" role="tab" tabindex="0" aria-selected="false" data-tab="settings" onclick="switchMainTab(this)">Settings</div>
+    <!-- Context Filter Bar — CWP DS 2026 "Quick filter Count" -->
+    <div class="context-filter-bar" role="toolbar" aria-label="Context filters" id="context-filter-bar">
+
+      <!-- Product -->
+      <div class="cfilter-wrap">
+        <button class="cfilter-btn" id="cfilter-product" aria-haspopup="listbox" aria-expanded="false"
+                onclick="toggleCFilter('product', event)" aria-label="Filter by Product">
+          <span class="cfilter-floating-label">Product</span>
+          <span class="cfilter-btn-value" id="cfilter-product-val">Product</span>
+          <svg class="cfilter-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="cfilter-dropdown" id="cfilter-product-drop" role="listbox">
+          <div class="cfilter-dropdown-header">
+            <span class="cfilter-dropdown-title">Product</span>
+            <button class="cfilter-dropdown-clear" onclick="clearCFilter('product')">Clear</button>
+          </div>
+          <div class="cfilter-dropdown-list">
+            <div class="cfilter-option" role="option" onclick="selectCFilter('product','iMaintenance',this)"><span class="cfilter-option-check"></span>iMaintenance</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('product','iPermits',this)"><span class="cfilter-option-check"></span>iPermits</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('product','mRounds',this)"><span class="cfilter-option-check"></span>mRounds</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agent -->
+      <div class="cfilter-wrap">
+        <button class="cfilter-btn" id="cfilter-agent" aria-haspopup="listbox" aria-expanded="false"
+                onclick="toggleCFilter('agent', event)" aria-label="Filter by Agent">
+          <span class="cfilter-floating-label">Agent</span>
+          <span class="cfilter-btn-value" id="cfilter-agent-val">Agent</span>
+          <svg class="cfilter-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="cfilter-dropdown" id="cfilter-agent-drop" role="listbox">
+          <div class="cfilter-dropdown-header">
+            <span class="cfilter-dropdown-title">Agent</span>
+            <button class="cfilter-dropdown-clear" onclick="clearCFilter('agent')">Clear</button>
+          </div>
+          <div class="cfilter-dropdown-list">
+            <div class="cfilter-option" role="option" onclick="selectCFilter('agent','Troubleshooting',this)"><span class="cfilter-option-check"></span>Troubleshooting</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('agent','Assist',this)"><span class="cfilter-option-check"></span>Assist</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('agent','5 Whys (RCA)',this)"><span class="cfilter-option-check"></span>5 Whys (RCA)</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('agent','Plan',this)"><span class="cfilter-option-check"></span>Plan</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('agent','Detect',this)"><span class="cfilter-option-check"></span>Detect</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('agent','Forms',this)"><span class="cfilter-option-check"></span>Forms</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('agent','Recommendation',this)"><span class="cfilter-option-check"></span>Recommendation</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('agent','DWI',this)"><span class="cfilter-option-check"></span>DWI</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('agent','Autofill',this)"><span class="cfilter-option-check"></span>Autofill</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('agent','PPE',this)"><span class="cfilter-option-check"></span>PPE</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('agent','Permits Autofill',this)"><span class="cfilter-option-check"></span>Permits Autofill</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('agent','Permits Authoring',this)"><span class="cfilter-option-check"></span>Permits Authoring</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date / Time Range -->
+      <div class="cfilter-wrap">
+        <button class="cfilter-btn" id="cfilter-date" aria-haspopup="dialog" aria-expanded="false"
+                onclick="toggleCFilter('date', event)" aria-label="Filter by Date / Time Range" style="min-width:168px">
+          <span class="cfilter-floating-label">Date / Time Range</span>
+          <span class="cfilter-btn-value" id="cfilter-date-val">Date / Time Range</span>
+          <svg class="cfilter-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="cfilter-dropdown" id="cfilter-date-drop" role="listbox" aria-label="Date range options">
+          <div class="cfilter-dropdown-header">
+            <span class="cfilter-dropdown-title">Date / Time Range</span>
+            <button class="cfilter-dropdown-clear" onclick="clearCFilter('date')">Clear</button>
+          </div>
+          <div class="cfilter-dropdown-list">
+            <div class="cfilter-option" role="option" id="cfilter-date-opt-1w"  onclick="selectDatePreset('Last 1 Week', this)"><span class="cfilter-option-check"></span>Last 1 Week</div>
+            <div class="cfilter-option" role="option" id="cfilter-date-opt-10d" onclick="selectDatePreset('Last 10 Days', this)"><span class="cfilter-option-check"></span>Last 10 Days</div>
+            <div class="cfilter-option" role="option" id="cfilter-date-opt-30d" onclick="selectDatePreset('Last 30 Days', this)"><span class="cfilter-option-check"></span>Last 30 Days</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Role -->
+      <div class="cfilter-wrap">
+        <button class="cfilter-btn" id="cfilter-role" aria-haspopup="listbox" aria-expanded="false"
+                onclick="toggleCFilter('role', event)" aria-label="Filter by User Role">
+          <span class="cfilter-floating-label">User Role</span>
+          <span class="cfilter-btn-value" id="cfilter-role-val">User Role</span>
+          <svg class="cfilter-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="cfilter-dropdown" id="cfilter-role-drop" role="listbox">
+          <div class="cfilter-dropdown-header">
+            <span class="cfilter-dropdown-title">User Role</span>
+            <button class="cfilter-dropdown-clear" onclick="clearCFilter('role')">Clear</button>
+          </div>
+          <div class="cfilter-dropdown-list">
+            <div class="cfilter-option" role="option" onclick="selectCFilter('role','Admin',this)"><span class="cfilter-option-check"></span>Admin</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('role','Technician',this)"><span class="cfilter-option-check"></span>Technician</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('role','Supervisor',this)"><span class="cfilter-option-check"></span>Supervisor</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('role','Planner',this)"><span class="cfilter-option-check"></span>Planner</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('role','Viewer',this)"><span class="cfilter-option-check"></span>Viewer</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Version -->
+      <div class="cfilter-wrap">
+        <button class="cfilter-btn" id="cfilter-version" aria-haspopup="listbox" aria-expanded="false"
+                onclick="toggleCFilter('version', event)" aria-label="Filter by Version">
+          <span class="cfilter-floating-label">Version</span>
+          <span class="cfilter-btn-value" id="cfilter-version-val">Version</span>
+          <svg class="cfilter-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="cfilter-dropdown" id="cfilter-version-drop" role="listbox">
+          <div class="cfilter-dropdown-header">
+            <span class="cfilter-dropdown-title">Version</span>
+            <button class="cfilter-dropdown-clear" onclick="clearCFilter('version')">Clear</button>
+          </div>
+          <div class="cfilter-dropdown-list">
+            <div class="cfilter-option" role="option" onclick="selectCFilter('version','v2.2.1',this)"><span class="cfilter-option-check"></span>v2.2.1</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('version','v2.2.0',this)"><span class="cfilter-option-check"></span>v2.2.0</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('version','v2.1.0',this)"><span class="cfilter-option-check"></span>v2.1.0</div>
+            <div class="cfilter-option" role="option" onclick="selectCFilter('version','v2.0.0',this)"><span class="cfilter-option-check"></span>v2.0.0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clear All -->
+      <button class="cfilter-clear-all" id="cfilter-clear-all" onclick="clearAllCFilters()" aria-label="Clear all filters">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+          <path d="M2 2l7 7M9 2l-7 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        Clear all
+      </button>
+
     </div>
 
     <!-- Content Area -->
@@ -4070,493 +4788,426 @@
       <!-- ============================================================
            PANE A: DASHBOARD
       ============================================================ -->
-      <div id="pane-dashboard" class="main-pane" role="tabpanel" aria-label="Dashboard">
+      <div id="pane-dashboard" class="main-pane active" role="tabpanel" aria-label="Dashboard">
+
+        <!-- Dashboard Sub-Tabs -->
+        <nav class="dash-tab-bar" role="tablist" aria-label="Dashboard sections">
+          <button class="dash-tab active" role="tab" aria-selected="true"  data-dtab="adoption"    onclick="switchDashTab(this)">Adoption &amp; Usage</button>
+          <button class="dash-tab"        role="tab" aria-selected="false" data-dtab="performance"  onclick="switchDashTab(this)">Performance &amp; Efficiency</button>
+          <button class="dash-tab"        role="tab" aria-selected="false" data-dtab="business"     onclick="switchDashTab(this)">Business Impact</button>
+          <button class="dash-tab"        role="tab" aria-selected="false" data-dtab="quality"      onclick="switchDashTab(this)">Quality &amp; Reliability</button>
+          <button class="dash-tab"        role="tab" aria-selected="false" data-dtab="cost"         onclick="switchDashTab(this)">Cost &amp; Resource</button>
+          <button class="dash-tab"        role="tab" aria-selected="false" data-dtab="lifecycle"    onclick="switchDashTab(this)">Lifecycle &amp; Operations</button>
+          <button class="dash-tab"        role="tab" aria-selected="false" data-dtab="governance"   onclick="switchDashTab(this)">Governance &amp; Compliance</button>
+        </nav>
+
+        <!-- Tab pane: Adoption & Usage -->
+        <div id="dtab-pane-adoption" class="dash-tab-pane active">
         <div class="dash-content">
           <div class="dash-header">
-            <span class="dash-title">Agent Performance Overview</span>
-            <div class="filter-btn-wrap">
-              <button class="filter-btn" aria-haspopup="listbox" aria-expanded="false" id="btn-date-filter" onclick="toggleDateFilter(event)">
-                <span id="date-filter-label">Last 30 days</span>
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                  <path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-              <div class="date-filter-dropdown" id="date-filter-dropdown" role="listbox" aria-label="Select date range">
-                <button class="dfd-item" role="option" onclick="selectDateFilter('Last 7 days', this)">Last 7 days</button>
-                <button class="dfd-item active" role="option" aria-selected="true" onclick="selectDateFilter('Last 30 days', this)">Last 30 days</button>
-                <button class="dfd-item" role="option" onclick="selectDateFilter('Last 3 months', this)">Last 3 months</button>
-                <button class="dfd-item" role="option" onclick="selectDateFilter('Last 6 months', this)">Last 6 months</button>
-                <button class="dfd-item" role="option" onclick="selectDateFilter('Last 12 months', this)">Last 12 months</button>
-              </div>
-            </div>
+            <span class="dash-title">Adoption &amp; Usage</span>
           </div>
 
-          <!-- Business Impact KPIs -->
-          <div class="impact-section">
-            <div class="impact-section-hdr">
-              <span class="impact-section-title">Business Impact</span>
-              <span class="impact-section-note">Click a card to see agent-level breakdown</span>
+          <div class="dash-widget-grid">
+
+            <!-- 1. Active Agents % -->
+            <div class="dash-widget">
+              <div class="widget-header">
+                <div><div class="widget-title">Active Agents %</div><div class="widget-subtitle">Agents with sessions vs total agents (12)</div></div>
+              </div>
+              <div class="widget-chart" id="hc-active-agents"></div>
             </div>
-            <div class="impact-kpi-grid" role="list" aria-label="Business impact metrics">
 
-              <!-- Repair Time Reduction -->
-              <div class="impact-kpi-card" role="listitem" tabindex="0"
-                   onclick="openKpiDrilldown('repair-time')"
-                   onkeydown="if(event.key==='Enter')openKpiDrilldown('repair-time')"
-                   aria-label="Repair Time Reduction — click for agent breakdown">
-                <div class="ikc-accent" style="background:#3d5afe"></div>
-                <div class="ikc-body">
-                  <div class="ikc-label">Repair Time Reduction</div>
-                  <div class="ikc-value">28%</div>
-                  <div class="ikc-trend">↓ Avg time: 4.2h → 3.0h</div>
-                  <div class="ikc-footer">
-                    <div class="ikc-agents">
-                      <div class="ikc-pip" style="background:#3d5afe">TR</div>
-                      <div class="ikc-pip" style="background:#2e7d32">AS</div>
-                      <div class="ikc-pip" style="background:#1565c0">IR</div>
-                    </div>
-                    <span class="ikc-drill-hint">3 agents ›</span>
-                  </div>
+            <!-- 2. Execution Volume -->
+            <div class="dash-widget">
+              <div class="widget-header">
+                <div><div class="widget-title">Execution Volume</div><div class="widget-subtitle">Session volume by group</div></div>
+                <div class="widget-toggle">
+                  <button class="wtgl-btn active" onclick="switchExecVol('product',this)">Product</button>
+                  <button class="wtgl-btn" onclick="switchExecVol('agent',this)">Agent</button>
                 </div>
               </div>
-
-              <!-- First-Time Fix Rate -->
-              <div class="impact-kpi-card" role="listitem" tabindex="0"
-                   onclick="openKpiDrilldown('first-time-fix')"
-                   onkeydown="if(event.key==='Enter')openKpiDrilldown('first-time-fix')"
-                   aria-label="First-Time Fix Rate — click for agent breakdown">
-                <div class="ikc-accent" style="background:#2e7d32"></div>
-                <div class="ikc-body">
-                  <div class="ikc-label">First-Time Fix Rate</div>
-                  <div class="ikc-value">87%</div>
-                  <div class="ikc-trend">↑ +11% vs 3 months ago</div>
-                  <div class="ikc-footer">
-                    <div class="ikc-agents">
-                      <div class="ikc-pip" style="background:#3d5afe">TR</div>
-                      <div class="ikc-pip" style="background:#2e7d32">AS</div>
-                      <div class="ikc-pip" style="background:#1565c0">IR</div>
-                    </div>
-                    <span class="ikc-drill-hint">3 agents ›</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Technician Productivity -->
-              <div class="impact-kpi-card" role="listitem" tabindex="0"
-                   onclick="openKpiDrilldown('productivity')"
-                   onkeydown="if(event.key==='Enter')openKpiDrilldown('productivity')"
-                   aria-label="Technician Productivity — click for agent breakdown">
-                <div class="ikc-accent" style="background:#f59e0b"></div>
-                <div class="ikc-body">
-                  <div class="ikc-label">Technician Productivity</div>
-                  <div class="ikc-value">+34%</div>
-                  <div class="ikc-trend">↑ Tasks per shift increased</div>
-                  <div class="ikc-footer">
-                    <div class="ikc-agents">
-                      <div class="ikc-pip" style="background:#7c3aed">WC</div>
-                      <div class="ikc-pip" style="background:#2e7d32">AS</div>
-                      <div class="ikc-pip" style="background:#3d5afe">TR</div>
-                    </div>
-                    <span class="ikc-drill-hint">3 agents ›</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Downtime Reduction -->
-              <div class="impact-kpi-card" role="listitem" tabindex="0"
-                   onclick="openKpiDrilldown('downtime')"
-                   onkeydown="if(event.key==='Enter')openKpiDrilldown('downtime')"
-                   aria-label="Downtime Reduction — click for agent breakdown">
-                <div class="ikc-accent" style="background:#c62828"></div>
-                <div class="ikc-body">
-                  <div class="ikc-label">Downtime Reduction</div>
-                  <div class="ikc-value">41%</div>
-                  <div class="ikc-trend">↓ Unplanned downtime cut</div>
-                  <div class="ikc-footer">
-                    <div class="ikc-agents">
-                      <div class="ikc-pip" style="background:#3d5afe">TR</div>
-                      <div class="ikc-pip" style="background:#f59e0b">RC</div>
-                      <div class="ikc-pip" style="background:#7c3aed">WC</div>
-                    </div>
-                    <span class="ikc-drill-hint">3 agents ›</span>
-                  </div>
-                </div>
-              </div>
-
+              <div class="widget-chart" id="hc-exec-vol"></div>
             </div>
-          </div>
 
-          <!-- Row 2: Skill Gap + Decision Velocity (above separator) -->
-          <div class="dash-insights-row">
-
-            <!-- Skill Gap Reduction Chart -->
-            <div class="dash-card skill-gap-card">
-              <div class="sgc-header">
-                <div>
-                  <div class="sgc-title">Skill Gap Reduction with AI</div>
-                  <div class="sgc-sub">Task success rate by technician experience level</div>
-                </div>
-                <div class="sgc-insight-chip" aria-label="AI reduced skill gap by 35%">
-                  <svg width="10" height="10" viewBox="0 0 11 11" fill="none" aria-hidden="true">
-                    <path d="M5.5 1v9M2 4.5l3.5 5.5 3.5-5.5" stroke="#3d5afe" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  Gap ↓<strong>35%</strong>
-                </div>
+            <!-- 3. Active Users (KPI) -->
+            <div class="dash-widget">
+              <div class="widget-header">
+                <div><div class="widget-title">Active Users</div><div class="widget-subtitle">Unique users interacting with agents</div></div>
+                <span class="kpi-badge-up">↑ +8 WoW</span>
               </div>
-              <div class="sgc-chart-wrap">
-                <svg viewBox="0 0 520 185" width="100%" aria-label="Dual-line chart: task success rate with and without AI">
-                  <line x1="72" y1="18"  x2="460" y2="18"  stroke="#f0f0f0" stroke-width="1"/>
-                  <line x1="72" y1="54"  x2="460" y2="54"  stroke="#f0f0f0" stroke-width="1"/>
-                  <line x1="72" y1="90"  x2="460" y2="90"  stroke="#f0f0f0" stroke-width="1"/>
-                  <line x1="72" y1="126" x2="460" y2="126" stroke="#f0f0f0" stroke-width="1"/>
-                  <line x1="72" y1="154" x2="460" y2="154" stroke="#e4e4e4" stroke-width="1"/>
-                  <text x="66" y="22"  text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="#aaa">100%</text>
-                  <text x="66" y="58"  text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="#aaa">75%</text>
-                  <text x="66" y="94"  text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="#aaa">50%</text>
-                  <text x="66" y="130" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="#aaa">25%</text>
-                  <path class="sgc-gap-fill" d="M 138,112 Q 266,62 394,34 L 394,22 Q 266,55 138,71 Z" fill="#3d5afe" opacity="0.12"/>
-                  <line x1="120" y1="71" x2="120" y2="112" stroke="#3d5afe" stroke-width="1.2" stroke-dasharray="2.5,2"/>
-                  <line x1="116" y1="71"  x2="124" y2="71"  stroke="#3d5afe" stroke-width="1.2"/>
-                  <line x1="116" y1="112" x2="124" y2="112" stroke="#3d5afe" stroke-width="1.2"/>
-                  <text x="108" y="93" text-anchor="middle" font-family="Inter,sans-serif" font-size="8.5" fill="#3d5afe" font-weight="600">26pt</text>
-                  <line x1="408" y1="22" x2="408" y2="34" stroke="#9e9e9e" stroke-width="1" stroke-dasharray="2,2"/>
-                  <line x1="404" y1="22" x2="412" y2="22" stroke="#9e9e9e" stroke-width="1"/>
-                  <line x1="404" y1="34" x2="412" y2="34" stroke="#9e9e9e" stroke-width="1"/>
-                  <text x="420" y="30" text-anchor="start" font-family="Inter,sans-serif" font-size="8" fill="#9e9e9e">6pt</text>
-                  <path d="M 138,112 Q 266,62 394,34" fill="none" stroke="#c4c4c4" stroke-width="2" stroke-dasharray="5,4" stroke-linecap="round"/>
-                  <path d="M 138,71 Q 266,55 394,22" fill="none" stroke="#3d5afe" stroke-width="2.5" stroke-linecap="round"/>
-                  <circle class="sgc-dot" cx="138" cy="112" r="4" fill="white" stroke="#c4c4c4" stroke-width="2"><title>Junior — Without AI: 38%</title></circle>
-                  <circle class="sgc-dot" cx="266" cy="65"  r="4" fill="white" stroke="#c4c4c4" stroke-width="2"><title>Mid — Without AI: 68%</title></circle>
-                  <circle class="sgc-dot" cx="394" cy="34"  r="4" fill="white" stroke="#c4c4c4" stroke-width="2"><title>Expert — Without AI: 90%</title></circle>
-                  <text x="138" y="128" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" fill="#9e9e9e" font-weight="600">38%</text>
-                  <text x="266" y="80"  text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" fill="#9e9e9e" font-weight="600">68%</text>
-                  <text x="394" y="49"  text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" fill="#9e9e9e" font-weight="600">90%</text>
-                  <circle class="sgc-dot" cx="138" cy="71" r="4.5" fill="#3d5afe"><title>Junior — With AI: 64%</title></circle>
-                  <circle class="sgc-dot" cx="266" cy="52" r="4.5" fill="#3d5afe"><title>Mid — With AI: 78%</title></circle>
-                  <circle class="sgc-dot" cx="394" cy="22" r="4.5" fill="#3d5afe"><title>Expert — With AI: 98%</title></circle>
-                  <text x="138" y="60"  text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" fill="#3d5afe" font-weight="700">64%</text>
-                  <text x="266" y="41"  text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" fill="#3d5afe" font-weight="700">78%</text>
-                  <text x="394" y="12"  text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" fill="#3d5afe" font-weight="700">98%</text>
-                  <text x="138" y="170" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#6e6e6e" font-weight="500">Junior</text>
-                  <text x="266" y="170" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#6e6e6e" font-weight="500">Mid</text>
-                  <text x="394" y="170" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#6e6e6e" font-weight="500">Expert</text>
-                  <text x="158" y="55" font-family="Inter,sans-serif" font-size="8.5" fill="#3d5afe" opacity="0.7" font-style="italic">Troubleshooting</text>
-                  <text x="276" y="38" font-family="Inter,sans-serif" font-size="8.5" fill="#2e7d32" opacity="0.8" font-style="italic">Assist</text>
-                </svg>
-              </div>
-              <div class="sgc-footer">
-                <div class="sgc-legend">
-                  <div class="sgc-legend-item"><div class="sgc-legend-dash" aria-hidden="true"></div>Without AI</div>
-                  <div class="sgc-legend-item"><div class="sgc-legend-solid" aria-hidden="true"></div>With AI</div>
-                </div>
-                <div class="sgc-agents">
-                  <span class="sgc-agent-tag" style="background:#ecefff;color:#3d5afe">Troubleshooting</span>
-                  <span class="sgc-agent-tag" style="background:#e5f7e5;color:#2e7d33">Assist</span>
-                </div>
+              <div class="kpi-body">
+                <div class="kpi-main"><span class="kpi-val">247</span><span class="kpi-unit">users</span></div>
+                <div class="kpi-desc">89 daily active · 158 weekly active</div>
+                <div class="kpi-sparkline" id="hc-active-users-spark"></div>
               </div>
             </div>
 
-            <!-- Decision Velocity -->
-            <div class="dash-card dv-card">
-              <div class="dv-header">
-                <div>
-                  <div class="dv-title">Decision Velocity</div>
-                  <div class="dv-sub">Time from alert to action — Before AI vs. With AI</div>
-                </div>
-                <div class="dv-insight-chip" aria-label="Time to action reduced by 42%">
-                  ⚡ Time to action reduced by <strong>42%</strong>
-                </div>
+            <!-- 4. Usage Frequency -->
+            <div class="dash-widget">
+              <div class="widget-header">
+                <div><div class="widget-title">Usage Frequency</div><div class="widget-subtitle">Distribution of interactions per user</div></div>
               </div>
-              <div class="dv-stage-hdr-row" aria-hidden="true">
-                <div class="dv-stage-hdr-item" style="flex:5">Alert</div>
-                <div class="dv-stage-hdr-item" style="flex:45">Diagnose</div>
-                <div class="dv-stage-hdr-item" style="flex:30">Approve</div>
-                <div class="dv-stage-hdr-item" style="flex:20">Execute</div>
-              </div>
-              <div class="dv-timeline">
-                <div class="dv-track-row">
-                  <span class="dv-row-label">Before AI</span>
-                  <div class="dv-track" role="img" aria-label="Before AI: Alert 5min, Diagnose 45min, Approve 30min, Execute 20min — ~100min">
-                    <div class="dv-seg" style="flex:5;background:#f59e0b"><span class="dv-seg-inner"></span></div>
-                    <div class="dv-seg" style="flex:45;background:#3d5afe"><span class="dv-seg-inner">Diagnose · 45 min</span></div>
-                    <div class="dv-seg" style="flex:30;background:#7c3aed"><span class="dv-seg-inner">Approve · 30 min</span></div>
-                    <div class="dv-seg" style="flex:20;background:#2e7d32"><span class="dv-seg-inner">Execute</span></div>
-                  </div>
-                  <span class="dv-time-label">~100 min</span>
-                </div>
-                <div class="dv-track-row">
-                  <span class="dv-row-label" style="color:#3d5afe;font-weight:600">With AI</span>
-                  <div class="dv-track" role="img" aria-label="With AI: Diagnose 15min, Approve 10min — ~58min total, 42% faster">
-                    <div class="dv-seg" style="flex:5;background:#f59e0b"><span class="dv-seg-inner"></span></div>
-                    <div class="dv-seg dv-seg-compressed" style="flex:15;background:#3d5afe">
-                      <span class="dv-seg-inner">Diagnose</span>
-                      <div class="dv-compress-badge">↓ 67%</div>
-                    </div>
-                    <div class="dv-seg dv-seg-compressed" style="flex:10;background:#7c3aed">
-                      <span class="dv-seg-inner">Appr.</span>
-                      <div class="dv-compress-badge">↓ 67%</div>
-                    </div>
-                    <div class="dv-seg" style="flex:28;background:#2e7d32"><span class="dv-seg-inner">Execute · 28 min</span></div>
-                    <div class="dv-saved-zone" style="flex:42"><span class="dv-saved-text">42% faster ›</span></div>
-                  </div>
-                  <span class="dv-time-label dv-time-ai">~58 min</span>
-                </div>
-              </div>
-              <div class="dv-agents-row">
-                <span class="dv-agents-label">Contributing agents:</span>
-                <div class="dv-agent-pill">
-                  <div class="dv-agent-dot" style="background:#3d5afe"></div>
-                  <span class="dv-agent-pill-name">Troubleshooting</span>
-                  <span class="dv-agent-pill-impact">→ Diagnose 3× faster</span>
-                </div>
-                <div class="dv-agent-pill">
-                  <div class="dv-agent-dot" style="background:#7c3aed"></div>
-                  <span class="dv-agent-pill-name">Plan</span>
-                  <span class="dv-agent-pill-impact">→ Approvals auto-generated</span>
-                </div>
-                <div class="dv-agent-pill">
-                  <div class="dv-agent-dot" style="background:#2e7d32"></div>
-                  <span class="dv-agent-pill-name">Detect</span>
-                  <span class="dv-agent-pill-impact">→ Context speeds execution</span>
-                </div>
-              </div>
+              <div class="widget-chart" id="hc-usage-freq"></div>
             </div>
 
-          </div><!-- /dash-insights-row -->
-
-          <!-- Separator: Business Impact above / Agent Performance below -->
-          <div class="dash-separator" role="separator" aria-hidden="true"></div>
-
-          <!-- 4 Metric Cards -->
-          <div class="dash-metrics" role="list" aria-label="Performance metrics">
-            <div class="dash-metric-card" role="listitem">
-              <div class="dmc-top">
-                <div class="dmc-dot dot-blue"></div>
-                <span class="dmc-label">Total Sessions</span>
-              </div>
-              <div class="dmc-value">4,821</div>
-              <div class="dmc-trend">↑ +12% vs last month</div>
-            </div>
-            <div class="dash-metric-card" role="listitem">
-              <div class="dmc-top">
-                <div class="dmc-dot dot-green"></div>
-                <span class="dmc-label">Success Rate</span>
-              </div>
-              <div class="dmc-value">94.2%</div>
-              <div class="dmc-trend">↑ +1.4% vs last month</div>
-            </div>
-            <div class="dash-metric-card" role="listitem">
-              <div class="dmc-top">
-                <div class="dmc-dot dot-green"></div>
-                <span class="dmc-label">Avg Response</span>
-              </div>
-              <div class="dmc-value">2.3s</div>
-              <div class="dmc-trend">↓ -0.4s improvement</div>
-            </div>
-            <div class="dash-metric-card" role="listitem">
-              <div class="dmc-top">
-                <div class="dmc-dot dot-amber"></div>
-                <span class="dmc-label">Active Users</span>
-              </div>
-              <div class="dmc-value">89</div>
-              <div class="dmc-trend">↑ +6 this week</div>
-            </div>
-          </div>
-
-          <!-- Chart Row -->
-          <div class="dash-chart-row">
-            <!-- Grouped Bar Chart -->
-            <div class="dash-card">
-              <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
-                <span class="dash-card-title" style="margin-bottom:0">Sessions over Time — Last 7 Days</span>
-              </div>
-              <div class="chart-legend" role="img" aria-label="Legend: Troubleshooting, Assist, 5 Whys (RCA)">
-                <div class="chart-legend-item"><div class="legend-dot" style="background:#3d5afe"></div>Troubleshooting</div>
-                <div class="chart-legend-item"><div class="legend-dot" style="background:#2e7d32"></div>Assist</div>
-                <div class="chart-legend-item"><div class="legend-dot" style="background:#f59e0b"></div>5 Whys (RCA)</div>
-              </div>
-              <div class="grouped-bar-chart" role="img" aria-label="Grouped bar chart showing sessions per agent for Monday through Sunday">
-                <!-- Mon -->
-                <div class="bar-group">
-                  <div class="bar-group-bars">
-                    <div class="bar" style="background:#3d5afe;height:58%"></div>
-                    <div class="bar" style="background:#2e7d32;height:72%"></div>
-                    <div class="bar" style="background:#f59e0b;height:40%"></div>
-                  </div>
-                  <span class="bar-day">Mon</span>
-                </div>
-                <!-- Tue -->
-                <div class="bar-group">
-                  <div class="bar-group-bars">
-                    <div class="bar" style="background:#3d5afe;height:80%"></div>
-                    <div class="bar" style="background:#2e7d32;height:65%"></div>
-                    <div class="bar" style="background:#f59e0b;height:52%"></div>
-                  </div>
-                  <span class="bar-day">Tue</span>
-                </div>
-                <!-- Wed -->
-                <div class="bar-group">
-                  <div class="bar-group-bars">
-                    <div class="bar" style="background:#3d5afe;height:95%"></div>
-                    <div class="bar" style="background:#2e7d32;height:88%"></div>
-                    <div class="bar" style="background:#f59e0b;height:70%"></div>
-                  </div>
-                  <span class="bar-day">Wed</span>
-                </div>
-                <!-- Thu -->
-                <div class="bar-group">
-                  <div class="bar-group-bars">
-                    <div class="bar" style="background:#3d5afe;height:75%"></div>
-                    <div class="bar" style="background:#2e7d32;height:82%"></div>
-                    <div class="bar" style="background:#f59e0b;height:60%"></div>
-                  </div>
-                  <span class="bar-day">Thu</span>
-                </div>
-                <!-- Fri -->
-                <div class="bar-group">
-                  <div class="bar-group-bars">
-                    <div class="bar" style="background:#3d5afe;height:100%"></div>
-                    <div class="bar" style="background:#2e7d32;height:92%"></div>
-                    <div class="bar" style="background:#f59e0b;height:78%"></div>
-                  </div>
-                  <span class="bar-day">Fri</span>
-                </div>
-                <!-- Sat -->
-                <div class="bar-group">
-                  <div class="bar-group-bars">
-                    <div class="bar" style="background:#3d5afe;height:42%"></div>
-                    <div class="bar" style="background:#2e7d32;height:35%"></div>
-                    <div class="bar" style="background:#f59e0b;height:25%"></div>
-                  </div>
-                  <span class="bar-day">Sat</span>
-                </div>
-                <!-- Sun -->
-                <div class="bar-group">
-                  <div class="bar-group-bars">
-                    <div class="bar" style="background:#3d5afe;height:30%"></div>
-                    <div class="bar" style="background:#2e7d32;height:28%"></div>
-                    <div class="bar" style="background:#f59e0b;height:18%"></div>
-                  </div>
-                  <span class="bar-day">Sun</span>
+            <!-- 5. Adoption Trend -->
+            <div class="dash-widget">
+              <div class="widget-header">
+                <div><div class="widget-title">Adoption Trend</div><div class="widget-subtitle">Active user growth with delta indicators</div></div>
+                <div class="widget-toggle">
+                  <button class="wtgl-btn active" onclick="switchAdoptionTrend('wow',this)">WoW</button>
+                  <button class="wtgl-btn" onclick="switchAdoptionTrend('mom',this)">MoM</button>
                 </div>
               </div>
+              <div class="widget-chart" id="hc-adoption-trend"></div>
             </div>
 
-            <!-- Per-Agent Breakdown -->
-            <div class="dash-card">
-              <span class="dash-card-title">Per-Agent Breakdown</span>
-              <table class="agent-table" aria-label="Per-agent performance breakdown">
-                <thead>
-                  <tr>
-                    <th>Agent</th>
-                    <th>Sessions</th>
-                    <th>Success</th>
-                    <th>Avg Time</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><div class="td-agent"><div class="td-dot" style="background:#3d5afe"></div>Troubleshooting</div></td>
-                    <td>2,103</td>
-                    <td class="td-success">93.1%</td>
-                    <td>2.8s</td>
-                  </tr>
-                  <tr>
-                    <td><div class="td-agent"><div class="td-dot" style="background:#2e7d32"></div>Assist</div></td>
-                    <td>1,847</td>
-                    <td class="td-success">95.8%</td>
-                    <td>1.9s</td>
-                  </tr>
-                  <tr>
-                    <td><div class="td-agent"><div class="td-dot" style="background:#f59e0b"></div>5 Whys (RCA)</div></td>
-                    <td>871</td>
-                    <td class="td-success">93.7%</td>
-                    <td>3.1s</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
 
-          <!-- Bottom Row -->
-          <div class="dash-bottom-row">
-            <!-- Recent Activity -->
-            <div class="dash-card">
-              <span class="dash-card-title">Recent Activity</span>
-              <div class="activity-list" role="list">
-                <div class="activity-row" role="listitem">
-                  <div class="activity-dot-wrap"><div class="activity-dot" style="background:#3d5afe"></div></div>
-                  <div class="activity-info">
-                    <div class="activity-agent">Troubleshooting</div>
-                    <div class="activity-msg">Diagnosed P0 pump failure on Unit 3</div>
-                  </div>
-                  <span class="activity-time">2m ago</span>
-                </div>
-                <div class="activity-row" role="listitem">
-                  <div class="activity-dot-wrap"><div class="activity-dot" style="background:#2e7d32"></div></div>
-                  <div class="activity-info">
-                    <div class="activity-agent">Assist</div>
-                    <div class="activity-msg">Answered WO-4821: Valve replacement SOP</div>
-                  </div>
-                  <span class="activity-time">11m ago</span>
-                </div>
-                <div class="activity-row" role="listitem">
-                  <div class="activity-dot-wrap"><div class="activity-dot" style="background:#f59e0b"></div></div>
-                  <div class="activity-info">
-                    <div class="activity-agent">5 Whys (RCA)</div>
-                    <div class="activity-msg">Root cause report for Conveyor E generated</div>
-                  </div>
-                  <span class="activity-time">34m ago</span>
-                </div>
-                <div class="activity-row" role="listitem">
-                  <div class="activity-dot-wrap"><div class="activity-dot" style="background:#c61919"></div></div>
-                  <div class="activity-info">
-                    <div class="activity-agent">Troubleshooting</div>
-                    <div class="activity-msg">Session timeout — sensor data unavailable</div>
-                  </div>
-                  <span class="activity-time">1h ago</span>
-                </div>
-              </div>
-            </div>
+          </div><!-- /dash-widget-grid -->
+        </div>
+        </div><!-- /dtab-pane-adoption -->
 
-            <!-- Agent Health Status -->
-            <div class="dash-card">
-              <span class="dash-card-title">Agent Health Status</span>
-              <div class="health-list" role="list">
-                <div class="health-row" role="listitem">
-                  <div class="health-avatar" style="background:linear-gradient(135deg,#7c3aed,#5252d4)">TS</div>
-                  <div class="health-info">
-                    <div class="health-name">Troubleshooting</div>
-                    <div class="health-sub">Last run: 2m ago · Uptime: 99.2%</div>
-                  </div>
-                  <span class="badge-operational">Operational</span>
+        <!-- Tab pane: Performance & Efficiency -->
+        <div id="dtab-pane-performance" class="dash-tab-pane">
+          <div class="dash-content">
+            <div class="dash-header"><span class="dash-title">Performance &amp; Efficiency</span></div>
+            <div class="dash-widget-grid">
+
+              <!-- P1. Success Rate -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Success Rate</div><div class="widget-subtitle">Agent task success rate trend over time</div></div>
+                  <span class="kpi-badge-up">94.2% current</span>
                 </div>
-                <div class="health-row" role="listitem">
-                  <div class="health-avatar" style="background:linear-gradient(135deg,#0891b2,#06b6d4)">AS</div>
-                  <div class="health-info">
-                    <div class="health-name">Assist</div>
-                    <div class="health-sub">Last run: 11m ago · Uptime: 99.8%</div>
-                  </div>
-                  <span class="badge-operational">Operational</span>
-                </div>
-                <div class="health-row" role="listitem">
-                  <div class="health-avatar" style="background:linear-gradient(135deg,#d97706,#f59e0b)">5W</div>
-                  <div class="health-info">
-                    <div class="health-name">5 Whys (RCA)</div>
-                    <div class="health-sub">Last run: 34m ago · Uptime: 98.5%</div>
-                  </div>
-                  <span class="badge-operational">Operational</span>
-                </div>
+                <div class="widget-chart" id="perf-success-rate"></div>
               </div>
-            </div>
+
+              <!-- P2. Avg Response Time with SLA -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Avg Response Time</div><div class="widget-subtitle">SLA threshold: 3.0s · spike markers enabled</div></div>
+                  <span class="kpi-badge-up">2.3s avg</span>
+                </div>
+                <div class="widget-chart" id="perf-response-time"></div>
+              </div>
+
+              <!-- P3. Task Completion Rate (semi-circle gauge) -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Task Completion Rate</div><div class="widget-subtitle">Semi-circle gauge · Red &lt;70% · Amber 70–90% · Green &gt;90%</div></div>
+                </div>
+                <div class="widget-chart" id="perf-task-completion"></div>
+              </div>
+
+              <!-- P4. Throughput per Agent (horizontal bar) -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Throughput per Agent</div><div class="widget-subtitle">Sessions completed — sorted descending</div></div>
+                </div>
+                <div class="widget-chart" id="perf-throughput"></div>
+              </div>
+
+              <!-- P5. Latency Distribution (full width) -->
+              <div class="dash-widget" style="grid-column:1/-1">
+                <div class="widget-header">
+                  <div><div class="widget-title">Latency Distribution</div><div class="widget-subtitle">Histogram with box plot overlay for outlier detection</div></div>
+                </div>
+                <div class="widget-chart" id="perf-latency-dist" style="min-height:240px"></div>
+              </div>
+
+            </div><!-- /dash-widget-grid -->
           </div>
         </div>
+
+        <!-- Tab pane: Business Impact -->
+        <div id="dtab-pane-business" class="dash-tab-pane">
+          <div class="dash-content">
+            <div class="dash-header"><span class="dash-title">Business Impact</span></div>
+            <div class="dash-widget-grid">
+
+
+              <!-- 19. ROI Contribution -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">ROI Contribution</div><div class="widget-subtitle">Return on AI investment · $2.4M saved</div></div>
+                </div>
+                <div class="widget-chart" id="hc-roi"></div>
+              </div>
+
+              <!-- 20. Process Time Reduction -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Process Time Reduction</div><div class="widget-subtitle">Before vs after AI — minutes per task</div></div>
+                </div>
+                <div class="widget-chart" id="hc-proc-time"></div>
+              </div>
+
+              <!-- 21. Customer Satisfaction Score -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Customer Satisfaction Score</div><div class="widget-subtitle">CSAT rating trend (1–5 scale)</div></div>
+                  <span class="kpi-badge-up">4.3 / 5</span>
+                </div>
+                <div class="widget-chart" id="hc-csat"></div>
+              </div>
+
+              <!-- 18. Error Reduction Impact (KPI) -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Error Reduction Impact</div><div class="widget-subtitle">Errors eliminated by AI agents this quarter</div></div>
+                  <span class="kpi-badge-up">↓ 63% fewer</span>
+                </div>
+                <div class="kpi-body">
+                  <div class="kpi-main"><span class="kpi-val">1,842</span><span class="kpi-unit">errors saved</span></div>
+                  <div class="kpi-desc">vs 4,987 baseline this quarter</div>
+                  <div class="kpi-sparkline" id="hc-error-impact-spark"></div>
+                </div>
+              </div>
+
+            </div><!-- /dash-widget-grid -->
+          </div>
+        </div>
+
+        <!-- Tab pane: Quality & Reliability -->
+        <div id="dtab-pane-quality" class="dash-tab-pane">
+          <div class="dash-content">
+            <div class="dash-header"><span class="dash-title">Quality &amp; Reliability</span></div>
+            <div class="dash-widget-grid">
+
+
+              <!-- 13. Error Rate -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Error Rate</div><div class="widget-subtitle">Errors over time with alert threshold</div></div>
+                  <span class="kpi-badge-down">2.1% current</span>
+                </div>
+                <div class="widget-chart" id="hc-error-rate"></div>
+              </div>
+
+              <!-- 14. Human Escalation Rate -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Human Escalation Rate</div><div class="widget-subtitle">Automated vs escalated tasks per agent</div></div>
+                </div>
+                <div class="widget-chart" id="hc-escalation"></div>
+              </div>
+
+              <!-- 15. Override Rate (KPI) -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Override Rate</div><div class="widget-subtitle">AI decisions overridden by users</div></div>
+                  <span class="kpi-badge-warn">Trending up</span>
+                </div>
+                <div class="kpi-body">
+                  <div class="kpi-main"><span class="kpi-val">8.4</span><span class="kpi-unit">%</span></div>
+                  <div class="kpi-desc">+1.2% vs last period · 47 overrides this week</div>
+                  <div class="kpi-sparkline" id="hc-override-spark"></div>
+                </div>
+              </div>
+
+              <!-- 16. Rejection Reasons -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Rejection Reasons</div><div class="widget-subtitle">Top rejection causes — Pareto view</div></div>
+                </div>
+                <div class="widget-chart" id="hc-rejection"></div>
+              </div>
+
+              <!-- 17. Confidence Score Distribution -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Confidence Score Distribution</div><div class="widget-subtitle">Box plot — spread and outliers per agent</div></div>
+                </div>
+                <div class="widget-chart" id="hc-confidence"></div>
+              </div>
+
+
+            </div><!-- /dash-widget-grid -->
+          </div>
+        </div>
+
+        <!-- Tab pane: Cost & Resource -->
+        <div id="dtab-pane-cost" class="dash-tab-pane">
+          <div class="dash-content">
+            <div class="dash-header"><span class="dash-title">Cost &amp; Resource</span></div>
+            <div class="dash-widget-grid">
+
+              <!-- ── COST EFFICIENCY ── -->
+
+              <!-- 22. Cost per Task (KPI) -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Cost per Task</div><div class="widget-subtitle">Avg compute + infra cost per execution</div></div>
+                  <span class="kpi-badge-up">↓ 22% MoM</span>
+                </div>
+                <div class="kpi-body">
+                  <div class="kpi-main"><span class="kpi-val">$0.031</span></div>
+                  <div class="kpi-desc">Down from $0.040 last month</div>
+                  <div class="kpi-sparkline" id="hc-cost-spark"></div>
+                </div>
+              </div>
+
+              <!-- 23. Compute Cost per Agent -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Compute Cost per Agent</div><div class="widget-subtitle">Monthly compute spend by agent ($)</div></div>
+                </div>
+                <div class="widget-chart" id="hc-compute-cost"></div>
+              </div>
+
+              <!-- ── RESOURCE UTILIZATION ── -->
+
+              <!-- 24. Resource Utilization -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Resource Utilization</div><div class="widget-subtitle">CPU · GPU · Memory over time (%)</div></div>
+                </div>
+                <div class="widget-chart" id="hc-resource-util"></div>
+              </div>
+
+              <!-- 25. Storage Usage -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Storage Usage</div><div class="widget-subtitle">Cumulative storage growth (GB)</div></div>
+                </div>
+                <div class="widget-chart" id="hc-storage"></div>
+              </div>
+
+            </div><!-- /dash-widget-grid -->
+          </div>
+        </div>
+
+        <!-- Tab pane: Lifecycle & Operations -->
+        <div id="dtab-pane-lifecycle" class="dash-tab-pane">
+          <div class="dash-content">
+            <div class="dash-header"><span class="dash-title">Lifecycle &amp; Operations</span></div>
+            <div class="dash-widget-grid">
+
+              <!-- ── AGENT HEALTH & VERSIONING ── -->
+
+              <!-- Agent Version & Last Update (full-width) -->
+              <div class="dash-widget" style="grid-column:1/-1">
+                <div class="widget-header">
+                  <div><div class="widget-title">Agent Version &amp; Last Update</div><div class="widget-subtitle">Version history, deploy timestamp, and health status</div></div>
+                </div>
+                <table class="avt-table" aria-label="Agent version and status">
+                  <thead><tr><th>Agent</th><th>Product</th><th>Version</th><th>Last Updated</th><th>Environment</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>Troubleshooting</td><td><span class="product-badge pb-mrounds">mRounds</span></td><td>v2.4.1</td><td>Apr 3, 2026 · 14:32</td><td>Production</td><td><span class="avt-dot" style="background:#2e7d32"></span>Healthy</td></tr>
+                    <tr><td>Assist</td><td><span class="product-badge pb-imaintenance">iMaintenance</span></td><td>v3.1.0</td><td>Apr 5, 2026 · 09:18</td><td>Production</td><td><span class="avt-dot" style="background:#2e7d32"></span>Healthy</td></tr>
+                    <tr><td>5 Whys (RCA)</td><td><span class="product-badge pb-mrounds">mRounds</span></td><td>v1.8.3</td><td>Mar 28, 2026 · 11:05</td><td>Production</td><td><span class="avt-dot" style="background:#2e7d32"></span>Healthy</td></tr>
+                    <tr><td>Detect</td><td><span class="product-badge pb-imaintenance">iMaintenance</span></td><td>v2.0.2</td><td>Apr 1, 2026 · 16:44</td><td>Production</td><td><span class="avt-dot" style="background:#f59e0b"></span>Warning</td></tr>
+                    <tr><td>PPE</td><td><span class="product-badge pb-ipermits">iPermits</span></td><td>v1.5.0</td><td>Apr 6, 2026 · 08:22</td><td>Production</td><td><span class="avt-dot" style="background:#2e7d32"></span>Healthy</td></tr>
+                    <tr><td>Autofill</td><td><span class="product-badge pb-mrounds">mRounds</span></td><td>v2.2.4</td><td>Apr 4, 2026 · 13:55</td><td>Production</td><td><span class="avt-dot" style="background:#2e7d32"></span>Healthy</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- ── OPERATIONAL METRICS ── -->
+
+              <!-- Avg Processing Latency -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Avg Processing Latency</div><div class="widget-subtitle">Latency trend across workflows (ms)</div></div>
+                  <span class="kpi-badge-up">↓ −18ms</span>
+                </div>
+                <div class="widget-chart" id="hc-proc-latency"></div>
+              </div>
+
+              <!-- Data Ingestion Volume -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Data Ingestion Volume</div><div class="widget-subtitle">Documents + records ingested per day</div></div>
+                </div>
+                <div class="widget-chart" id="hc-ingestion"></div>
+              </div>
+
+              <!-- Retrain Frequency -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Retrain Frequency</div><div class="widget-subtitle">Retraining events per agent (last 6 months)</div></div>
+                </div>
+                <div class="widget-chart" id="hc-retrain"></div>
+              </div>
+
+              <!-- Downtime / Uptime -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Downtime / Uptime</div><div class="widget-subtitle">Platform availability this period</div></div>
+                </div>
+                <div class="widget-chart" id="hc-uptime"></div>
+              </div>
+
+            </div><!-- /dash-widget-grid -->
+          </div>
+        </div>
+
+        <!-- Tab pane: Governance & Compliance -->
+        <div id="dtab-pane-governance" class="dash-tab-pane">
+          <div class="dash-content">
+            <div class="dash-header"><span class="dash-title">Governance &amp; Compliance</span></div>
+            <div class="dash-widget-grid">
+
+              <!-- ── GOVERNANCE & COMPLIANCE ── -->
+
+              <!-- 30. Audit Logs Coverage -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Audit Logs Coverage</div><div class="widget-subtitle">Logged vs expected actions (gauge)</div></div>
+                </div>
+                <div class="widget-chart" id="hc-audit-logs"></div>
+              </div>
+
+              <!-- 31. Policy Compliance (KPI) -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Policy Compliance</div><div class="widget-subtitle">Agents operating within policy bounds</div></div>
+                  <span class="kpi-badge-up">Compliant</span>
+                </div>
+                <div class="kpi-body">
+                  <div class="kpi-main"><span class="kpi-val">97.8</span><span class="kpi-unit">%</span></div>
+                  <div class="kpi-desc">12 agents fully compliant · 1 flagged</div>
+                  <div class="kpi-sparkline" id="hc-compliance-spark"></div>
+                </div>
+              </div>
+
+              <!-- 32. Access Control Coverage -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Access Control Coverage</div><div class="widget-subtitle">Correct vs incorrect access attempts</div></div>
+                </div>
+                <div class="widget-chart" id="hc-access-ctrl"></div>
+              </div>
+
+              <!-- 33. Compliance Breaches -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Compliance Breaches</div><div class="widget-subtitle">Policy violations over time with alerts</div></div>
+                  <span class="kpi-badge-warn">3 this month</span>
+                </div>
+                <div class="widget-chart" id="hc-compliance-breaches"></div>
+              </div>
+
+              <!-- Tasks Automated -->
+              <div class="dash-widget">
+                <div class="widget-header">
+                  <div><div class="widget-title">Tasks Automated</div><div class="widget-subtitle">Automated vs manual task ratio</div></div>
+                  <span class="kpi-badge-up">↑ +3.2% MoM</span>
+                </div>
+                <div class="widget-chart" id="hc-tasks-auto"></div>
+              </div>
+
+            </div><!-- /dash-widget-grid -->
+          </div>
+        </div>
+
       </div><!-- /pane-dashboard -->
 
       <!-- ============================================================
            PANE B: MY AGENTS
       ============================================================ -->
-      <div id="pane-my-agents" class="main-pane active" role="tabpanel" aria-label="My Agents">
+      <div id="pane-my-agents" class="main-pane" role="tabpanel" aria-label="My Agents">
 
         <!-- B1: Card Grid View -->
         <div id="agents-grid-view" class="agents-grid-view">
@@ -4610,12 +5261,13 @@
             <div class="agent-cards-grid" id="agent-cards-grid" role="list" aria-label="AI Agents">
 
               <!-- Agent 1: Troubleshooting -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" onclick="openAgentDetail('wo-assistant')" onkeydown="keyActivate(event,this)" aria-label="Troubleshooting agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" data-product="mRounds" data-agent="Troubleshooting" onclick="openAgentDetail('wo-assistant')" onkeydown="keyActivate(event,this)" aria-label="Troubleshooting agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#3d5afe">TS</div>
                   <span class="badge-status badge-deployed">Deployed</span>
                 </div>
                 <div>
+                  <span class="product-badge pb-mrounds">mRounds</span>
                   <div class="agent-card-name">Troubleshooting</div>
                   <div class="agent-card-desc">Diagnoses equipment failures, process anomalies, and operational issues using SAP PM and IoT sensor data.</div>
                 </div>
@@ -4635,12 +5287,13 @@
               </div>
 
               <!-- Agent 2: Assist -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" onclick="openAgentDetail('safety')" onkeydown="keyActivate(event,this)" aria-label="Assist agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" data-product="iMaintenance" data-agent="Assist" onclick="openAgentDetail('safety')" onkeydown="keyActivate(event,this)" aria-label="Assist agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#2e7d32">AS</div>
                   <span class="badge-status badge-deployed">Deployed</span>
                 </div>
                 <div>
+                  <span class="product-badge pb-imaintenance">iMaintenance</span>
                   <div class="agent-card-name">Assist</div>
                   <div class="agent-card-desc">Answers work order queries, retrieves SOPs and guides technicians through step-by-step procedures.</div>
                 </div>
@@ -4660,12 +5313,13 @@
               </div>
 
               <!-- Agent 3: 5 Whys (RCA) -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" onclick="openAgentDetail('parts')" onkeydown="keyActivate(event,this)" aria-label="5 Whys RCA agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" data-product="mRounds" data-agent="5 Whys (RCA)" onclick="openAgentDetail('parts')" onkeydown="keyActivate(event,this)" aria-label="5 Whys RCA agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#f59e0b">5W</div>
                   <span class="badge-status badge-deployed">Deployed</span>
                 </div>
                 <div>
+                  <span class="product-badge pb-mrounds">mRounds</span>
                   <div class="agent-card-name">5 Whys (RCA)</div>
                   <div class="agent-card-desc">Performs root cause analysis on equipment failures and cross-references historical work orders and sensor trends.</div>
                 </div>
@@ -4685,12 +5339,13 @@
               </div>
 
               <!-- Agent 4: Plan (Available) -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="available" onclick="openAgentDetail('scheduler')" onkeydown="keyActivate(event,this)" aria-label="Plan agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="available" data-product="iMaintenance" data-agent="Plan" onclick="openAgentDetail('scheduler')" onkeydown="keyActivate(event,this)" aria-label="Plan agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#7c3aed">PL</div>
                   <span class="badge-status badge-available">Available</span>
                 </div>
                 <div>
+                  <span class="product-badge pb-imaintenance">iMaintenance</span>
                   <div class="agent-card-name">Plan</div>
                   <div class="agent-card-desc">Plans and schedules work orders by evaluating equipment criticality, technician availability, and resource constraints.</div>
                 </div>
@@ -4711,12 +5366,13 @@
               </div>
 
               <!-- Agent 5: Detect -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" onclick="openAgentDetail('eq-health')" onkeydown="keyActivate(event,this)" aria-label="Detect agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" data-product="iMaintenance" data-agent="Detect" onclick="openAgentDetail('eq-health')" onkeydown="keyActivate(event,this)" aria-label="Detect agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#1565c0">DT</div>
                   <span class="badge-status badge-deployed">Deployed</span>
                 </div>
                 <div>
+                  <span class="product-badge pb-imaintenance">iMaintenance</span>
                   <div class="agent-card-name">Detect</div>
                   <div class="agent-card-desc">Continuously monitors data streams to detect anomalies, equipment deviations, and early failure signals.</div>
                 </div>
@@ -4736,12 +5392,13 @@
               </div>
 
               <!-- Agent 6: Forms (Coming Soon) -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="coming-soon" onclick="openAgentDetail('shift-report')" onkeydown="keyActivate(event,this)" aria-label="Forms agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="coming-soon" data-product="iMaintenance" data-agent="Forms" onclick="openAgentDetail('shift-report')" onkeydown="keyActivate(event,this)" aria-label="Forms agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#7c3aed">FM</div>
                   <span class="badge-status badge-coming-soon">Coming Soon</span>
                 </div>
                 <div>
+                  <span class="product-badge pb-imaintenance">iMaintenance</span>
                   <div class="agent-card-name">Forms</div>
                   <div class="agent-card-desc">Generates, pre-fills, and routes digital forms for maintenance, inspection, and compliance workflows.</div>
                 </div>
@@ -4759,12 +5416,13 @@
               </div>
 
               <!-- Agent 7: Recommendation -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="available" onclick="openAgentDetail('calibration')" onkeydown="keyActivate(event,this)" aria-label="Recommendation agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="available" data-product="iPermits" data-agent="Recommendation" onclick="openAgentDetail('calibration')" onkeydown="keyActivate(event,this)" aria-label="Recommendation agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#0891b2">RE</div>
                   <span class="badge-status badge-available">Available</span>
                 </div>
                 <div>
+                  <span class="product-badge pb-ipermits">iPermits</span>
                   <div class="agent-card-name">Recommendation</div>
                   <div class="agent-card-desc">Delivers context-aware maintenance, repair, and inspection recommendations based on equipment history and sensor trends.</div>
                 </div>
@@ -4785,12 +5443,13 @@
               </div>
 
               <!-- Agent 8: DWI (Coming Soon) -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="coming-soon" onclick="openAgentDetail('energy')" onkeydown="keyActivate(event,this)" aria-label="DWI agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="coming-soon" data-product="mRounds" data-agent="DWI" onclick="openAgentDetail('energy')" onkeydown="keyActivate(event,this)" aria-label="DWI agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#d97706">DW</div>
                   <span class="badge-status badge-coming-soon">Coming Soon</span>
                 </div>
                 <div>
+                  <span class="product-badge pb-mrounds">mRounds</span>
                   <div class="agent-card-name">DWI</div>
                   <div class="agent-card-desc">Creates and delivers step-by-step digital work instructions, adapting in real time to equipment state and technician feedback.</div>
                 </div>
@@ -4808,12 +5467,13 @@
               </div>
 
               <!-- Agent 9: Autofill -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" onclick="openAgentDetail('autofill')" onkeydown="keyActivate(event,this)" aria-label="Autofill agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" data-product="mRounds" data-agent="Autofill" onclick="openAgentDetail('autofill')" onkeydown="keyActivate(event,this)" aria-label="Autofill agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#059669">AF</div>
                   <span class="badge-status badge-deployed">Deployed</span>
                 </div>
                 <div>
+                  <span class="product-badge pb-mrounds">mRounds</span>
                   <div class="agent-card-name">Autofill</div>
                   <div class="agent-card-desc">Automatically populates work orders, inspection forms, and SAP PM records from equipment history and IoT data.</div>
                 </div>
@@ -4833,12 +5493,13 @@
               </div>
 
               <!-- Agent 10: Permits Autofill (Available) -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="available" onclick="openAgentDetail('permits-autofill')" onkeydown="keyActivate(event,this)" aria-label="Permits Autofill agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="available" data-product="iPermits" data-agent="Permits Autofill" onclick="openAgentDetail('permits-autofill')" onkeydown="keyActivate(event,this)" aria-label="Permits Autofill agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#0f766e">PA</div>
                   <span class="badge-status badge-available">Available</span>
                 </div>
                 <div>
+                  <span class="product-badge pb-ipermits">iPermits</span>
                   <div class="agent-card-name">Permits Autofill</div>
                   <div class="agent-card-desc">Automatically populates work permit fields using equipment history, job details, and risk assessment templates.</div>
                 </div>
@@ -4859,12 +5520,13 @@
               </div>
 
               <!-- Agent 11: PPE -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" onclick="openAgentDetail('ppe')" onkeydown="keyActivate(event,this)" aria-label="PPE agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="deployed" data-product="iPermits" data-agent="PPE" onclick="openAgentDetail('ppe')" onkeydown="keyActivate(event,this)" aria-label="PPE agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#9333ea">PP</div>
                   <span class="badge-status badge-deployed">Deployed</span>
                 </div>
                 <div>
+                  <span class="product-badge pb-ipermits">iPermits</span>
                   <div class="agent-card-name">PPE</div>
                   <div class="agent-card-desc">Verifies PPE requirements per job type, checks technician certifications, and alerts on missing or expired protective equipment.</div>
                 </div>
@@ -4884,12 +5546,13 @@
               </div>
 
               <!-- Agent 12: Permits Authoring (Coming Soon) -->
-              <div class="agent-card" role="listitem" tabindex="0" data-status="coming-soon" onclick="openAgentDetail('permits-authoring')" onkeydown="keyActivate(event,this)" aria-label="Permits Authoring agent">
+              <div class="agent-card" role="listitem" tabindex="0" data-status="coming-soon" data-product="iPermits" data-agent="Permits Authoring" onclick="openAgentDetail('permits-authoring')" onkeydown="keyActivate(event,this)" aria-label="Permits Authoring agent">
                 <div class="agent-card-top">
                   <div class="agent-card-avatar" style="background:#dc2626">PT</div>
                   <span class="badge-status badge-coming-soon">Coming Soon</span>
                 </div>
                 <div>
+                  <span class="product-badge pb-ipermits">iPermits</span>
                   <div class="agent-card-name">Permits Authoring</div>
                   <div class="agent-card-desc">Guides permit writers through hot work, confined space, and LOTO permit creation with regulatory compliance checks.</div>
                 </div>
@@ -4999,16 +5662,13 @@
                       <div class="ov-filter-bar-title">Performance Overview</div>
                       <div class="ov-filter-bar-period" id="ov-filter-period-label">Showing data for: Last 30 days</div>
                     </div>
-                    <div class="filter-btn-wrap">
-                      <button class="filter-btn" aria-haspopup="listbox" aria-expanded="false"
+                    <div class="ps-filter-wrap">
+                      <button class="ps-filter-btn" aria-haspopup="listbox" aria-expanded="false"
                               id="btn-ov-filter" onclick="toggleOvFilter(event)">
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" style="color:#6e6e6e">
-                          <rect x="1" y="1" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/>
-                          <path d="M1 4h10M4 1v10M8 1v10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-                        </svg>
-                        <span id="ov-filter-label">Last 30 days</span>
-                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                          <path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <span class="ps-filter-label">Time Period</span>
+                        <span class="ps-filter-value" id="ov-filter-label">Last 30 days</span>
+                        <svg class="ps-filter-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                          <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                       </button>
                       <div class="date-filter-dropdown" id="ov-filter-dropdown" role="listbox" aria-label="Select time range">
@@ -6258,6 +6918,41 @@ function toggleSubNav(subId, navEl, chevId) {
   navEl.setAttribute('aria-expanded', String(!isOpen));
 }
 
+function toggleWorksmartNav(navEl) {
+  const sub = document.getElementById('ws-sub');
+  const chev = document.getElementById('ws-chev');
+  const isOpen = sub.classList.contains('open');
+  const willOpen = !isOpen;
+  sub.classList.toggle('open', willOpen);
+  chev.classList.toggle('rotated', willOpen);
+  navEl.setAttribute('aria-expanded', String(willOpen));
+  // Auto-select Dashboard when expanding
+  if (willOpen) {
+    const dashItem = document.getElementById('ws-sub-dashboard');
+    switchWorksmartModule('dashboard', dashItem);
+  }
+}
+
+var wsModuleNames = { 'dashboard': 'Dashboard', 'my-agents': 'My Agents', 'settings': 'Settings' };
+
+function switchWorksmartModule(tabId, subEl) {
+  // Update sidebar sub-item active states
+  document.querySelectorAll('#ws-sub .nav-sub-item').forEach(function(item) {
+    item.classList.remove('active');
+    item.querySelector('.nav-sub-label').classList.remove('active');
+  });
+  subEl.classList.add('active');
+  subEl.querySelector('.nav-sub-label').classList.add('active');
+  // Update topbar title and breadcrumb
+  var name = wsModuleNames[tabId] || tabId;
+  var titleEl = document.getElementById('topbar-module-title');
+  var crumbEl = document.getElementById('topbar-breadcrumb-sub');
+  if (titleEl) titleEl.textContent = name;
+  if (crumbEl) crumbEl.textContent = name;
+  // Switch to the corresponding pane directly
+  showMainPane(tabId);
+}
+
 /* ================================================================
    SEGMENTED CONTROL — AGENT FILTER
 ================================================================ */
@@ -6268,45 +6963,15 @@ function filterAgents(filter, el) {
     btn.classList.toggle('active', isActive);
     btn.setAttribute('aria-selected', String(isActive));
   });
-
-  // Show/hide cards by data-status
-  const cards = document.querySelectorAll('#agent-cards-grid .agent-card');
-  let visible = 0;
-  cards.forEach(card => {
-    const status = card.dataset.status; // 'deployed' | 'available' | 'coming-soon'
-    const show = filter === 'all' ||
-                 (filter === 'deployed'    && status === 'deployed') ||
-                 (filter === 'coming-soon' && status === 'coming-soon');
-    card.style.display = show ? '' : 'none';
-    if (show) visible++;
-  });
-
-  // Update count label
-  const countEl = document.getElementById('agents-filter-count');
-  if (countEl) {
-    const label = filter === 'all'         ? `${visible} AI Agents` :
-                  filter === 'deployed'    ? `${visible} Deployed` :
-                                             `${visible} Coming Soon`;
-    countEl.textContent = label;
-  }
+  currentStatusFilter = filter;
+  applyAllFilters();
 }
 
 /* ================================================================
-   MAIN TABS
+   MAIN PANE NAVIGATION
 ================================================================ */
-function switchMainTab(el) {
-  document.querySelectorAll('.tab-bar .tab').forEach(t => {
-    t.classList.remove('active');
-    t.setAttribute('aria-selected', 'false');
-  });
-  el.classList.add('active');
-  el.setAttribute('aria-selected', 'true');
-
-  const tabId = el.dataset.tab;
-
-  // Show/hide panes
+function showMainPane(tabId) {
   document.querySelectorAll('.main-pane').forEach(p => p.classList.remove('active'));
-
   if (tabId === 'dashboard') {
     document.getElementById('pane-dashboard').classList.add('active');
   } else if (tabId === 'my-agents') {
@@ -6318,6 +6983,206 @@ function switchMainTab(el) {
   } else if (tabId === 'settings') {
     document.getElementById('pane-settings').classList.add('active');
   }
+  // Sync sidebar WorkSmart AI sub-items
+  const wsSubIds = ['dashboard', 'my-agents', 'settings'];
+  document.querySelectorAll('#ws-sub .nav-sub-item').forEach(function(item) {
+    item.classList.remove('active');
+    item.querySelector('.nav-sub-label').classList.remove('active');
+  });
+  if (wsSubIds.includes(tabId)) {
+    const sideItem = document.getElementById('ws-sub-' + tabId);
+    if (sideItem) {
+      sideItem.classList.add('active');
+      sideItem.querySelector('.nav-sub-label').classList.add('active');
+    }
+  }
+}
+
+/* ================================================================
+   CONTEXT FILTERS
+================================================================ */
+var cFilterState = { product: null, agent: null, date: null, role: null, version: null };
+var currentStatusFilter = 'all';
+
+function applyAllFilters() {
+  var product = cFilterState.product;
+  var agent   = cFilterState.agent;
+  var cards   = document.querySelectorAll('#agent-cards-grid .agent-card');
+  var visible = 0;
+  cards.forEach(function(card) {
+    var status      = card.dataset.status;
+    var cardProduct = card.dataset.product;
+    var cardAgent   = card.dataset.agent;
+    var statusOk = currentStatusFilter === 'all' ||
+                   (currentStatusFilter === 'deployed'    && status === 'deployed') ||
+                   (currentStatusFilter === 'coming-soon' && status === 'coming-soon');
+    var productOk = !product || cardProduct === product;
+    var agentOk   = !agent   || cardAgent   === agent;
+    var show = statusOk && productOk && agentOk;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  var countEl = document.getElementById('agents-filter-count');
+  if (countEl) {
+    var label = currentStatusFilter === 'deployed'    ? visible + ' Deployed' :
+                currentStatusFilter === 'coming-soon' ? visible + ' Coming Soon' :
+                                                        visible + ' AI Agents';
+    countEl.textContent = label;
+  }
+}
+
+function toggleCFilter(key, event) {
+  event.stopPropagation();
+  var btn  = document.getElementById('cfilter-' + key);
+  var drop = document.getElementById('cfilter-' + key + '-drop');
+  var isOpen = drop.classList.contains('open');
+  // Close all first
+  ['product','agent','date','role','version'].forEach(function(k) {
+    document.getElementById('cfilter-' + k + '-drop').classList.remove('open');
+    document.getElementById('cfilter-' + k).classList.remove('open');
+    document.getElementById('cfilter-' + k).setAttribute('aria-expanded','false');
+  });
+  if (!isOpen) {
+    drop.classList.add('open');
+    btn.classList.add('open');
+    btn.setAttribute('aria-expanded','true');
+  }
+}
+
+function selectCFilter(key, value, optEl) {
+  var alreadySelected = optEl.classList.contains('selected');
+  // Single-select: clear others in same group
+  var list = optEl.closest('.cfilter-dropdown-list');
+  list.querySelectorAll('.cfilter-option').forEach(function(o) {
+    o.classList.remove('selected');
+  });
+  if (!alreadySelected) {
+    optEl.classList.add('selected');
+    cFilterState[key] = value;
+  } else {
+    cFilterState[key] = null;
+  }
+  updateCFilterBtn(key);
+  updateClearAll();
+  if (key === 'product' || key === 'agent') applyAllFilters();
+  // Close dropdown
+  document.getElementById('cfilter-' + key + '-drop').classList.remove('open');
+  document.getElementById('cfilter-' + key).classList.remove('open');
+  document.getElementById('cfilter-' + key).setAttribute('aria-expanded','false');
+}
+
+function selectDatePreset(label, optEl) {
+  // Toggle selection — clicking active option deselects
+  var alreadySelected = optEl.classList.contains('selected');
+  document.getElementById('cfilter-date-drop').querySelectorAll('.cfilter-option').forEach(function(o) {
+    o.classList.remove('selected');
+  });
+  if (!alreadySelected) {
+    optEl.classList.add('selected');
+    cFilterState['date'] = label;
+  } else {
+    cFilterState['date'] = null;
+  }
+  updateCFilterBtn('date');
+  updateClearAll();
+  document.getElementById('cfilter-date-drop').classList.remove('open');
+  document.getElementById('cfilter-date').classList.remove('open');
+  document.getElementById('cfilter-date').setAttribute('aria-expanded','false');
+}
+
+
+var cFilterPlaceholders = {
+  product: 'Product',
+  agent:   'Agent',
+  date:    'Date / Time Range',
+  role:    'User Role',
+  version: 'Version'
+};
+
+function updateCFilterBtn(key) {
+  var btn   = document.getElementById('cfilter-' + key);
+  var valEl = document.getElementById('cfilter-' + key + '-val');
+  var val   = cFilterState[key];
+  if (val) {
+    // Filled state: floating label visible (via CSS), value in dark color
+    btn.classList.add('active');
+    valEl.textContent = val.length > 18 ? val.slice(0, 18) + '…' : val;
+  } else {
+    // Default state: no floating label, filter name shown as gray placeholder
+    btn.classList.remove('active');
+    valEl.textContent = cFilterPlaceholders[key] || key;
+  }
+}
+
+function clearCFilter(key) {
+  cFilterState[key] = null;
+  var drop = document.getElementById('cfilter-' + key + '-drop');
+  if (drop) {
+    drop.querySelectorAll('.cfilter-option').forEach(function(o) {
+      o.classList.remove('selected');
+    });
+  }
+  updateCFilterBtn(key);
+  updateClearAll();
+  if (key === 'product' || key === 'agent') applyAllFilters();
+  document.getElementById('cfilter-' + key + '-drop').classList.remove('open');
+  document.getElementById('cfilter-' + key).classList.remove('open');
+  document.getElementById('cfilter-' + key).setAttribute('aria-expanded','false');
+}
+
+function clearAllCFilters() {
+  ['product','agent','date','role','version'].forEach(clearCFilter);
+  applyAllFilters();
+}
+
+function updateClearAll() {
+  var anyActive = Object.values(cFilterState).some(function(v) { return v !== null; });
+  var btn = document.getElementById('cfilter-clear-all');
+  btn.classList.toggle('visible', anyActive);
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.cfilter-btn') && !e.target.closest('.cfilter-dropdown')) {
+    ['product','agent','date','role','version'].forEach(function(k) {
+      var drop = document.getElementById('cfilter-' + k + '-drop');
+      var btn  = document.getElementById('cfilter-' + k);
+      if (drop) drop.classList.remove('open');
+      if (btn)  { btn.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+    });
+  }
+});
+
+function switchMainTab(el) {
+  showMainPane(el.dataset.tab);
+}
+
+/* ================================================================
+   DASHBOARD SUB-TABS
+================================================================ */
+function switchDashTab(el) {
+  document.querySelectorAll('.dash-tab').forEach(t => {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+  });
+  document.querySelectorAll('.dash-tab-pane').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  el.setAttribute('aria-selected', 'true');
+  const pane = document.getElementById('dtab-pane-' + el.dataset.dtab);
+  if (pane) pane.classList.add('active');
+  // Lazy-init charts and reflow on tab switch
+  var tab = el.dataset.dtab;
+  if (tab === 'performance') { setTimeout(initPerfCharts, 60); setTimeout(initAdoptionCharts, 60); }
+  if (tab === 'adoption')    setTimeout(initAdoptionCharts, 60);
+  if (tab === 'business')    setTimeout(initAdoptionCharts, 60);
+  if (tab === 'quality')     setTimeout(initAdoptionCharts, 60);
+  if (tab === 'cost')        setTimeout(initAdoptionCharts, 60);
+  if (tab === 'governance')  setTimeout(initAdoptionCharts, 60);
+  setTimeout(function() {
+    if (typeof Highcharts !== 'undefined') {
+      Highcharts.charts.forEach(function(c) { if (c) c.reflow(); });
+    }
+  }, 80);
 }
 
 /* ================================================================
@@ -6349,12 +7214,7 @@ function openAgentDetail(agentKey) {
   if (!data) return;
 
   // Ensure My Agents pane is visible
-  document.querySelectorAll('.main-pane').forEach(p => p.classList.remove('active'));
-  document.getElementById('pane-my-agents').classList.add('active');
-  document.querySelectorAll('.tab-bar .tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.tab === 'my-agents');
-    t.setAttribute('aria-selected', String(t.dataset.tab === 'my-agents'));
-  });
+  showMainPane('my-agents');
 
   // Switch from grid to detail view
   document.getElementById('agents-grid-view').style.display = 'none';
@@ -7253,9 +8113,7 @@ function toggleMoreMenu(e) {
   const menu = document.getElementById('more-dropdown-main');
   const open = menu.classList.toggle('open');
   btn.setAttribute('aria-expanded', String(open));
-  // close date filter if open
-  document.getElementById('date-filter-dropdown').classList.remove('open');
-  document.getElementById('btn-date-filter').setAttribute('aria-expanded','false');
+  document.querySelectorAll('.widget-action-menu.open').forEach(function(m) { m.classList.remove('open'); });
 }
 
 function openHelpGuide() {
@@ -7264,29 +8122,6 @@ function openHelpGuide() {
   showToast('Help Guide — coming soon');
 }
 
-/* ================================================================
-   DATE FILTER DROPDOWN
-================================================================ */
-function toggleDateFilter(e) {
-  e.stopPropagation();
-  const btn = document.getElementById('btn-date-filter');
-  const dd  = document.getElementById('date-filter-dropdown');
-  const open = dd.classList.toggle('open');
-  btn.setAttribute('aria-expanded', String(open));
-  // close more menu if open
-  document.getElementById('more-dropdown-main').classList.remove('open');
-  document.getElementById('btn-more-main').setAttribute('aria-expanded','false');
-}
-
-function selectDateFilter(label, el) {
-  document.getElementById('date-filter-label').textContent = label;
-  document.querySelectorAll('.dfd-item').forEach(b => {
-    b.classList.toggle('active', b === el);
-    b.setAttribute('aria-selected', String(b === el));
-  });
-  document.getElementById('date-filter-dropdown').classList.remove('open');
-  document.getElementById('btn-date-filter').setAttribute('aria-expanded','false');
-}
 
 /* ================================================================
    OVERVIEW TAB — TIMELINE FILTER
@@ -7306,10 +8141,8 @@ function toggleOvFilter(e) {
   const btn = document.getElementById('btn-ov-filter');
   const dd  = document.getElementById('ov-filter-dropdown');
   const open = dd.classList.toggle('open');
+  btn.classList.toggle('open', open);
   btn.setAttribute('aria-expanded', String(open));
-  // close dashboard filter if open
-  const dashDd = document.getElementById('date-filter-dropdown');
-  if (dashDd) { dashDd.classList.remove('open'); document.getElementById('btn-date-filter').setAttribute('aria-expanded','false'); }
   document.getElementById('more-dropdown-main').classList.remove('open');
   document.getElementById('btn-more-main').setAttribute('aria-expanded','false');
 }
@@ -7323,7 +8156,9 @@ function selectOvFilter(label, el) {
     b.setAttribute('aria-selected', String(b === el));
   });
   document.getElementById('ov-filter-dropdown').classList.remove('open');
-  document.getElementById('btn-ov-filter').setAttribute('aria-expanded','false');
+  const btn = document.getElementById('btn-ov-filter');
+  btn.classList.remove('open');
+  btn.setAttribute('aria-expanded','false');
 
   // Update metric values & sub-labels
   const m = OV_METRICS[label] || OV_METRICS['Last 30 days'];
@@ -7339,10 +8174,10 @@ function selectOvFilter(label, el) {
 document.addEventListener('click', function() {
   document.getElementById('more-dropdown-main').classList.remove('open');
   document.getElementById('btn-more-main').setAttribute('aria-expanded','false');
-  const dd = document.getElementById('date-filter-dropdown');
-  if (dd) { dd.classList.remove('open'); document.getElementById('btn-date-filter').setAttribute('aria-expanded','false'); }
   const ovDd = document.getElementById('ov-filter-dropdown');
-  if (ovDd) { ovDd.classList.remove('open'); document.getElementById('btn-ov-filter').setAttribute('aria-expanded','false'); }
+  if (ovDd) { ovDd.classList.remove('open'); const ob = document.getElementById('btn-ov-filter'); ob.classList.remove('open'); ob.setAttribute('aria-expanded','false'); }
+  // close all widget action menus
+  document.querySelectorAll('.widget-action-menu.open').forEach(function(m) { m.classList.remove('open'); });
 });
 
 /* ================================================================
@@ -7352,8 +8187,7 @@ document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
   document.getElementById('more-dropdown-main').classList.remove('open');
   document.getElementById('btn-more-main').setAttribute('aria-expanded','false');
-  const dfd = document.getElementById('date-filter-dropdown');
-  if (dfd) { dfd.classList.remove('open'); document.getElementById('btn-date-filter').setAttribute('aria-expanded','false'); }
+  document.querySelectorAll('.widget-action-menu.open').forEach(function(m) { m.classList.remove('open'); });
   const ovDd = document.getElementById('ov-filter-dropdown');
   if (ovDd) { ovDd.classList.remove('open'); document.getElementById('btn-ov-filter').setAttribute('aria-expanded','false'); }
   if (document.getElementById('modal-bulk-upload').classList.contains('open')) closeUploadModal();
@@ -8086,6 +8920,648 @@ function confirmRollback() {
 const deployingOverlay = document.getElementById('modal-deploying');
 if (deployingOverlay) deployingOverlay.addEventListener('click', function(e) {
   if (e.target === this) { /* non-blocking — don't close on overlay click */ }
+});
+
+/* ================================================================
+   HIGHCHARTS — Global Theme
+================================================================ */
+(function() {
+  if (typeof Highcharts === 'undefined') return;
+  Highcharts.setOptions({
+    chart: { style:{ fontFamily:"'Inter',sans-serif" }, backgroundColor:'transparent', spacing:[10,6,8,6], animation:{ duration:500 } },
+    title:    { text:null },
+    subtitle: { text:null },
+    credits:  { enabled:false },
+    legend: { itemStyle:{ fontSize:'10px', fontWeight:'500', color:'#525560' }, symbolRadius:2, symbolHeight:8, symbolWidth:12, itemHoverStyle:{ color:'#1f1f1f' }, margin:8, padding:6 },
+    xAxis: { lineColor:'#e2e4e9', tickColor:'transparent', labels:{ style:{ fontSize:'10px', color:'#9e9e9e' } }, gridLineColor:'transparent' },
+    yAxis: { gridLineColor:'#f0f0f2', lineColor:'transparent', tickColor:'transparent', labels:{ style:{ fontSize:'10px', color:'#9e9e9e' } }, title:{ text:null } },
+    tooltip: { backgroundColor:'#1f1f1f', borderColor:'transparent', borderRadius:6, style:{ color:'#fff', fontSize:'11px' }, shadow:false },
+    plotOptions: { series:{ animation:{ duration:600 } } },
+    colors: ['#5252d4','#3d5afe','#2e7d32','#f59e0b','#c62828','#0891b2','#7c3aed','#059669']
+  });
+})();
+
+/* helper: add center label to a donut chart */
+function addDonutLabel(chart, html) {
+  if (!chart || !chart.series[0] || !chart.series[0].center) return;
+  chart.renderer.text(html, 0, 0)
+    .attr({ align:'center', zIndex:5 })
+    .css({ fontFamily:"'Inter',sans-serif" })
+    .add()
+    .attr({
+      x: chart.plotLeft + chart.series[0].center[0],
+      y: chart.plotTop  + chart.series[0].center[1] + 10
+    });
+}
+
+/* ================================================================
+   ADOPTION & USAGE — Chart Init
+================================================================ */
+var _adoptionChartsInited = false;
+var _perfChartsInited     = false;
+
+function initAdoptionCharts() {
+  if (typeof Highcharts === 'undefined' || _adoptionChartsInited) return;
+  _adoptionChartsInited = true;
+  var H = Highcharts;
+  var months = ['Oct','Nov','Dec','Jan','Feb','Mar'];
+
+  /* 1. Active Agents % — Donut */
+  /* Active = agents with at least 1 session; 7 of 12 total agents */
+  var c1 = H.chart('hc-active-agents', {
+    chart: { type:'pie', height:220, backgroundColor:'transparent', style:{ fontFamily:'Inter, sans-serif' } },
+    title: { text:'' },
+    credits: { enabled:false },
+    plotOptions: { pie:{
+      innerSize:'65%',
+      dataLabels:{ enabled:false },
+      showInLegend:true,
+      center:['42%','50%'],
+      borderWidth:0,
+      states:{ hover:{ halo:{ size:4 } } }
+    }},
+    legend: {
+      layout:'vertical', align:'right', verticalAlign:'middle',
+      symbolRadius:3,
+      itemMarginBottom:8,
+      itemStyle:{ fontSize:'11px', fontWeight:'500', color:'#4f4f4f' }
+    },
+    tooltip:{ pointFormat:'<b>{point.name}</b>: {point.y} agents<br/><span style="color:{point.color}">●</span> {point.percentage:.0f}% of total' },
+    series:[{ name:'Agents', data:[
+      { name:'Active',   y:7, color:'#5252d4' },
+      { name:'Inactive', y:5, color:'#e2e4e9' }
+    ]}]
+  });
+  addDonutLabel(c1, '<tspan style="font-size:22px;font-weight:700;fill:#1f1f1f">58%</tspan><tspan dy="16" x="0" style="font-size:11px;font-weight:500;fill:#6e6e6e">7 of 12 active</tspan>');
+
+  /* 2. Execution Volume — Column */
+  window._execVolData = {
+    product: { cats:['iMaintenance','iPermits','mRounds'], data:[3840,2150,1920] },
+    agent:   { cats:['Troubleshoot','Assist','Autofill','PPE','5 Whys','Detect','Recomm.','Plan','DWI'], data:[2103,1847,1204,892,871,534,672,0,0] }
+  };
+  window._execVolChart = H.chart('hc-exec-vol', {
+    chart: { type:'column', height:220 },
+    xAxis: { categories: window._execVolData.product.cats },
+    legend: { enabled:false },
+    plotOptions: { column:{ borderRadius:4, colorByPoint:true, dataLabels:{ enabled:true, style:{ fontSize:'10px', fontWeight:'600' } } } },
+    colors:['#5252d4','#7c3aed','#2e7d32'],
+    series:[{ name:'Sessions', data: window._execVolData.product.data }]
+  });
+
+  /* 3. Active Users — Sparkline */
+  H.chart('hc-active-users-spark', {
+    chart: { type:'area', height:64, margin:[0,0,0,0], spacing:[0,0,0,0] },
+    xAxis:{ visible:false }, yAxis:{ visible:false }, legend:{ enabled:false },
+    tooltip:{ pointFormat:'<b>{point.y}</b> users' },
+    series:[{ data:[188,201,210,225,218,234,247], color:'#5252d4', fillColor:'rgba(82,82,212,0.12)', lineWidth:1.5, marker:{ enabled:false } }]
+  });
+
+  /* 4. Usage Frequency — Histogram */
+  H.chart('hc-usage-freq', {
+    chart: { type:'column', height:220 },
+    xAxis: { categories:['1–2','3–5','6–10','11–20','21–50','51+'], title:{ text:'Interactions / user', style:{ fontSize:'10px',color:'#9e9e9e' } } },
+    legend: { enabled:false },
+    plotOptions: { column:{ borderRadius:2, groupPadding:0.05, pointPadding:0.02 } },
+    series:[{ name:'Users', data:[18,42,67,54,38,28], color:'#5252d4' }]
+  });
+
+  /* 5. Adoption Trend — Line with WoW/MoM toggle */
+  window._adoptionTrendData = {
+    wow: { cats:['W1','W2','W3','W4','W5','W6','W7','W8','W9','W10','W11','W12'],
+           series:[
+             { name:'Active Users', data:[140,152,158,163,171,178,189,194,201,212,228,247], color:'#5252d4', marker:{ symbol:'circle',radius:2.5 } },
+             { name:'Δ WoW', type:'column', data:[0,12,6,5,8,7,11,5,7,11,16,19], color:'rgba(82,82,212,0.22)', yAxis:1 }
+           ]},
+    mom: { cats:['Oct','Nov','Dec','Jan','Feb','Mar'],
+           series:[
+             { name:'Active Users', data:[140,163,189,212,228,247], color:'#5252d4', marker:{ symbol:'circle',radius:3 } },
+             { name:'Δ MoM', type:'column', data:[0,23,26,23,16,19], color:'rgba(82,82,212,0.22)', yAxis:1 }
+           ]}
+  };
+  window._adoptionTrendChart = H.chart('hc-adoption-trend', {
+    chart:{ height:220 },
+    xAxis:{ categories: window._adoptionTrendData.wow.cats },
+    yAxis:[ { title:{ text:null } }, { title:{ text:null }, opposite:true, gridLineColor:'transparent' } ],
+    legend:{ enabled:true },
+    series: window._adoptionTrendData.wow.series
+  });
+
+  /* 6. Tasks Automated — Donut */
+  var c6 = H.chart('hc-tasks-auto', {
+    chart:{ type:'pie', height:220 },
+    plotOptions:{ pie:{ innerSize:'62%', dataLabels:{ enabled:false }, showInLegend:true, center:['40%','50%'] } },
+    legend:{ layout:'vertical', align:'right', verticalAlign:'middle' },
+    series:[{ name:'Tasks', data:[
+      { name:'Automated', y:78, color:'#5252d4' },
+      { name:'Manual',    y:22, color:'#e2e4e9' }
+    ]}]
+  });
+  addDonutLabel(c6, '<tspan style="font-size:18px;font-weight:700;fill:#1f1f1f">78%</tspan><tspan dy="14" x="0" style="font-size:9px;fill:#9e9e9e">automated</tspan>');
+
+  /* 12. Avg Processing Latency — Multi-line */
+  H.chart('hc-proc-latency', {
+    chart:{ type:'line', height:220 },
+    xAxis:{ categories: months },
+    yAxis:{ labels:{ formatter:function(){ return this.value+'ms'; } } },
+    series:[
+      { name:'Troubleshoot', data:[320,290,275,260,248,232], color:'#5252d4', marker:{ symbol:'circle',radius:2.5 } },
+      { name:'Assist',       data:[180,172,165,158,160,155], color:'#3d5afe', marker:{ symbol:'circle',radius:2.5 } },
+      { name:'Detect',       data:[410,390,370,355,348,342], color:'#0891b2', marker:{ symbol:'circle',radius:2.5 } }
+    ],
+    tooltip:{ valueSuffix:' ms', shared:true }
+  });
+
+  /* 13. Error Rate — Line with alert zone */
+  H.chart('hc-error-rate', {
+    chart:{ type:'line', height:220 },
+    xAxis:{ categories: months },
+    yAxis:{ max:8, labels:{ formatter:function(){ return this.value+'%'; } },
+      plotLines:[{ value:5, color:'#c62828', dashStyle:'Dash', width:1.5, label:{ text:'Alert 5%', style:{ color:'#c62828',fontSize:'9px' } } }] },
+    series:[{ name:'Error Rate', data:[5.2,4.8,4.1,3.6,3.2,2.1], color:'#c62828', lineWidth:2.5,
+      marker:{ symbol:'circle',radius:3 },
+      zones:[{ value:3,color:'#c62828' },{ color:'#f59e0b' }]
+    }],
+    legend:{ enabled:false }, tooltip:{ valueSuffix:'%' }
+  });
+
+  /* 14. Human Escalation Rate — Stacked Bar */
+  H.chart('hc-escalation', {
+    chart:{ type:'bar', height:220 },
+    xAxis:{ categories:['Troubleshoot','Assist','5 Whys','Detect','PPE'] },
+    yAxis:{ max:100, labels:{ formatter:function(){ return this.value+'%'; } } },
+    plotOptions:{ bar:{ stacking:'percent', borderRadius:3 } },
+    series:[
+      { name:'Automated', data:[82,91,78,88,95], color:'#5252d4' },
+      { name:'Escalated', data:[18, 9,22,12, 5], color:'#e2e4e9' }
+    ]
+  });
+
+  /* 15. Override Rate — Sparkline */
+  H.chart('hc-override-spark', {
+    chart:{ type:'line', height:64, margin:[0,0,0,0], spacing:[0,0,0,0] },
+    xAxis:{ visible:false }, yAxis:{ visible:false }, legend:{ enabled:false },
+    series:[{ data:[6.1,6.8,7.2,7.8,8.1,7.9,8.4], color:'#f59e0b', lineWidth:1.5, marker:{ enabled:false } }]
+  });
+
+  /* 16. Rejection Reasons — Donut */
+  H.chart('hc-rejection', {
+    chart:{ type:'pie', height:220 },
+    plotOptions:{ pie:{ innerSize:'55%', dataLabels:{ enabled:false }, showInLegend:true, center:['38%','50%'] } },
+    legend:{ layout:'vertical', align:'right', verticalAlign:'middle' },
+    series:[{ name:'Rejections', data:[
+      { name:'Low Confidence', y:38, color:'#c62828' },
+      { name:'Data Missing',   y:28, color:'#f59e0b' },
+      { name:'Out of Scope',   y:18, color:'#5252d4' },
+      { name:'User Override',  y:10, color:'#0891b2' },
+      { name:'Other',          y: 6, color:'#e2e4e9' }
+    ]}]
+  });
+
+  /* 17. Confidence Score Distribution — Box Plot */
+  H.chart('hc-confidence', {
+    chart:{ type:'boxplot', height:220 },
+    xAxis:{ categories:['Troubleshoot','Assist','5 Whys','Detect','PPE','Autofill'] },
+    yAxis:{ min:0.5, max:1, labels:{ formatter:function(){ return (this.value*100).toFixed(0)+'%'; } } },
+    plotOptions:{ boxplot:{ fillColor:'rgba(82,82,212,0.15)', color:'#5252d4', whiskerLength:'60%', medianWidth:2 } },
+    series:[{ name:'Confidence', data:[
+      [0.72,0.81,0.87,0.93,0.98],[0.78,0.86,0.91,0.96,0.99],
+      [0.65,0.74,0.82,0.89,0.95],[0.68,0.77,0.85,0.91,0.97],
+      [0.80,0.89,0.94,0.97,0.99],[0.70,0.79,0.86,0.92,0.97]
+    ]}],
+    legend:{ enabled:false },
+    tooltip:{ headerFormat:'{point.key}<br/>', pointFormat:'Min:{point.low:.0%} Q1:{point.q1:.0%} Median:{point.median:.0%} Q3:{point.q3:.0%} Max:{point.high:.0%}' }
+  });
+
+  /* 18. Error Reduction Impact — Sparkline */
+  H.chart('hc-error-impact-spark', {
+    chart:{ type:'area', height:64, margin:[0,0,0,0], spacing:[0,0,0,0] },
+    xAxis:{ visible:false }, yAxis:{ visible:false }, legend:{ enabled:false },
+    series:[{ data:[4987,4200,3600,2900,2200,1842], color:'#2e7d32', fillColor:'rgba(46,125,50,0.12)', lineWidth:1.5, marker:{ enabled:false } }]
+  });
+
+  /* 19. ROI Contribution — Solid Gauge */
+  (function() {
+    if (H.seriesTypes && H.seriesTypes.solidgauge) {
+      H.chart('hc-roi', {
+        chart:{ type:'solidgauge', height:220 },
+        pane:{ startAngle:0, endAngle:360, center:['50%','50%'], size:'80%',
+          background:[{ backgroundColor:'#f0f0f2', innerRadius:'70%', outerRadius:'100%', borderWidth:0 }] },
+        yAxis:{ min:0, max:400, lineWidth:0, tickWidth:0, minorTickInterval:null, labels:{ enabled:false } },
+        plotOptions:{ solidgauge:{ dataLabels:{ borderWidth:0, useHTML:true, y:-22,
+          format:'<div style="text-align:center"><span style="font-size:20px;font-weight:700;color:#1f1f1f">342%</span><br/><span style="font-size:9px;color:#9e9e9e">ROI</span><br/><span style="font-size:11px;font-weight:600;color:#2e7d32">$2.4M saved</span></div>' } } },
+        series:[{ name:'ROI', data:[342], color:'#5252d4', innerRadius:'70%', outerRadius:'100%' }],
+        legend:{ enabled:false }
+      });
+    } else {
+      var cr = H.chart('hc-roi', {
+        chart:{ type:'pie', height:220 },
+        plotOptions:{ pie:{ innerSize:'65%', dataLabels:{ enabled:false }, center:['50%','50%'] } },
+        series:[{ data:[{ name:'ROI', y:342, color:'#5252d4' },{ name:'', y:58, color:'#f0f0f2' }] }],
+        legend:{ enabled:false }
+      });
+      addDonutLabel(cr, '<tspan style="font-size:18px;font-weight:700;fill:#1f1f1f">342%</tspan><tspan dy="14" x="0" style="font-size:9px;fill:#2e7d32">ROI</tspan>');
+    }
+  })();
+
+  /* 20. Process Time Reduction — Dual Column */
+  H.chart('hc-proc-time', {
+    chart:{ type:'column', height:220 },
+    xAxis:{ categories:['Troubleshoot','Assist','5 Whys','Detect','PPE'] },
+    yAxis:{ title:{ text:'Minutes', style:{ fontSize:'10px' } } },
+    plotOptions:{ column:{ borderRadius:3 } },
+    series:[
+      { name:'Before AI', data:[45,22,68,38,15], color:'#e2e4e9' },
+      { name:'With AI',   data:[18, 8,24,14, 6], color:'#5252d4' }
+    ]
+  });
+
+  /* 21. CSAT — Line */
+  H.chart('hc-csat', {
+    chart:{ type:'line', height:220 },
+    xAxis:{ categories: months },
+    yAxis:{ min:3, max:5, tickInterval:0.5,
+      plotLines:[{ value:4, color:'#2e7d32', dashStyle:'Dash', width:1, label:{ text:'Target 4.0', style:{ color:'#2e7d32',fontSize:'9px' } } }] },
+    series:[{ name:'CSAT', data:[3.8,3.9,4.1,4.1,4.2,4.3], color:'#0891b2', lineWidth:2.5,
+      marker:{ symbol:'circle',radius:3 } }],
+    legend:{ enabled:false }, tooltip:{ valueSuffix:' / 5' }
+  });
+
+  /* 22. Cost per Task — Sparkline */
+  H.chart('hc-cost-spark', {
+    chart:{ type:'area', height:64, margin:[0,0,0,0], spacing:[0,0,0,0] },
+    xAxis:{ visible:false }, yAxis:{ visible:false }, legend:{ enabled:false },
+    series:[{ data:[0.051,0.048,0.044,0.040,0.036,0.031], color:'#2e7d32', fillColor:'rgba(46,125,50,0.12)', lineWidth:1.5, marker:{ enabled:false } }]
+  });
+
+  /* 23. Compute Cost per Agent — Column */
+  H.chart('hc-compute-cost', {
+    chart:{ type:'column', height:220 },
+    xAxis:{ categories:['Troubleshoot','Assist','Autofill','PPE','5 Whys','Detect','Recomm.'] },
+    yAxis:{ labels:{ formatter:function(){ return '$'+this.value; } } },
+    legend:{ enabled:false },
+    plotOptions:{ column:{ borderRadius:4, colorByPoint:true, dataLabels:{ enabled:true, formatter:function(){ return '$'+this.y; }, style:{ fontSize:'9px' } } } },
+    colors:['#5252d4','#3d5afe','#059669','#7c3aed','#f59e0b','#0891b2','#2e7d32'],
+    series:[{ name:'$/month', data:[420,318,290,184,165,248,140] }]
+  });
+
+  /* 24. Resource Utilization — Multi-line */
+  H.chart('hc-resource-util', {
+    chart:{ type:'line', height:220 },
+    xAxis:{ categories: months },
+    yAxis:{ max:100, labels:{ formatter:function(){ return this.value+'%'; } } },
+    series:[
+      { name:'CPU %',    data:[48,52,55,58,54,61], color:'#5252d4', marker:{ symbol:'circle',radius:2.5 } },
+      { name:'GPU %',    data:[32,38,42,40,38,44], color:'#0891b2', marker:{ symbol:'circle',radius:2.5 } },
+      { name:'Memory %', data:[61,63,67,65,68,71], color:'#f59e0b', marker:{ symbol:'circle',radius:2.5 } }
+    ],
+    tooltip:{ valueSuffix:'%', shared:true }
+  });
+
+  /* 25. Storage Usage — Area */
+  H.chart('hc-storage', {
+    chart:{ type:'area', height:220 },
+    xAxis:{ categories: months },
+    series:[{ name:'Storage (GB)', data:[120,148,172,201,234,268], color:'#7c3aed', fillColor:'rgba(124,58,237,0.12)', lineWidth:2, marker:{ symbol:'circle',radius:3 } }],
+    legend:{ enabled:false }, tooltip:{ valueSuffix:' GB' }
+  });
+
+  /* 26. Data Ingestion Volume — Area */
+  H.chart('hc-ingestion', {
+    chart:{ type:'area', height:220 },
+    xAxis:{ categories: months },
+    series:[
+      { name:'Documents', data:[2100,2450,2800,3100,2950,3400], color:'#5252d4', fillColor:'rgba(82,82,212,0.1)', lineWidth:2, marker:{ symbol:'circle',radius:2.5 } },
+      { name:'Records',   data:[18200,20100,23400,25800,24200,28600], color:'#0891b2', fillColor:'rgba(8,145,178,0.06)', lineWidth:2, marker:{ symbol:'circle',radius:2.5 } }
+    ],
+    tooltip:{ shared:true }
+  });
+
+  /* 27. Downtime/Uptime — Donut */
+  var c27 = H.chart('hc-uptime', {
+    chart:{ type:'pie', height:220 },
+    plotOptions:{ pie:{ innerSize:'62%', dataLabels:{ enabled:false }, showInLegend:true, center:['40%','50%'] } },
+    legend:{ layout:'vertical', align:'right', verticalAlign:'middle' },
+    series:[{ name:'Availability', data:[
+      { name:'Uptime',   y:99.2, color:'#2e7d32' },
+      { name:'Downtime', y: 0.8, color:'#e2e4e9' }
+    ]}]
+  });
+  addDonutLabel(c27, '<tspan style="font-size:18px;font-weight:700;fill:#1f1f1f">99.2%</tspan><tspan dy="14" x="0" style="font-size:9px;fill:#9e9e9e">uptime</tspan>');
+
+  /* 28. Retrain Frequency — Column */
+  H.chart('hc-retrain', {
+    chart:{ type:'column', height:220 },
+    xAxis:{ categories:['Troubleshoot','Assist','5 Whys','Detect','PPE','Autofill','Recomm.'] },
+    yAxis:{ allowDecimals:false, title:{ text:'Retrains', style:{ fontSize:'10px' } } },
+    legend:{ enabled:false },
+    plotOptions:{ column:{ borderRadius:3, colorByPoint:true, dataLabels:{ enabled:true, style:{ fontSize:'9px' } } } },
+    colors:['#5252d4','#3d5afe','#f59e0b','#0891b2','#7c3aed','#059669','#2e7d32'],
+    series:[{ name:'Retrains', data:[4,3,2,5,2,3,1] }]
+  });
+
+  /* 30. Audit Logs Coverage — Solid Gauge */
+  (function() {
+    if (H.seriesTypes && H.seriesTypes.solidgauge) {
+      H.chart('hc-audit-logs', {
+        chart:{ type:'solidgauge', height:220 },
+        pane:{ startAngle:-90, endAngle:90, center:['50%','78%'], size:'130%',
+          background:[{ backgroundColor:'#f0f0f2', innerRadius:'60%', outerRadius:'100%', shape:'arc', borderWidth:0 }] },
+        yAxis:{ min:0, max:100, stops:[[0.7,'#c62828'],[0.9,'#f59e0b'],[1,'#2e7d32']], lineWidth:0, tickWidth:0, minorTickInterval:null,
+          labels:{ distance:16, style:{ fontSize:'10px',color:'#9e9e9e' } } },
+        plotOptions:{ solidgauge:{ dataLabels:{ y:-26, borderWidth:0, useHTML:true,
+          format:'<div style="text-align:center"><span style="font-size:22px;font-weight:700;color:#1f1f1f">{y}%</span><br/><span style="font-size:10px;color:#9e9e9e">logged</span></div>' } } },
+        series:[{ name:'Coverage', data:[94], innerRadius:'60%', outerRadius:'100%' }],
+        legend:{ enabled:false }
+      });
+    }
+  })();
+
+  /* 31. Policy Compliance — Sparkline */
+  H.chart('hc-compliance-spark', {
+    chart:{ type:'line', height:64, margin:[0,0,0,0], spacing:[0,0,0,0] },
+    xAxis:{ visible:false }, yAxis:{ visible:false, min:90, max:100 }, legend:{ enabled:false },
+    series:[{ data:[95.2,96.1,96.8,97.2,97.5,97.8], color:'#2e7d32', lineWidth:1.5, marker:{ enabled:false } }]
+  });
+
+  /* 32. Access Control Coverage — Donut */
+  var c32 = H.chart('hc-access-ctrl', {
+    chart:{ type:'pie', height:220 },
+    plotOptions:{ pie:{ innerSize:'62%', dataLabels:{ enabled:false }, showInLegend:true, center:['40%','50%'] } },
+    legend:{ layout:'vertical', align:'right', verticalAlign:'middle' },
+    series:[{ name:'Access', data:[
+      { name:'Correct',   y:96.4, color:'#2e7d32' },
+      { name:'Incorrect', y: 3.6, color:'#c62828' }
+    ]}]
+  });
+  addDonutLabel(c32, '<tspan style="font-size:18px;font-weight:700;fill:#1f1f1f">96.4%</tspan><tspan dy="14" x="0" style="font-size:9px;fill:#9e9e9e">correct</tspan>');
+
+  /* 33. Compliance Breaches — Column */
+  H.chart('hc-compliance-breaches', {
+    chart:{ type:'column', height:220 },
+    xAxis:{ categories:['Oct','Nov','Dec','Jan','Feb','Mar'] },
+    yAxis:{ allowDecimals:false,
+      plotLines:[{ value:3, color:'#c62828', dashStyle:'Dash', width:1.5, label:{ text:'Alert threshold', style:{ color:'#c62828',fontSize:'9px' } } }] },
+    legend:{ enabled:false },
+    plotOptions:{ column:{ borderRadius:3, colorByPoint:true } },
+    colors:['#e2e4e9','#e2e4e9','#f59e0b','#e2e4e9','#f59e0b','#c62828'],
+    series:[{ name:'Breaches', data:[1,2,4,1,3,3] }]
+  });
+}
+
+/* Toggle helpers */
+function switchExecVol(mode, btn) {
+  btn.closest('.widget-toggle').querySelectorAll('.wtgl-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  if (!window._execVolChart) return;
+  var d = window._execVolData[mode];
+  window._execVolChart.xAxis[0].setCategories(d.cats, false);
+  window._execVolChart.series[0].setData(d.data, true, { duration:400 });
+}
+
+function switchAdoptionTrend(mode, btn) {
+  btn.closest('.widget-toggle').querySelectorAll('.wtgl-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  if (!window._adoptionTrendChart) return;
+  var d = window._adoptionTrendData[mode];
+  window._adoptionTrendChart.xAxis[0].setCategories(d.cats, false);
+  while (window._adoptionTrendChart.series.length > 0) { window._adoptionTrendChart.series[0].remove(false); }
+  d.series.forEach(function(s){ window._adoptionTrendChart.addSeries(s, false); });
+  window._adoptionTrendChart.redraw({ duration:400 });
+}
+
+/* ================================================================
+   PERFORMANCE & EFFICIENCY — Chart Init
+================================================================ */
+function initPerfCharts() {
+  if (typeof Highcharts === 'undefined' || _perfChartsInited) return;
+  _perfChartsInited = true;
+  var H = Highcharts;
+  var months = ['Oct','Nov','Dec','Jan','Feb','Mar'];
+
+  /* P1. Success Rate */
+  H.chart('perf-success-rate', {
+    chart:{ type:'line', height:240 },
+    xAxis:{ categories: months },
+    yAxis:{ min:86, max:100, labels:{ formatter:function(){ return this.value+'%'; } } },
+    series:[
+      { name:'Overall',      data:[91.2,92.4,93.1,93.8,94.0,94.2], color:'#5252d4', lineWidth:2.5, marker:{ symbol:'circle',radius:3 } },
+      { name:'Troubleshoot', data:[90.1,91.8,92.5,93.4,93.8,93.1], color:'#3d5afe', dashStyle:'Dash', marker:{ symbol:'circle',radius:2 } },
+      { name:'Assist',       data:[93.2,94.1,95.0,95.6,95.9,95.8], color:'#2e7d32', dashStyle:'Dash', marker:{ symbol:'circle',radius:2 } }
+    ],
+    tooltip:{ valueSuffix:'%', shared:true }
+  });
+
+  /* P2. Avg Response Time with SLA + spikes */
+  H.chart('perf-response-time', {
+    chart:{ type:'line', height:240 },
+    xAxis:{ categories: months },
+    yAxis:{ labels:{ formatter:function(){ return this.value+'s'; } },
+      plotLines:[{ value:3.0, color:'#c62828', width:2, dashStyle:'Dash', label:{ text:'SLA 3.0s', style:{ color:'#c62828',fontSize:'9px' } } }] },
+    series:[
+      { name:'Avg Response', data:[3.2,2.9,2.8,2.4,2.5,2.3], color:'#5252d4', lineWidth:2.5, marker:{ symbol:'circle',radius:3 } },
+      { name:'P95 Latency',  data:[4.8,4.2,4.0,3.6,3.8,3.4], color:'#f59e0b', lineWidth:1.5, dashStyle:'ShortDot', marker:{ symbol:'circle',radius:2 } },
+      { name:'SLA Breach', type:'scatter', data:[[0,3.2]], color:'#c62828', marker:{ symbol:'triangle',radius:6 }, tooltip:{ pointFormat:'<b>SLA Breach: {point.y}s</b>' } }
+    ],
+    tooltip:{ valueSuffix:'s' }
+  });
+
+  /* P3. Task Completion Rate — Semi-circle Solid Gauge */
+  (function() {
+    if (H.seriesTypes && H.seriesTypes.solidgauge) {
+      H.chart('perf-task-completion', {
+        chart:{ type:'solidgauge', height:240 },
+        pane:{ startAngle:-90, endAngle:90, center:['50%','80%'], size:'150%',
+          background:[{ backgroundColor:'#f0f0f2', innerRadius:'60%', outerRadius:'100%', shape:'arc', borderWidth:0 }] },
+        yAxis:{ min:0, max:100, stops:[[0.7,'#c62828'],[0.9,'#f59e0b'],[1,'#2e7d32']], lineWidth:0, tickWidth:0, minorTickInterval:null,
+          labels:{ distance:20, style:{ fontSize:'10px',color:'#9e9e9e' } } },
+        plotOptions:{ solidgauge:{ dataLabels:{ y:-32, borderWidth:0, useHTML:true,
+          format:'<div style="text-align:center"><span style="font-size:28px;font-weight:700;color:#1f1f1f">{y}%</span><br/><span style="font-size:11px;color:#2e7d32;font-weight:600">On target ✓</span></div>' } } },
+        series:[{ name:'Completion Rate', data:[87], innerRadius:'60%', outerRadius:'100%' }],
+        legend:{ enabled:false }
+      });
+    }
+  })();
+
+  /* P4. Throughput per Agent — Horizontal Bar */
+  H.chart('perf-throughput', {
+    chart:{ type:'bar', height:240 },
+    xAxis:{ categories:['Troubleshoot','Assist','Autofill','PPE','5 Whys','Detect','Recommendation','Plan','DWI'] },
+    yAxis:{ title:{ text:'Sessions completed', style:{ fontSize:'10px' } } },
+    legend:{ enabled:false },
+    plotOptions:{ bar:{ borderRadius:3, colorByPoint:true, dataLabels:{ enabled:true, style:{ fontSize:'10px',fontWeight:'600' } } } },
+    colors:['#5252d4','#3d5afe','#059669','#7c3aed','#f59e0b','#0891b2','#2e7d32','#a8b4f8','#e2e4e9'],
+    series:[{ name:'Sessions', data:[2103,1847,1204,892,871,534,672,0,0] }]
+  });
+
+  /* P5. Latency Distribution — Full-width Histogram + Box Plot */
+  H.chart('perf-latency-dist', {
+    chart:{ height:260 },
+    xAxis:[{ categories:['0–0.5s','0.5–1s','1–1.5s','1.5–2s','2–3s','3–4s','4–5s','5s+'], title:{ text:'Response time bucket', style:{ fontSize:'10px' } } }],
+    yAxis:[
+      { title:{ text:'Request count', style:{ fontSize:'10px' } }, gridLineColor:'#f0f0f2' },
+      { title:{ text:'Latency (s)', style:{ fontSize:'10px' } }, opposite:true, gridLineColor:'transparent' }
+    ],
+    plotOptions:{ column:{ borderRadius:3, groupPadding:0.03, pointPadding:0.01 } },
+    series:[
+      { type:'column', name:'Requests', data:[82,210,348,264,138,52,18,6], color:'rgba(82,82,212,0.35)', yAxis:0 },
+      { type:'boxplot', name:'Latency (s)', data:[[0.2,0.8,1.3,1.9,3.2]], color:'#5252d4', fillColor:'rgba(82,82,212,0.18)', whiskerLength:'70%', medianWidth:2.5, yAxis:1,
+        tooltip:{ headerFormat:'', pointFormat:'Min:{point.low}s · Q1:{point.q1}s · Median:{point.median}s · Q3:{point.q3}s · Max:{point.high}s' } }
+    ],
+    legend:{ enabled:true }
+  });
+}
+
+/* ================================================================
+   WIDGET ACTION BUTTONS — download + more
+================================================================ */
+(function injectWidgetActions() {
+  var dlSVG = '<svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true"><path d="M7.5 1.5v8M4.5 6.5l3 3 3-3M1.5 11.5v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var moreSVG = '<svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true"><circle cx="7.5" cy="2.5" r="1.2" fill="currentColor"/><circle cx="7.5" cy="7.5" r="1.2" fill="currentColor"/><circle cx="7.5" cy="12.5" r="1.2" fill="currentColor"/></svg>';
+
+  document.querySelectorAll('.widget-header').forEach(function(header, i) {
+    var uid = 'wgt' + i;
+    var wrap = document.createElement('div');
+    wrap.className = 'widget-actions';
+    wrap.innerHTML =
+      '<div class="widget-action-wrap">' +
+        '<button class="widget-action-btn" aria-label="Download widget" aria-haspopup="true" aria-expanded="false" title="Download" onclick="toggleWidgetMenu(\'dl-' + uid + '\',event)">' + dlSVG + '</button>' +
+        '<div class="widget-action-menu" id="dl-' + uid + '">' +
+          '<button class="wam-item" onclick="widgetDownload(\'PNG\',event)">PNG</button>' +
+          '<button class="wam-item" onclick="widgetDownload(\'JPEG\',event)">JPEG</button>' +
+          '<button class="wam-item" onclick="widgetDownload(\'PDF\',event)">PDF</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="widget-action-wrap">' +
+        '<button class="widget-action-btn" aria-label="More options" aria-haspopup="true" aria-expanded="false" title="More" onclick="toggleWidgetMenu(\'more-' + uid + '\',event)">' + moreSVG + '</button>' +
+        '<div class="widget-action-menu" id="more-' + uid + '">' +
+          '<button class="wam-item" onclick="widgetViewDetails(event)">View Details</button>' +
+        '</div>' +
+      '</div>';
+    header.appendChild(wrap);
+  });
+})();
+
+function toggleWidgetMenu(menuId, e) {
+  e.stopPropagation();
+  var menu = document.getElementById(menuId);
+  if (!menu) return;
+  var wasOpen = menu.classList.contains('open');
+  document.querySelectorAll('.widget-action-menu.open').forEach(function(m) { m.classList.remove('open'); });
+  if (!wasOpen) { menu.classList.add('open'); }
+}
+
+function widgetDownload(format, e) {
+  e.stopPropagation();
+  document.querySelectorAll('.widget-action-menu.open').forEach(function(m) { m.classList.remove('open'); });
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1b1b3c;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-family:var(--font-inter);z-index:9999;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.2);';
+  t.textContent = 'Downloading as ' + format + '\u2026';
+  document.body.appendChild(t);
+  setTimeout(function() { document.body.removeChild(t); }, 2400);
+}
+
+function widgetViewDetails(e) {
+  e.stopPropagation();
+  document.querySelectorAll('.widget-action-menu.open').forEach(function(m) { m.classList.remove('open'); });
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1b1b3c;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-family:var(--font-inter);z-index:9999;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.2);';
+  t.textContent = 'Opening widget details\u2026';
+  document.body.appendChild(t);
+  setTimeout(function() { document.body.removeChild(t); }, 2400);
+}
+
+/* ================================================================
+   DASHBOARD WIDGET DRAG & DROP
+================================================================ */
+var _dndSrc    = null;
+var _dndGrid   = null;
+
+
+function initDashDnD() {
+  document.querySelectorAll('.dash-widget').forEach(function(widget) {
+    widget.setAttribute('draggable', 'true');
+    widget.addEventListener('dragstart',  _dndStart);
+    widget.addEventListener('dragend',    _dndEnd);
+    widget.addEventListener('dragover',   _dndOver);
+    widget.addEventListener('dragleave',  _dndLeave);
+    widget.addEventListener('drop',       _dndDrop);
+  });
+}
+
+function _dndStart(e) {
+  // Cancel if originating from a button/input inside the widget
+  if (e.target.closest('button, input, select, textarea, a, .widget-action-wrap')) {
+    e.preventDefault();
+    return;
+  }
+  _dndSrc  = this;
+  _dndGrid = this.parentNode;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', '');
+  var self = this;
+  setTimeout(function() {
+    self.classList.add('dnd-dragging');
+    if (_dndGrid) _dndGrid.classList.add('dnd-active');
+  }, 0);
+}
+
+function _dndEnd(e) {
+  document.querySelectorAll('.dnd-dragging').forEach(function(el) { el.classList.remove('dnd-dragging'); });
+  document.querySelectorAll('.dnd-over').forEach(function(el)     { el.classList.remove('dnd-over');     });
+  document.querySelectorAll('.dnd-active').forEach(function(el)   { el.classList.remove('dnd-active');   });
+  // Reflow Highcharts after layout change
+  setTimeout(function() {
+    if (window.Highcharts) {
+      Highcharts.charts.forEach(function(c) { if (c) c.reflow(); });
+    }
+  }, 60);
+  _dndSrc  = null;
+  _dndGrid = null;
+}
+
+function _dndOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  if (!_dndSrc || this === _dndSrc) return;
+  // Only allow drop within the same grid
+  if (this.parentNode !== _dndGrid) return;
+  document.querySelectorAll('.dnd-over').forEach(function(el) { el.classList.remove('dnd-over'); });
+  this.classList.add('dnd-over');
+}
+
+function _dndLeave(e) {
+  // Only remove if we've actually left this element (not just entered a child)
+  if (!e.currentTarget.contains(e.relatedTarget)) {
+    this.classList.remove('dnd-over');
+  }
+}
+
+function _dndDrop(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  if (!_dndSrc || this === _dndSrc) return;
+  if (this.parentNode !== _dndGrid) return;
+  this.classList.remove('dnd-over');
+
+  var grid    = _dndGrid;
+  var widgets = Array.from(grid.querySelectorAll('.dash-widget'));
+  var srcIdx  = widgets.indexOf(_dndSrc);
+  var tgtIdx  = widgets.indexOf(this);
+  if (srcIdx < 0 || tgtIdx < 0) return;
+
+  if (srcIdx < tgtIdx) {
+    grid.insertBefore(_dndSrc, this.nextSibling);
+  } else {
+    grid.insertBefore(_dndSrc, this);
+  }
+}
+
+/* ----------------------------------------------------------------
+   Init on load
+---------------------------------------------------------------- */
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(initAdoptionCharts, 100);
+  setTimeout(initDashDnD, 150);
 });
 
 </script>
