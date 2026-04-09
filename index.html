@@ -4414,8 +4414,7 @@
     .avt-table tr:last-child td { border-bottom: none; }
     .avt-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 5px; vertical-align: middle; }
   </style>
-  <script src="https://code.highcharts.com/highcharts.js"></script>
-  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  <script src="vendor/highcharts.js"></script>
   <script src="vendor/highcharts-more.js"></script>
   <script src="vendor/solid-gauge.js"></script>
 </head>
@@ -9456,6 +9455,7 @@ function initPerfCharts() {
         '<div class="widget-action-menu" id="more-' + uid + '">' +
           '<button class="wam-item" onclick="widgetViewDetails(event)">View Details</button>' +
           '<button class="wam-item" onclick="widgetEmail(event)">Email</button>' +
+          '<button class="wam-item" onclick="widgetExpandFull(event, this)">Expand Full</button>' +
         '</div>' +
       '</div>';
     header.appendChild(wrap);
@@ -9499,6 +9499,53 @@ function widgetEmail(e) {
   t.textContent = 'Preparing email\u2026';
   document.body.appendChild(t);
   setTimeout(function() { document.body.removeChild(t); }, 2400);
+}
+
+function widgetExpandFull(e, btn) {
+  e.stopPropagation();
+  document.querySelectorAll('.widget-action-menu.open').forEach(function(m) { m.classList.remove('open'); });
+  var widget = btn.closest('.dash-widget');
+  if (!widget) return;
+
+  // Build overlay
+  var overlay = document.createElement('div');
+  overlay.id = 'widget-expand-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;';
+
+  var panel = document.createElement('div');
+  panel.style.cssText = 'background:#fff;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,0.22);width:100%;max-width:900px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;';
+
+  // Header row with title + close button
+  var titleEl = widget.querySelector('.widget-title');
+  var titleText = titleEl ? titleEl.textContent : 'Widget';
+  var hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #e2e4e9;flex-shrink:0;';
+  hdr.innerHTML = '<span style="font-family:var(--font-inter);font-size:14px;font-weight:600;color:#1b1b3c;">' + titleText + '</span>' +
+    '<button onclick="document.getElementById(\'widget-expand-overlay\').remove()" style="width:32px;height:32px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:6px;color:#525560;font-size:18px;line-height:1;" title="Close">' +
+    '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>';
+
+  // Clone widget content (chart + body, skip header)
+  var body = document.createElement('div');
+  body.style.cssText = 'flex:1;overflow:auto;padding:20px 24px;';
+  Array.from(widget.children).forEach(function(child) {
+    if (!child.classList.contains('widget-header')) {
+      body.appendChild(child.cloneNode(true));
+    }
+  });
+
+  panel.appendChild(hdr);
+  panel.appendChild(body);
+  overlay.appendChild(panel);
+  document.body.appendChild(overlay);
+
+  // Close on backdrop click
+  overlay.addEventListener('click', function(ev) {
+    if (ev.target === overlay) overlay.remove();
+  });
+
+  // Close on Escape
+  function onEsc(ev) { if (ev.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', onEsc); } }
+  document.addEventListener('keydown', onEsc);
 }
 
 /* ================================================================
