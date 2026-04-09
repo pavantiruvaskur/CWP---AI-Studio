@@ -1219,7 +1219,17 @@
       font-size: 10px;
       font-weight: 600;
       letter-spacing: 0.15px;
-      margin-bottom: 5px;
+    }
+    /* Pin product badge to bottom-right of card */
+    .agent-card .product-badge {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      margin: 0;
+    }
+    /* Prevent action buttons sliding under the badge */
+    .agent-card .agent-card-actions {
+      padding-right: 96px;
     }
     .product-badge::before {
       content: '';
@@ -4701,7 +4711,7 @@
       </div>
 
       <!-- Date / Time Range -->
-      <div class="cfilter-wrap">
+      <div class="cfilter-wrap" id="cfilter-date-wrap">
         <button class="cfilter-btn" id="cfilter-date" aria-haspopup="dialog" aria-expanded="false"
                 onclick="toggleCFilter('date', event)" aria-label="Filter by Date / Time Range" style="min-width:168px">
           <span class="cfilter-floating-label">Date / Time Range</span>
@@ -6982,6 +6992,15 @@ function showMainPane(tabId) {
     document.getElementById('pane-templates').classList.add('active');
   } else if (tabId === 'settings') {
     document.getElementById('pane-settings').classList.add('active');
+  }
+  // Filter bar visibility rules
+  var filterBar   = document.getElementById('context-filter-bar');
+  var dateWrap    = document.getElementById('cfilter-date-wrap');
+  if (tabId === 'settings') {
+    if (filterBar) filterBar.style.display = 'none';
+  } else {
+    if (filterBar) filterBar.style.display = '';
+    if (dateWrap)  dateWrap.style.display  = (tabId === 'my-agents') ? 'none' : '';
   }
   // Sync sidebar WorkSmart AI sub-items
   const wsSubIds = ['dashboard', 'my-agents', 'settings'];
