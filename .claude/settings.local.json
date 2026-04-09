@@ -21,7 +21,24 @@
       "Read(//opt/homebrew/**)",
       "Bash(brew list:*)",
       "Bash(pyenv versions:*)",
-      "Bash(brew install:*)"
+      "Bash(brew install:*)",
+      "Bash(claude mcp:*)",
+      "mcp__highchart-mcp-server__render_chart",
+      "Bash(curl -s -o /Users/igdclt0585/Desktop/Claude_Project/CWP/vendor/highcharts.js https://code.highcharts.com/highcharts.js)",
+      "Bash(curl -s -o /Users/igdclt0585/Desktop/Claude_Project/CWP/vendor/highcharts-more.js https://code.highcharts.com/highcharts-more.js)",
+      "Bash(curl -s -o /Users/igdclt0585/Desktop/Claude_Project/CWP/vendor/solid-gauge.js https://code.highcharts.com/modules/solid-gauge.js)",
+      "Bash(curl -L -s -o /Users/igdclt0585/Desktop/Claude_Project/CWP/vendor/highcharts.js https://code.highcharts.com/highcharts.js)",
+      "Bash(curl -L -s -o /Users/igdclt0585/Desktop/Claude_Project/CWP/vendor/highcharts-more.js https://code.highcharts.com/highcharts-more.js)",
+      "Bash(curl -L -s -o /Users/igdclt0585/Desktop/Claude_Project/CWP/vendor/solid-gauge.js https://code.highcharts.com/modules/solid-gauge.js)",
+      "Bash(curl -v https://code.highcharts.com/highcharts.js)",
+      "Bash(curl -L -s -o /Users/igdclt0585/Desktop/Claude_Project/CWP/vendor/highcharts.js \"https://cdn.jsdelivr.net/npm/highcharts@12/highcharts.js\")",
+      "Bash(curl -L -s -o /Users/igdclt0585/Desktop/Claude_Project/CWP/vendor/highcharts-more.js \"https://cdn.jsdelivr.net/npm/highcharts@12/highcharts-more.js\")",
+      "Bash(curl -L -s -o /Users/igdclt0585/Desktop/Claude_Project/CWP/vendor/solid-gauge.js \"https://cdn.jsdelivr.net/npm/highcharts@12/modules/solid-gauge.js\")",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(ls:*)",
+      "Bash(git rm:*)"
     ]
   }
 }
